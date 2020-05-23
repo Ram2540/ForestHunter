@@ -1,0 +1,96 @@
+  [class^="weapon-"] {
+    position: relative;
+    display: inline-block; 
+}  
+/* .weapon-card {
+    width: 200px;
+    height: 125px;
+    position: relative;
+    display: inline-block; 
+    background-color: #5d5252;
+    margin: 1px;
+    border-radius: 17px;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,.35);
+}   */
+
+ .weapon-avatar-box {
+    width: 100px;
+    height: 125px;
+    top:10;
+    left:5; 
+} 
+
+.weapon-avatar {
+object-fit:contain;
+max-width:100px;
+max-height:125px;
+display: inline-block; 
+position: absolute;
+top:10;
+left:10; 
+}
+
+.weapon-level-box {
+    width: 50%;
+    height: 18px;
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    background: linear-gradient(135deg,#1557b9,#8db2eb 50%,#661ea8);
+    box-shadow: inset 0 10px 0 rgba(119, 240, 230, 0.1), 0 1px 1px rgba(0,0,0,.15);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.weapon-level {
+    position: absolute;
+    right: 6px;
+}
+
+.weapon-dps-box {
+    width: 50%;
+    height: 18px;
+    position: absolute;
+    top: 30px;
+    right: 6px;
+    background: linear-gradient(135deg,#1557b9,#8db2eb 50%,#661ea8);
+    box-shadow: inset 0 10px 0 rgba(119, 240, 230, 0.1), 0 1px 1px rgba(0,0,0,.15);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.weapon-dps {
+    position: absolute;
+    right: 6px;
+}
+
+.color-btn-green {
+    width: 50%;
+    right: 10px;
+    BOTTOM: 25px;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block; 
+    background: linear-gradient(0deg,#7cbc30,#baf279);
+}
+
+/*
+[class^="color-btn"] {
+    width: 50%;
+    right: 6px;
+    BOTTOM: 25px;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block; 
+}
+*/
+ /* [class^="color-btn"] {
+    border-radius: 5px;
+    width: 60%;
+} */
+
+/* .color-btn.green {
+    background: linear-gradient(0deg,#7cbc30,#baf279);
+}  */

@@ -1,0 +1,16 @@
+<div class="weapon-card">
+    <div class="weapon-avatar-box">
+        <img class="weapon-avatar" src="{{weapon.UrlImg}}">
+    </div>
+    <div class="weapon-level-box">
+        level
+        <div class="weapon-level">{{weapon.level}}</div>
+    </div>
+    <div class="weapon-dps-box">
+        dps
+        <div class="weapon-dps">{{weapon.damage}}</div>
+    </div>
+    <app-buy-button class="color-btn-green" (buttonClicked)="levelUp()" [myValue] = "weapon.price"></app-buy-button>
+</div>
+
+

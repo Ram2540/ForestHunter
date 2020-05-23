@@ -1,0 +1,11 @@
+.enemy {
+    /* display: inline-block; */
+    /* background-position: 0 0,10px 10px; */
+    width: 400px;
+    height: 800px;
+    position: relative;
+    /* left: 0px;
+    top: 400px; */
+    /* height: 100vh; */
+    /* font-weight: 500; */
+}

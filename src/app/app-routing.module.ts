@@ -1,0 +1,28 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { LeftSideHeroComponent } from './components/left-side-hero/left-side-hero.component';
+import { LeftSideQuestsComponent } from './components/left-side-quests/left-side-quests.component';
+
+
+const appRoutes: Routes = [
+    { path: '', component: LeftSideHeroComponent },
+    { path: 'hero', component: LeftSideHeroComponent },
+    { path: 'guild', component: LeftSideHeroComponent },
+    { path: 'village', component: LeftSideHeroComponent },
+    { path: 'quests', component: LeftSideQuestsComponent },
+    { path: 'ratings', component: LeftSideHeroComponent },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(appRoutes)
+    ],
+    exports: [
+        RouterModule
+    ]
+})
+
+export class AppRoutingModule {
+
+}

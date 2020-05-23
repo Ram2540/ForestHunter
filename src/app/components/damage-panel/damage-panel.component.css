@@ -1,0 +1,15 @@
+.dps {
+    width:100px;
+    height: 70px;
+    left: 250px; 
+    position: relative;
+    border-radius: 35px;
+    background: linear-gradient(0deg,#dbdd67,#948d53 18%,rgb(131, 129, 120) 60%,#413409 85%,#493703);
+    color: white;
+}
+
+.title {
+    left :40px;
+    top: 10px;
+    position: relative;
+}

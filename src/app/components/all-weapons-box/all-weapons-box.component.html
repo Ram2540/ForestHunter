@@ -1,0 +1,6 @@
+<!-- <div class="all-weapons-box">  -->
+<!-- <app-weapon-card class="weapon-card" *ngFor="let weaponElement of weapons" [weapon]="weaponElement"></app-weapon-card> -->
+<app-weapon-card *ngIf="nextToBuyWeapon" [weapon]="nextToBuyWeapon" (weaponClicked)="onUpdateData()"></app-weapon-card>
+<app-weapon-card *ngFor="let weaponElement of weapons" [weapon]="weaponElement" (weaponClicked)="onUpdateData()">
+</app-weapon-card>
+<!-- </div> -->
