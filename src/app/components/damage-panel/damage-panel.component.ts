@@ -12,4 +12,12 @@ export class DamagePanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  public getDPSMultiplier() {
+    return this.heroService.getDPSMultiplier();
+  }
+
+  public getDamage() {
+    return this.heroService.getDamage();
+  }
+
 }

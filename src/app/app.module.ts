@@ -23,7 +23,6 @@ import { DamagePanelComponent } from './components/damage-panel/damage-panel.com
 import { LeftSideHeroComponent } from './components/left-side-hero/left-side-hero.component';
 import { LeftSideQuestsComponent } from './components/left-side-quests/left-side-quests.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginFormComponent } from './login-form/login-form.component';
 
 
 @NgModule({
@@ -45,8 +44,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
     EnemyDataComponent,
     DamagePanelComponent,
     LeftSideHeroComponent,
-    LeftSideQuestsComponent,
-    LoginFormComponent
+    LeftSideQuestsComponent
   ],
   imports: [
     BrowserModule,

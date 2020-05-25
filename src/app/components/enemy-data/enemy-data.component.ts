@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import {EnemyService} from '../../services/enemy.service'
+import { EnemyService } from '../../services/enemy.service'
 
 @Component({
   selector: 'app-enemy-data',
@@ -7,16 +7,33 @@ import {EnemyService} from '../../services/enemy.service'
   styleUrls: ['./enemy-data.component.css']
 })
 export class EnemyDataComponent implements OnInit {
-// @HostBinding 
+  // @HostBinding 
   constructor(private enemyService: EnemyService) { }
 
   ngOnInit() {
   }
 
-  // getEnemyHPPercentage() {
-  //    return this.enemyService.getPercentHP();
-  //   return 25;
-  // }
+  public getMostersDownOnCurrentLevel() {
+    return this.enemyService.getMostersDownOnCurrentLevel();
+  }
 
+  public getMaxMosterOnLevel() {
+    return this.enemyService.getMaxMosterOnLevel()
+  }
 
+  public getPercentHP() {
+    return this.enemyService.getPercentHP()
+  }
+
+  public getEnemyHP() {
+    return this.enemyService.getEnemyHP()
+  }
+
+  public getFullHP() {
+    return this.enemyService.getFullHP()
+  }
+
+  public getCurrentLevel() {
+    return this.enemyService.getCurrentLevel()
+  }
 }
