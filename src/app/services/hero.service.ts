@@ -21,17 +21,14 @@ export class HeroService{
   weaponsChanged = new EventEmitter<Weapon[]>();
 
 
-  constructor(private goldService: GoldService, private dataStorageService: DataStorageService, private authService: AuthService/*,private enemyService: EnemyService*/) {
-    this.subscriptionToUser = this.authService.user.subscribe(
-      () => {
+  constructor(private goldService: GoldService, private dataStorageService: DataStorageService, private authService: AuthService) {
+    
+    this.subscriptionToUser = this.authService.userChanged.subscribe( (value) => {
+      if (this.authService.user.value)
+      {
         this.fetchData();
       }
-    )
-
-    setTimeout(() => {this.fetchData();},10000);
-
-    setInterval(() => {console.log(this.superHero.getValue());},1000);
-
+    });
   }
 
   /*------------------------Gold-----------------------------*/
@@ -126,38 +123,11 @@ export class HeroService{
     this.weaponsChanged.emit(newWeapons);
   }
 
-  private fetchData() {
+  public fetchData() {
     this.dataStorageService.getHero().subscribe(h => {
-      this.superHero.next(h);
+        this.superHero.next(h);
+        this.emitWeaponsChanged(this.superHero.getValue().weapons);
+        this.recalculateDamage();
     });
   }
-  /*-----------------------------------------------------*/
-  /*
-  private gerRandomWeaponUrls(): string {
-    let value = Math.floor(Math.random() * Object.keys(weaponUrls).length );
-    switch (value) {
-      case 0: return weaponUrls.weapon1;
-      case 1: return weaponUrls.weapon2;
-      case 2: return weaponUrls.weapon3;
-      case 3: return weaponUrls.weapon4;
-      default: return weaponUrls.weapon1;
-    }
-  }
-
-  private randomEnum<T>(anEnum: T): T[keyof T] {
-    const enumValues = Object.keys(anEnum)
-      .map(n => Number.parseInt(n))
-      .filter(n => !Number.isNaN(n)) as unknown as T[keyof T][]
-    const randomIndex = Math.floor(Math.random() * enumValues.length)
-    const randomEnumValue = enumValues[randomIndex]
-    return randomEnumValue;
-  }
-
-  getRandomnSetOfWeapons() {
-    let n = Math.random() * 5;
-    for (let i = 0; i < n; i++) {
-      this.superHero.weapons.push({ id: Math.floor(Math.random() * 100), level: Math.floor(Math.random() * 100), damage: Math.floor(Math.random() * 999), attackFrequency: Math.floor(Math.random() * 1000), element: this.randomEnum(ElementTypes), availability: true, UrlImg: this.gerRandomWeaponUrls() });
-    }
-  }
-*/
 }
