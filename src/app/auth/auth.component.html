@@ -1,0 +1,106 @@
+<button (click)="onOpenForm()" *ngIf="!isFormOpened"> SIGN IN</button>
+
+
+<div class="popupWrapper-diable" *ngIf="isFormOpened">
+    <div class="login-div">
+        <div class="alert alert-danger" *ngIf="error">
+            <p>{{error}}</p>
+        </div>
+        <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="login-form">
+            <div class="form-group">
+                <label for="email">E-Mail</label>
+                <input type="email" id="email" class="form-control" ngModel name="email" required email />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" ngModel name="password" required
+                    minlength="6" />
+            </div>
+            <div class="form-group" *ngIf="!isLoginMode">
+                <label for="repeatpassword">repeat Password</label>
+                <input type="password" id="repeatpassword" class="form-control" ngModel name="repeatpassword" required
+                    minlength="6" />
+            </div>
+            <div>
+                <button type="submit" [disabled]=!authForm.valid>Login</button>
+                <button (click)="onOpenForm()">Cancel</button>
+                <button (click)="onSwitchLoginToSignUp()">Switch Login to Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <div class="alert alert-danger" *ngIf="error">
+        <p>{{ error }}</p>
+      </div>
+      <div *ngIf="isLoading" style="text-align: center;">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+        <div class="form-group">
+          <label for="email">E-Mail</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            ngModel
+            name="email"
+            required
+            email
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            ngModel
+            name="password"
+            required
+            minlength="6"
+          />
+        </div>
+        <div>
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!authForm.valid"
+          >
+            {{ isLoginMode ? 'Login' : 'Sign Up' }}
+          </button>
+          |
+          <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
+            Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div> -->
+
+<!-- <div>
+    <div id="popupWrapper" class="popup-layer show">
+        <div class="screen-blend-55"></div>
+        <div id="popupContainer" class="popup-in">
+            <div class="m-popup sand sign-in">
+                <div class="title">Sign in</div>
+                <div class="color-box"></div>
+                <div class="content sign-in1 ">
+                    <div class="sign-in-form">
+                        <div class="block-a"><label class="tfield username ">Username<input type="text" name="username"
+                                    class="itext username" value=""></label><label
+                                class="tfield password ">Password<input type="password" name="password"
+                                    class="itext password" value="">
+                                <div class="note">Forgot password?</div>
+                            </label></div>
+                        <div class="btn-simple-gold btn-ok">Sign in</div>
+                        <div class="alt-step">Don't have a password?&nbsp;<span class="go">Sign up</span></div>
+                    </div>
+                </div>
+                <div class="btn-close-x"></div>
+            </div>
+        </div>
+    </div>
+</div> -->

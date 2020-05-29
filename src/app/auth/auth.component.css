@@ -1,0 +1,16 @@
+.login-div {
+    position: absolute;
+    top: 50%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+}
+
+.popupWrapper-diable
+{
+    position: absolute;
+    width:100%;
+    height:100%;
+    background: rgba(255, 255, 255, .4);
+    /* font-weight: 50000 */
+    /* background: #555 */
+}

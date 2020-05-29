@@ -2,7 +2,7 @@ import { Weapon } from './weapon';
 import { getWeaponsList } from '../services/fixed-data';
 
 export class Hero {
-    private id: number;
+    id: number;
     gold: number;
     goldBonus: number;
     DPSMultiplier: number;
@@ -13,8 +13,10 @@ export class Hero {
     maxMosterOnLevel: number;
     mostersDownOnCurrentLevel: number;
 
-    constructor(id: number) {
-        this.id = id;
+    //constructor(id: number, avaliableWeapons?: Weapon[], weapons?: Weapon[], lvl?: number, gold?: number, ) {
+    constructor() {
+        this.id = 1;
+
         this.avaliableWeapons = [];
         this.weapons = [];
         this.level = 1;

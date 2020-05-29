@@ -20,20 +20,11 @@ export class Enemy {
                 break;
             case (1): this.url = "https://xgm.guru/files/649/130131/screenshot2.png";
                 break;
-            default: "https://forums.wesnoth.org/download/file.php?id=23653&mode=view";
+            case (2): this.url = "https://pngimage.net/wp-content/uploads/2018/05/evolve-png-2.png";
+                break;
+            default: "https://pngimage.net/wp-content/uploads/2018/05/evolve-png-2.png";
         }
         console.log(r + "enemy");
-
-        // if (Math.random()>0.5)
-        // {
-        // this.url = "https://xgm.guru/files/649/130131/screenshot2.png";
-        // console.log ("take 1 pesant");
-        // }
-        // else 
-        // {
-        //     this.url = "https://forums.wesnoth.org/download/file.php?id=23653&mode=view";
-        //     console.log ("take 2 pesant");
-        // }
     }
 }
 

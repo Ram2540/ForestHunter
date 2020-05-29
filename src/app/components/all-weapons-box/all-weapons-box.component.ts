@@ -16,16 +16,16 @@ export class AllWeaponsBoxComponent implements OnInit {
   ngOnInit() {
     this.onUpdateData();
     this.heroService.weaponsChanged.subscribe(
-      (newWeapons:Weapon[]) => {
-        //this.weapons= newWeapons;
-        this.onUpdateData()
+      (newWeapons: Weapon[]) => {
+        // this.weapons= newWeapons;
+        this.onUpdateData();
       }
     )
 
     /*----------------------------------TEST for reload-------------------------- */
-    setInterval(() => {
-      this.onUpdateData()
-    }, 15000);
+    // setInterval(() => {
+    //   this.onUpdateData()
+    // }, 15000);
 
   }
 

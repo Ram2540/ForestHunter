@@ -23,7 +23,11 @@ import { DamagePanelComponent } from './components/damage-panel/damage-panel.com
 import { LeftSideHeroComponent } from './components/left-side-hero/left-side-hero.component';
 import { LeftSideQuestsComponent } from './components/left-side-quests/left-side-quests.component';
 import { AppRoutingModule } from './app-routing.module';
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthComponent } from './auth/auth.component';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from './auth/auth.service';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -44,18 +48,27 @@ import { AppRoutingModule } from './app-routing.module';
     EnemyDataComponent,
     DamagePanelComponent,
     LeftSideHeroComponent,
-    LeftSideQuestsComponent
+    LeftSideQuestsComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
     // RouterModule,
     // RouterModule.forRoot(appRoutes),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     HeroService,
     GoldService,
-    EnemyService
+    EnemyService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

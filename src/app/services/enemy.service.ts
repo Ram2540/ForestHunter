@@ -7,10 +7,13 @@ import { HeroService } from './hero.service';
 })
 export class EnemyService {
   currentEnemy: Enemy;
+  private creationOfNewEnemyLaunched = false;
+
+
   constructor(private heroService: HeroService) {
     this.generateEnemy(heroService.getCurrentLevel());
 
-    setInterval(() => { this.toDamageEnemy(); }, 100);
+    setInterval(() => { this.toDamageEnemy(); }, 1000);
   }
   public getEnemy(): Enemy {
     return this.currentEnemy;
@@ -28,7 +31,19 @@ export class EnemyService {
 
 
   private generateEnemy(level: number) {
-    if (!this.isEnemyAlive()) {
+    if (!this.isEnemyAlive() && !this.creationOfNewEnemyLaunched) {
+      /*if (this.currentEnemy) {
+        this.creationOfNewEnemyLaunched = true;
+        setTimeout(() => {
+          // this.currentEnemy = null;
+          this.currentEnemy = new Enemy(1, level);
+          this.creationOfNewEnemyLaunched = false;
+        }, 1250);
+      } else {
+        this.currentEnemy = new Enemy(1, level);
+      }
+*/
+      this.currentEnemy = null;
       this.currentEnemy = new Enemy(1, level);
       console.log('generateEnemy-------------');
     }
@@ -46,12 +61,13 @@ export class EnemyService {
     console.log('toDamageEnemy ' + this.heroService.getDamage());
     this.currentEnemy.HP -= damage;
     if (this.currentEnemy.HP <= 0) {
+      this.currentEnemy.HP = 0;
       this.enemyKilled();
     }
   }
   private enemyKilled() {
     // let _level = this.currentEnemy.level;
-    this.currentEnemy = null;
+    //this.currentEnemy = null;
     this.heroService.addGold(111);
     this.heroService.enemyKilled();
     console.log('enemyKilled-------------');
@@ -59,18 +75,18 @@ export class EnemyService {
   }
 
 
- /*------------------------Level-----------------------------*/
- getCurrentLevel(): number{
-  return this.heroService.getCurrentLevel();
-}
+  /*------------------------Level-----------------------------*/
+  getCurrentLevel(): number {
+    return this.heroService.getCurrentLevel();
+  }
 
-getMaxMosterOnLevel(): number{
- return this.heroService.getMaxMosterOnLevel();
-}
+  getMaxMosterOnLevel(): number {
+    return this.heroService.getMaxMosterOnLevel();
+  }
 
-getMostersDownOnCurrentLevel(): number{
- return this.heroService.getMostersDownOnCurrentLevel();
-}
+  getMostersDownOnCurrentLevel(): number {
+    return this.heroService.getMostersDownOnCurrentLevel();
+  }
 
   // /*-----------------------------------TEST-------------------------------------- */
   //   private getRewards(): [{ HP: number, gold: number }] {

@@ -1,49 +1,62 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, OnInit } from '@angular/core';
 import { ElementTypes } from '../enums/elementTypes';
 import { weaponUrls } from '../enums/imageUrls';
 import { Hero } from '../classes/hero';
 import { GoldService } from './gold.service';
 import { Weapon } from '../classes/weapon';
+import { DataStorageService } from './data-storage/data-storage.service';
+import { AuthService } from '../auth/auth.service';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class HeroService {
-  private superHero: Hero = new Hero(1);
+export class HeroService{
+  private superHero: BehaviorSubject<Hero> = new BehaviorSubject<Hero>(new Hero());
   private damage = 0;
   private nextWeaponToBuy: Weapon;
-/*----------------------*/
-weaponsChanged = new EventEmitter<Weapon[]>();
-  
+  private subscriptionToUser: Subscription;
+  /*----------------------*/
+  weaponsChanged = new EventEmitter<Weapon[]>();
 
-  constructor(private goldService: GoldService/*,private enemyService: EnemyService*/) {
- 
+
+  constructor(private goldService: GoldService, private dataStorageService: DataStorageService, private authService: AuthService/*,private enemyService: EnemyService*/) {
+    this.subscriptionToUser = this.authService.user.subscribe(
+      () => {
+        this.fetchData();
+      }
+    )
+
+    setTimeout(() => {this.fetchData();},10000);
+
+    setInterval(() => {console.log(this.superHero.getValue());},1000);
+
   }
 
   /*------------------------Gold-----------------------------*/
   public getGold(): number {
-    return this.superHero.gold;
+    return this.superHero.getValue().gold;
   }
   public getGoldBonus(): number {
-    return this.superHero.goldBonus;
+    return this.superHero.getValue().goldBonus;
   }
 
   public addGold(gold: number): void {
-    this.superHero.gold += gold;
-    console.log(this.superHero.gold);
+    this.superHero.getValue().gold += gold;
+    console.log(this.superHero.getValue().gold);
   }
 
   public addGoldBonus(bonus: number): void {
-    this.superHero.goldBonus += bonus;
+    this.superHero.getValue().goldBonus += bonus;
   }
   public isThereEnoughGold(gold: number): boolean {
-    return this.superHero.gold >= gold;
+    return this.superHero.getValue().gold >= gold;
   }
   /*------------------------Weapon-----------------------------*/
   private recalculateDamage() {
     this.damage = 0;
-    this.damage = this.superHero.weapons.filter(w => w.level > 0).reduce((prev, curr) => prev + curr.damage, 0);
+    this.damage = this.superHero.getValue().weapons.filter(w => w.level > 0).reduce((prev, curr) => prev + curr.damage, 0);
     console.log('recalculateDamage ' + this.damage);
   }
   public getDamage() {
@@ -51,16 +64,16 @@ weaponsChanged = new EventEmitter<Weapon[]>();
   }
 
   public getDPSMultiplier() {
-    return this.superHero.DPSMultiplier;
+    return this.superHero.getValue().DPSMultiplier;
   }
   public getHeroWeapons() {
-    return this.superHero.weapons.filter(w => w.level > 0);
+    return this.superHero.getValue().weapons.filter(w => w.level > 0);
   }
   public getNextWeaponToBuy() {
     if (this.nextWeaponToBuy && this.nextWeaponToBuy.level === 0) {
       return this.nextWeaponToBuy;
     }
-    return this.superHero.weapons.filter(w => w.level === 0).sort((n1, n2) => {
+    return this.superHero.getValue().weapons.filter(w => w.level === 0).sort((n1, n2) => {
       if (n1.price > n2.price) {
         return 1;
       }
@@ -74,46 +87,50 @@ weaponsChanged = new EventEmitter<Weapon[]>();
   }
 
   public levelUp(id: number) {
-    for (let i = 0; this.superHero.weapons.length > i; i++) {
-      if (this.superHero.weapons[i].id === id) {
-        if (this.isThereEnoughGold(this.superHero.weapons[i].price)) {
-          this.addGold(this.superHero.weapons[i].price * -1);
-          this.superHero.weapons[i].level++;
-           this.superHero.weapons[i].damage = Math.floor((this.superHero.weapons[i].damage * 1.1));
-           this.superHero.weapons[i].price = Math.floor(this.superHero.weapons[i].price * 1.2);
-           this.emitWeaponsChanged(this.superHero.weapons);
+    for (let i = 0; this.superHero.getValue().weapons.length > i; i++) {
+      if (this.superHero.getValue().weapons[i].id === id) {
+        if (this.isThereEnoughGold(this.superHero.getValue().weapons[i].price)) {
+          this.addGold(this.superHero.getValue().weapons[i].price * -1);
+          this.superHero.getValue().weapons[i].level++;
+          this.superHero.getValue().weapons[i].damage = Math.floor((this.superHero.getValue().weapons[i].damage * 1.1));
+          this.superHero.getValue().weapons[i].price = Math.floor(this.superHero.getValue().weapons[i].price * 1.2);
+          this.emitWeaponsChanged(this.superHero.getValue().weapons);
           break;
         }
       }
     }
     this.recalculateDamage();
   }
- /*------------------------Level-----------------------------*/
- getCurrentLevel():number{
-   return this.superHero.currentLevel;
- }
-
- getMaxMosterOnLevel():number{
-  return this.superHero.maxMosterOnLevel;
-}
-
-getMostersDownOnCurrentLevel():number{
-  return this.superHero.mostersDownOnCurrentLevel;
-}
-
-enemyKilled(){
-  this.superHero.mostersDownOnCurrentLevel++;
-  if (this.superHero.mostersDownOnCurrentLevel === this.superHero.maxMosterOnLevel)
-  {
-    this.superHero.mostersDownOnCurrentLevel=0;
-    this.superHero.currentLevel++;
+  /*------------------------Level-----------------------------*/
+  getCurrentLevel(): number {
+    return this.superHero.getValue().currentLevel;
   }
-}
-/*-------------------------Emiters------------------------- */
-private emitWeaponsChanged(newWeapons:Weapon[]):void
-{
-  this.weaponsChanged.emit(newWeapons);
-}
+
+  getMaxMosterOnLevel(): number {
+    return this.superHero.getValue().maxMosterOnLevel;
+  }
+
+  getMostersDownOnCurrentLevel(): number {
+    return this.superHero.getValue().mostersDownOnCurrentLevel;
+  }
+
+  enemyKilled() {
+    this.superHero.getValue().mostersDownOnCurrentLevel++;
+    if (this.superHero.getValue().mostersDownOnCurrentLevel === this.superHero.getValue().maxMosterOnLevel) {
+      this.superHero.getValue().mostersDownOnCurrentLevel = 0;
+      this.superHero.getValue().currentLevel++;
+    }
+  }
+  /*-------------------------Emiters------------------------- */
+  private emitWeaponsChanged(newWeapons: Weapon[]): void {
+    this.weaponsChanged.emit(newWeapons);
+  }
+
+  private fetchData() {
+    this.dataStorageService.getHero().subscribe(h => {
+      this.superHero.next(h);
+    });
+  }
   /*-----------------------------------------------------*/
   /*
   private gerRandomWeaponUrls(): string {

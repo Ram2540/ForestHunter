@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LeftSideHeroComponent } from './components/left-side-hero/left-side-hero.component';
 import { LeftSideQuestsComponent } from './components/left-side-quests/left-side-quests.component';
+import { AuthComponent } from './auth/auth.component';
 
 
 const appRoutes: Routes = [
@@ -12,6 +13,7 @@ const appRoutes: Routes = [
     { path: 'village', component: LeftSideHeroComponent },
     { path: 'quests', component: LeftSideQuestsComponent },
     { path: 'ratings', component: LeftSideHeroComponent },
+    { path: '', component: LeftSideHeroComponent },
 ];
 
 @NgModule({
