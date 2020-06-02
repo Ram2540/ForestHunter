@@ -22,6 +22,7 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   userChanged: Observable<User> = this.user.asObservable();
   private api = 'AIzaSyDWyCa698JnaQrv1z1PjSIkErIhiLSAFPo';
+  private localStorageUserKey = 'userData';
 
   constructor(private http: HttpClient) { 
   
@@ -73,6 +74,22 @@ export class AuthService {
       );
   }
 
+  autoLogin() {
+    const userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
+    const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+    }
+  }
+
   logout() {
     this.user.next(null);
   }
@@ -87,6 +104,7 @@ export class AuthService {
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
     this.user.complete();
+    localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
