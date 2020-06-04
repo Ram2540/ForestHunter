@@ -12,23 +12,25 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class HeroService{
+export class HeroService {
   private superHero: BehaviorSubject<Hero> = new BehaviorSubject<Hero>(new Hero());
   private damage = 0;
   private nextWeaponToBuy: Weapon;
-  private subscriptionToUser: Subscription;
+  private subscriptionToDataStorageHero: Subscription;
   /*----------------------*/
   weaponsChanged = new EventEmitter<Weapon[]>();
 
-
   constructor(private goldService: GoldService, private dataStorageService: DataStorageService, private authService: AuthService) {
-    
-    this.subscriptionToUser = this.authService.userChanged.subscribe( (value) => {
-      if (this.authService.user.value)
-      {
-        this.fetchData();
+    this.subscriptionToDataStorageHero = this.dataStorageService.loadedHero.subscribe(hero => {
+      console.log('next(hero);');
+      if (hero) {
+        console.log('this.superHero.next(hero);');
+        this.superHero.next(hero);
+        this.emitWeaponsChanged(this.superHero.getValue().weapons);
+        this.recalculateDamage();
       }
     });
+
   }
 
   /*------------------------Gold-----------------------------*/
@@ -41,7 +43,6 @@ export class HeroService{
 
   public addGold(gold: number): void {
     this.superHero.getValue().gold += gold;
-    console.log(this.superHero.getValue().gold);
   }
 
   public addGoldBonus(bonus: number): void {
@@ -54,7 +55,6 @@ export class HeroService{
   private recalculateDamage() {
     this.damage = 0;
     this.damage = this.superHero.getValue().weapons.filter(w => w.level > 0).reduce((prev, curr) => prev + curr.damage, 0);
-    console.log('recalculateDamage ' + this.damage);
   }
   public getDamage() {
     return this.damage;
@@ -123,11 +123,22 @@ export class HeroService{
     this.weaponsChanged.emit(newWeapons);
   }
 
-  public fetchData() {
-    this.dataStorageService.getHero().subscribe(h => {
-        this.superHero.next(h);
-        this.emitWeaponsChanged(this.superHero.getValue().weapons);
-        this.recalculateDamage();
-    });
-  }
+  //  public fetchData() {
+  //   this.dataStorageService.hero.subscribe(h => {
+  //     if (h)
+  //     {
+  //       this.superHero.next(h);
+  //       this.emitWeaponsChanged(this.superHero.getValue().weapons);
+  //       this.recalculateDamage();
+  //     }
+  //   });
+  //}
+
+  // public fetchData() {
+  //   this.dataStorageService.getHero().subscribe(h => {
+  //       this.superHero.next(h);
+  //       this.emitWeaponsChanged(this.superHero.getValue().weapons);
+  //       this.recalculateDamage();
+  //   });
+  // }
 }

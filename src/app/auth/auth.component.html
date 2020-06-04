@@ -1,6 +1,6 @@
 <button (click)="onOpenForm()" *ngIf="!isFormOpened"> SIGN IN</button>
 
-
+<button (click)="onTest()" > TEST</button>
 <div class="popupWrapper-diable" *ngIf="isFormOpened">
     <div class="login-div">
         <div class="alert alert-danger" *ngIf="error">
@@ -22,7 +22,7 @@
                     minlength="6" />
             </div>
             <div>
-                <button type="submit" [disabled]=!authForm.valid>Login</button>
+                <button type="submit" class="success" [disabled]=!authForm.valid>Login</button>
                 <button (click)="onOpenForm()">Cancel</button>
                 <button (click)="onSwitchLoginToSignUp()">Switch Login to Sign Up</button>
             </div>

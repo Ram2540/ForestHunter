@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, switchMap, map } from 'rxjs/operators';
 import { throwError, BehaviorSubject, Observable } from 'rxjs';
-
 import { User } from './user.model';
+import {AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
+
+import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase';
+import { Hero } from '../classes/hero';
 
 export interface AuthResponseData {
   kind: string;
@@ -23,11 +28,51 @@ export class AuthService {
   userChanged: Observable<User> = this.user.asObservable();
   private api = 'AIzaSyDWyCa698JnaQrv1z1PjSIkErIhiLSAFPo';
   private localStorageUserKey = 'userData';
+  private database = firebase.database();
 
-  constructor(private http: HttpClient) { 
-  
+  constructor(private http: HttpClient, private authFirebase: AngularFireAuth) {
+    this.user.subscribe(user => {
+      if (user) {
+      localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
+      }
+    });
+
+    this.authFirebase.authState.subscribe(user => {
+      if (user){
+        console.log('authFirebase.authState');
+        console.log(user);
+      }
+    }
+    );
+
   }
 
+  onTest()
+  {
+    // console.log(firebase.database().ref('userData/'+ this.user.getValue().uid+'/'));
+    // firebase.database().ref('userData/'+ this.user.getValue().uid+'/')
+    // .once('value').then(function(snapshot) {
+    //   var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+    //   console.log('username ');
+    //   console.log(snapshot);
+    // });
+
+    console.log(firebase
+        .database()
+        .ref('userData/'+ this.user.getValue().uid+'/')
+        .on('value', function(snapshot) {
+          console.log(snapshot.val());
+        }));
+      // firebase
+      //   .database()
+      //   .ref('userData/' + 'userId')
+      //   .set({
+      //     username: 'name',
+      //     email: 'email',
+      //     profile_picture: 'imageUrl',
+      //   });
+
+  }
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
@@ -51,7 +96,25 @@ export class AuthService {
       );
   }
 
+ 
+
+
   login(email: string, password: string) {
+    this.authFirebase.signInWithEmailAndPassword(email, password)
+    .then(resData => {
+      console.log(' ------------------------------------------55------------------------------=');
+      console.log(resData);
+      console.log(resData.user);
+      // this.handleAuthentication(
+      //   resData.user.email,
+      //   resData.user.localId,
+      //   resData.user.getIdToken().,
+      //   +resData.user.expiresIn
+      // );
+    }).catch(this.handleError);
+
+
+
     return this.http
       .post<AuthResponseData>(
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
@@ -77,14 +140,15 @@ export class AuthService {
   autoLogin() {
     const userData: {
       email: string;
-      id: string;
+      uid: string;
       _token: string;
       _tokenExpirationDate: string;
     } = JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
       return;
     }
-    const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+    console.log(' ------------------------------------------------------------------------=');
+    const loadedUser = new User(userData.email, userData.uid, userData._token, new Date(userData._tokenExpirationDate));
     if (loadedUser.token) {
       this.user.next(loadedUser);
     }
@@ -104,7 +168,6 @@ export class AuthService {
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
     this.user.complete();
-    localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
@@ -125,4 +188,57 @@ export class AuthService {
     }
     return throwError(errorMessage);
   }
+
+
+/*
+ login(email: string, password: string) {
+    return this.http
+      .post<AuthResponseData>(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
+  }
+
+signup(email: string, password: string) {
+    return this.http
+      .post<AuthResponseData>(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.api,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
+  }
+
+*/
+
+
+
 }

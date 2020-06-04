@@ -66,4 +66,8 @@ export class AuthComponent {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  onTest()
+  {
+    this.authService.onTest();
+  }
 }

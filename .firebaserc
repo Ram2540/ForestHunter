@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "foresthunter-f42be": {
+      "hosting": {
+        "ForestHunter": [
+          "foresthunter-f42be"
+        ]
+      }
+    }
+  }
+}

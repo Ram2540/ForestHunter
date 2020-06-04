@@ -45,7 +45,7 @@ export class EnemyService {
 */
       this.currentEnemy = null;
       this.currentEnemy = new Enemy(1, level);
-      console.log('generateEnemy-------------');
+      //console.log('generateEnemy-------------');
     }
   }
 
@@ -58,7 +58,7 @@ export class EnemyService {
   public toDamageEnemy() {
 
     const damage: number = this.heroService.getDamage(); // Math.random() * 10;
-    console.log('toDamageEnemy ' + this.heroService.getDamage());
+    //console.log('toDamageEnemy ' + this.heroService.getDamage());
     this.currentEnemy.HP -= damage;
     if (this.currentEnemy.HP <= 0) {
       this.currentEnemy.HP = 0;
@@ -70,7 +70,7 @@ export class EnemyService {
     //this.currentEnemy = null;
     this.heroService.addGold(111);
     this.heroService.enemyKilled();
-    console.log('enemyKilled-------------');
+    //console.log('enemyKilled-------------');
     this.generateEnemy(this.heroService.getCurrentLevel());// this.generateEnemy(_level + 1);
   }
 

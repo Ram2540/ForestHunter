@@ -24,7 +24,7 @@ export class Enemy {
                 break;
             default: "https://pngimage.net/wp-content/uploads/2018/05/evolve-png-2.png";
         }
-        console.log(r + "enemy");
+        //console.log(r + "enemy");
     }
 }
 
