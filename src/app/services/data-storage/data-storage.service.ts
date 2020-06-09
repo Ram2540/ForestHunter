@@ -8,6 +8,7 @@ import { observable, Observable, Subject, BehaviorSubject, Subscription } from '
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { Reference } from '@angular/compiler/src/render3/r3_ast';
+import { DatabaseDataLinks } from './database-enums';
 
 
 @Injectable({
@@ -17,13 +18,14 @@ export class DataStorageService {
   private urlFirebase = 'https://foresthunter-f42be.firebaseio.com/';
   loadedHero = new BehaviorSubject<Hero>(null);
   private subscriptionToUser: Subscription;
-  
-  
-  private get RefForUserData() {
-    return 'userData/' + this.authService.user.getValue().uid + '/';
+  private get heroDBData() {
+    return this.getRef(this.RefForDataTo(DatabaseDataLinks.Hero));
   }
-  private get RefForHero() {
-    return this.RefForUserData + 'hero/';
+  private get enemyLogDBData() {
+    return this.getRef(this.RefForDataTo(DatabaseDataLinks.EnemyLog) + new Date().getTime().toString());
+  }
+  private get weaponLogDBData() {
+    return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog));
   }
 
   constructor(private http: HttpClient, private authService: AuthService) {
@@ -44,39 +46,54 @@ export class DataStorageService {
 
   public postHero(postData: Hero) {
     if (this.authService.user.value && postData) {
-      this.getRef(this.RefForHero)
+      this.heroDBData
+        .set(postData);
+    }
+  }
+
+  public postEnemyLog(postData) {
+    if (this.authService.user.value && postData) {
+      this.enemyLogDBData
         .set(postData);
     }
   }
 
   public getHero(): void {
     if (this.authService.user.value) {
-      this.getRef(this.RefForHero)
+      this.heroDBData
         .on('value', (snapshot) => {
           const leadedHero = snapshot.val();
           if (leadedHero)
           {
-            console.log(leadedHero);
             this.loadedHero.next(leadedHero);
           }
-          //const leadedHero: Hero = JSON.parse(JSON.stringify(result));
-          console.log(leadedHero);
         });
     }
   }
 
-  private getUrlForUserData(): string {
-    return this.urlFirebase + '/userData/hero/' + this.authService.user.value.uid + '.json';
+  public setSharedData(){
+    
   }
 
-  private GetRefForData(): string {
-    return 'userData/' + this.authService.user.getValue().uid + '/';
-  }
+  //old one
+  // private getUrlForUserData(): string {
+  //   return this.urlFirebase + '/userData/hero/' + this.authService.user.value.uid + '.json';
+  // }
+
+  // private GetRefForData(): string {
+  //   return 'userData/' + this.authService.user.getValue().uid + '/';
+  // }
 
   private getRef(ref: string): firebase.database.Reference {
     return firebase
       .database()
       .ref(ref);
+  }
+  private get RefForUserData() {
+    return 'userData/' + this.authService.user.getValue().uid + '/';
+  }
+  private RefForDataTo(branch: string ) {
+    return this.RefForUserData + branch + '/';
   }
 
   /*

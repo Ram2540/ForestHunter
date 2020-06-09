@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { SharedDataService } from './databaseSharedData/shared-data.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,9 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent {
   title = 'Forest Hunter';
 
-  constructor(private authService: AuthService)
+  constructor(private authService: AuthService, private sharedDataService: SharedDataService)
   {
     this.authService.autoLogin();
+    //this.sharedDataService.setEnemyRewards();
   }
 }

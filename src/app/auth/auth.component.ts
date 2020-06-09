@@ -27,10 +27,9 @@ export class AuthComponent {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs: Observable<AuthResponseData>;
+    let authObs: Promise<boolean | Observable<never>>;
 
     this.isLoading = true;
-
     if (this.isLoginMode) {
       authObs = this.authService.login(email, password);
     } else {
@@ -41,19 +40,16 @@ export class AuthComponent {
       }
       authObs = this.authService.signup(email, password);
     }
-
-    authObs.subscribe(
-      resData => {
-        //console.log(resData);
+    authObs.then(
+      () => {
         this.isLoading = false;
         this.isFormOpened = false;
-      },
-      errorMessage => {
-        //console.log(errorMessage);
-        this.error = errorMessage;
-        this.isLoading = false;
-      }
-    );
+      }).catch(
+        errorMessage => {
+          this.error = errorMessage;
+          this.isLoading = false;
+        }
+      );
 
     form.reset();
   }
@@ -66,8 +62,7 @@ export class AuthComponent {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onTest()
-  {
+  onTest() {
     this.authService.onTest();
   }
 }

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, switchMap, map } from 'rxjs/operators';
 import { throwError, BehaviorSubject, Observable } from 'rxjs';
 import { User } from './user.model';
-import {AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -33,111 +33,159 @@ export class AuthService {
   constructor(private http: HttpClient, private authFirebase: AngularFireAuth) {
     this.user.subscribe(user => {
       if (user) {
-      localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
+        localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
       }
     });
 
     this.authFirebase.authState.subscribe(user => {
-      if (user){
-        console.log('authFirebase.authState');
-        console.log(user);
+      if (user) {
+        this.handleUserAssign(user);
       }
     }
     );
-
   }
 
-  onTest()
-  {
-    // console.log(firebase.database().ref('userData/'+ this.user.getValue().uid+'/'));
-    // firebase.database().ref('userData/'+ this.user.getValue().uid+'/')
-    // .once('value').then(function(snapshot) {
-    //   var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-    //   console.log('username ');
-    //   console.log(snapshot);
-    // });
-
-    console.log(firebase
-        .database()
-        .ref('userData/'+ this.user.getValue().uid+'/')
-        .on('value', function(snapshot) {
-          console.log(snapshot.val());
-        }));
-      // firebase
-      //   .database()
-      //   .ref('userData/' + 'userId')
-      //   .set({
-      //     username: 'name',
-      //     email: 'email',
-      //     profile_picture: 'imageUrl',
-      //   });
-
+  onTest() {
+    firebase
+      .database()
+      .ref('userData/' + this.user.getValue().uid + '/')
+      .on('value', ((snapshot) => {
+        console.log(snapshot.val());
+      }));
   }
-  signup(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.api,
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
+  signup(email: string, password: string): Promise<boolean | Observable<never>> {
+    return this.authFirebase.createUserWithEmailAndPassword(email, password)
+      .then(() => true)
+      .catch(this.handleError);
   }
 
- 
-
-
-  login(email: string, password: string) {
-    this.authFirebase.signInWithEmailAndPassword(email, password)
-    .then(resData => {
-      console.log(' ------------------------------------------55------------------------------=');
-      console.log(resData);
-      console.log(resData.user);
-      // this.handleAuthentication(
-      //   resData.user.email,
-      //   resData.user.localId,
-      //   resData.user.getIdToken().,
-      //   +resData.user.expiresIn
-      // );
-    }).catch(this.handleError);
-
-
-
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
+  login(email: string, password: string): Promise<boolean | Observable<never>> {
+    return this.authFirebase.signInWithEmailAndPassword(email, password)
+      .then(() => true)
+      .catch(this.handleError);
   }
 
   autoLogin() {
+    const userData: {
+      email: string;
+      uid: string;
+      _idToken: string;
+      _refreshToken: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
+    this.authFirebase.signInWithCustomToken(userData._idToken).catch(this.handleError);
+  }
+
+  logout() {
+    this.user.next(null);
+    this.authFirebase.signOut();
+  }
+
+  private async handleUserAssign(
+    user: firebase.User
+  ) {
+    const idToken = await firebase.auth().currentUser.getIdToken();
+
+    console.log('------------------authFirebase.authState-----------------------');
+    console.log(idToken);
+    console.log(user.linkWithCredential);
+    const expirationDate = new Date(new Date().getTime() + 3600000);
+    const loadedUser = new User(
+      user.email,
+      user.uid,
+      idToken,
+      user.refreshToken,
+      expirationDate);
+    this.user.next(loadedUser);
+    this.user.complete();
+  }
+
+
+  // private handleAuthentication(
+  //   email: string,
+  //   userId: string,
+  //   token: string,
+  //   expiresIn: number
+  // ) {
+  //   const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+  //   const user = new User(email, userId, token ,'dfdfsdf', expirationDate);
+  //   this.user.next(user);
+  //   this.user.complete();
+  // }
+
+
+  private handleError(errorRes: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (!errorRes.error || !errorRes.error.error) {
+      return throwError(errorMessage);
+    }
+    switch (errorRes.error.error.message) {
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct.';
+        break;
+    }
+    return throwError(errorMessage);
+  }
+}
+
+  /*
+   login(email: string, password: string) {
+      return this.http
+        .post<AuthResponseData>(
+          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
+          {
+            email: email,
+            password: password,
+            returnSecureToken: true
+          }
+        )
+        .pipe(
+          catchError(this.handleError),
+          tap(resData => {
+            this.handleAuthentication(
+              resData.email,
+              resData.localId,
+              resData.idToken,
+              +resData.expiresIn
+            );
+          })
+        );
+    }
+  
+  signup(email: string, password: string) {
+      return this.http
+        .post<AuthResponseData>(
+          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.api,
+          {
+            email: email,
+            password: password,
+            returnSecureToken: true
+          }
+        )
+        .pipe(
+          catchError(this.handleError),
+          tap(resData => {
+            this.handleAuthentication(
+              resData.email,
+              resData.localId,
+              resData.idToken,
+              +resData.expiresIn
+            );
+          })
+        );
+    }
+
+
+    autoLogin() {
     const userData: {
       email: string;
       uid: string;
@@ -188,57 +236,9 @@ export class AuthService {
     }
     return throwError(errorMessage);
   }
-
-
-/*
- login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
-  }
-
-signup(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.api,
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
-  }
-
-*/
+  
+  */
 
 
 
-}
+

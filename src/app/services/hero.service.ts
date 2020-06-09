@@ -112,6 +112,7 @@ export class HeroService {
   }
 
   enemyKilled() {
+    this.dataStorageService.postEnemyLog({currentLevel: this.superHero.getValue().currentLevel, text: 'enemyDied'});
     this.superHero.getValue().mostersDownOnCurrentLevel++;
     if (this.superHero.getValue().mostersDownOnCurrentLevel === this.superHero.getValue().maxMosterOnLevel) {
       this.superHero.getValue().mostersDownOnCurrentLevel = 0;
