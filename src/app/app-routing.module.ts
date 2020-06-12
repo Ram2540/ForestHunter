@@ -5,7 +5,7 @@ import { LeftSideHeroComponent } from './components/left-side-hero/left-side-her
 import { LeftSideQuestsComponent } from './components/left-side-quests/left-side-quests.component';
 import { AuthComponent } from './auth/auth.component';
 
-
+//I need implement guards 
 const appRoutes: Routes = [
     { path: '', component: LeftSideHeroComponent },
     { path: 'hero', component: LeftSideHeroComponent },
@@ -13,7 +13,7 @@ const appRoutes: Routes = [
     { path: 'village', component: LeftSideHeroComponent },
     { path: 'quests', component: LeftSideQuestsComponent },
     { path: 'ratings', component: LeftSideHeroComponent },
-    { path: '', component: LeftSideHeroComponent },
+    { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

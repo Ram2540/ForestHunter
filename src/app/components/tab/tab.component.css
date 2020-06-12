@@ -1,10 +1,16 @@
-.tab {
+.active 
+{
+    background-color: #69523d !important;
+}
+
+
+#tab {
     width: 118px;
     height: 40px;
     position: relative;
     top: 5;
-     display: inline-block;
-     margin: 0 2px 0 0; 
+    display: inline-block;
+    margin: 0 2px 0 0; 
     cursor: pointer;
     background-color: #9c8b7c;
     border-radius: 24px 24px 0 0; 
@@ -16,7 +22,9 @@
    top: 10px;
    position: absolute;
    text-transform: capitalize;
+   color: white;
 }
+
 
 
 

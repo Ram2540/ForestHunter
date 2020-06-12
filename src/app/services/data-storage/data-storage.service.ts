@@ -25,24 +25,16 @@ export class DataStorageService {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.EnemyLog) + new Date().getTime().toString());
   }
   private get weaponLogDBData() {
-    return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog));
+    return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
   }
 
   constructor(private http: HttpClient, private authService: AuthService) {
-    // this.authService.user.subscribe((value) => {
-
-    //   if (this.authService.user.value) {
-    //     this.getHero();
-    //   }
-    // });
     this.subscriptionToUser = this.authService.userChanged.subscribe((value) => {
       if (this.authService.user.value) {
         this.getHero();
       }
     });
   }
-
-
 
   public postHero(postData: Hero) {
     if (this.authService.user.value && postData) {
@@ -51,39 +43,33 @@ export class DataStorageService {
     }
   }
 
-  public postEnemyLog(postData) {
-    if (this.authService.user.value && postData) {
-      this.enemyLogDBData
-        .set(postData);
-    }
+  public postEnemyLog(enemyPostData) {
+    this.postDataToRef(this.enemyLogDBData, enemyPostData);
   }
+  public postWeaponLog(weaponPostData) {
+    this.postDataToRef(this.weaponLogDBData, weaponPostData);
+  }
+
+
 
   public getHero(): void {
     if (this.authService.user.value) {
       this.heroDBData
         .on('value', (snapshot) => {
           const leadedHero = snapshot.val();
-          if (leadedHero)
-          {
+          if (leadedHero) {
             this.loadedHero.next(leadedHero);
           }
         });
     }
   }
 
-  public setSharedData(){
-    
+  private postDataToRef(postDataRef: firebase.database.Reference, postData) {
+    if (this.authService.user.value && postData && postDataRef) {
+      postDataRef
+        .set(postData);
+    }
   }
-
-  //old one
-  // private getUrlForUserData(): string {
-  //   return this.urlFirebase + '/userData/hero/' + this.authService.user.value.uid + '.json';
-  // }
-
-  // private GetRefForData(): string {
-  //   return 'userData/' + this.authService.user.getValue().uid + '/';
-  // }
-
   private getRef(ref: string): firebase.database.Reference {
     return firebase
       .database()
@@ -92,7 +78,7 @@ export class DataStorageService {
   private get RefForUserData() {
     return 'userData/' + this.authService.user.getValue().uid + '/';
   }
-  private RefForDataTo(branch: string ) {
+  private RefForDataTo(branch: string) {
     return this.RefForUserData + branch + '/';
   }
 
@@ -124,4 +110,12 @@ export class DataStorageService {
   }
 
   */
+  //old one
+  // private getUrlForUserData(): string {
+  //   return this.urlFirebase + '/userData/hero/' + this.authService.user.value.uid + '.json';
+  // }
+
+  // private GetRefForData(): string {
+  //   return 'userData/' + this.authService.user.getValue().uid + '/';
+  // }
 }

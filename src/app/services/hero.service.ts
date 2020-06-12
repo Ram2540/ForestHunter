@@ -91,6 +91,7 @@ export class HeroService {
           this.superHero.getValue().weapons[i].level++;
           this.superHero.getValue().weapons[i].damage = Math.floor((this.superHero.getValue().weapons[i].damage * 1.1));
           this.superHero.getValue().weapons[i].price = Math.floor(this.superHero.getValue().weapons[i].price * 1.2);
+          this.dataStorageService.postWeaponLog(this.superHero.getValue().weapons[i]);
           this.emitWeaponsChanged(this.superHero.getValue().weapons);
           break;
         }
