@@ -13,6 +13,6 @@ export class AppComponent {
   constructor(private authService: AuthService, private sharedDataService: SharedDataService)
   {
     this.authService.autoLogin();
-    //this.sharedDataService.setEnemyRewards();
+    //this.sharedDataService.UpdateAllSharedData();
   }
 }

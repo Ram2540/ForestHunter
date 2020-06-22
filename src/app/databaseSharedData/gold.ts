@@ -1,5 +1,3 @@
-import { SelectControlValueAccessor } from '@angular/forms';
-
 export interface enemyReward {
 
     level: number;
@@ -12,6 +10,8 @@ export abstract class SharedDataGold {
     private static startGoldReward = 2;
     private static multiplier = 1.8;
     private static finalLevel = 1000;
+
+    //get array data for enemyRewards
     public static get enemyRewards() {
         if (this.enemyRewardsArray.length < this.finalLevel) {
             let reward = this.startGoldReward;

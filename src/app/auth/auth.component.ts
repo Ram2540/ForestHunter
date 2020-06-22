@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService, AuthResponseData } from './auth.service';
 import { Observable } from 'rxjs';
 import { RoutesService } from '../services/routes.service';
+import { SharedDataService } from '../databaseSharedData/shared-data.service';
 
 
 
@@ -17,7 +18,7 @@ export class AuthComponent {
   isLoading = false;
   error: string = null;
   openFormSignIn = false;
-  constructor(private authService: AuthService, private routesService: RoutesService) { }
+  constructor(private authService: AuthService, private routesService: RoutesService, private sharedDataService: SharedDataService) { }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -64,5 +65,6 @@ export class AuthComponent {
 
   onTest() {
     this.authService.onTest();
+    this.sharedDataService.UpdateAllSharedData();
   }
 }
