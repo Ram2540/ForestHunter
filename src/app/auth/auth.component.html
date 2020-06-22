@@ -1,33 +1,46 @@
-<button (click)="onOpenForm()" *ngIf="!isFormOpened"> SIGN IN</button>
+<button (click)="onOpenForm()" *ngIf="!isFormOpened" class="btn btn-outline-info"> SIGN IN</button>
 
-<button (click)="onTest()" > TEST</button>
+<button (click)="onTest()" class="btn btn-outline-info"> TEST</button>
 <div class="popupWrapper-diable" *ngIf="isFormOpened">
-    <div class="login-div">
-        <div class="alert alert-danger" *ngIf="error">
-            <p>{{error}}</p>
-        </div>
-        <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="login-form">
-            <div class="form-group">
-                <label for="email">E-Mail</label>
-                <input type="email" id="email" class="form-control" ngModel name="email" required email />
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" class="form-control" ngModel name="password" required
-                    minlength="6" />
-            </div>
-            <div class="form-group" *ngIf="!isLoginMode">
-                <label for="repeatpassword">repeat Password</label>
-                <input type="password" id="repeatpassword" class="form-control" ngModel name="repeatpassword" required
-                    minlength="6" />
-            </div>
-            <div>
-                <button type="submit" class="success" [disabled]=!authForm.valid>Login</button>
-                <button (click)="onOpenForm()">Cancel</button>
-                <button (click)="onSwitchLoginToSignUp()">Switch Login to Sign Up</button>
-            </div>
-        </form>
+  <div class="login-div">
+    <div class="alert alert-danger" *ngIf="error">
+      <p>{{error}}</p>
     </div>
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="login-form">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" class="form-control" ngModel name="email" required email #email="ngModel" />
+          </div>
+        </div>
+      </div>
+      <span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email</span>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" ngModel name="password" required minlength="6" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group" *ngIf="!isLoginMode">
+            <label for="repeatpassword">repeat Password</label>
+            <input type="password" id="repeatpassword" class="form-control" ngModel name="repeatpassword" required
+              minlength="6" />
+          </div>
+        </div>
+      </div>
+      <div>
+
+        <button type="submit" class="btn btn-success" [disabled]=!authForm.valid>Login</button>
+        <button (click)="onOpenForm()" class="btn btn-danger">Cancel</button>
+        <button (click)="onSwitchLoginToSignUp()" class="btn btn-info">Switch Login to Sign Up</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- <div class="row">

@@ -11,7 +11,7 @@ export class Enemy {
 
     constructor(id: number, level: number) {
         this.id = id;
-        this.HP = 250 * level;
+        this.HP = 250 * 2 ** level;
         this.FullHP = this.HP;
 
         const r = Math.floor(Math.random() * 3);

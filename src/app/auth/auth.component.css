@@ -14,3 +14,6 @@
     /* font-weight: 50000 */
     /* background: #555 */
 }
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
