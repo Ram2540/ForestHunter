@@ -14,8 +14,8 @@ import { AllWeaponsBoxComponent } from './components/all-weapons-box/all-weapons
 import { BuyButtonComponent } from './components/buttons/buy-button/buy-button.component';
 import { TextButtonComponent } from './components/buttons/text-button/text-button.component';
 import { TabComponent } from './components/tab/tab.component';
-import { HeroService } from './services/hero.service'
-import { GoldService } from './services/gold.service'
+import { HeroService } from './services/hero.service';
+import { GoldService } from './services/gold.service';
 import { EnemyService } from './services/enemy.service';
 import { EnemyComponent } from './components/enemy/enemy.component';
 import { EnemyDataComponent } from './components/enemy-data/enemy-data.component';
@@ -32,6 +32,8 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule  } from '@angular/fire/database';
+import { StoreModule } from '@ngrx/store';
+import * as fromStoreApp from './store/app-store';
 import * as firebase from 'firebase';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -67,7 +69,8 @@ firebase.initializeApp(environment.firebaseConfig);
     // RouterModule.forRoot(appRoutes),
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot(fromStoreApp.appReducer)
   ],
   providers: [
     HeroService,

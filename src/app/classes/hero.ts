@@ -20,7 +20,7 @@ export class Hero {
         this.avaliableWeapons = [];
         this.weapons = [];
         this.level = 1;
-        this.gold = 1000999;
+        this.gold = 100999;
         this.goldBonus = 0;
 
         this.currentLevel = 1;

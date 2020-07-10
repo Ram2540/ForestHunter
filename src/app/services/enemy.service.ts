@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Enemy } from '../classes/enemy';
 import { HeroService } from './hero.service';
+import { GoldService } from './gold.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class EnemyService {
   private creationOfNewEnemyLaunched = false;
 
 
-  constructor(private heroService: HeroService) {
+  constructor(private heroService: HeroService, private goldService: GoldService) {
     this.generateEnemy(heroService.getCurrentLevel());
 
     setInterval(() => { this.toDamageEnemy(); }, 1000);
@@ -68,7 +69,6 @@ export class EnemyService {
   private enemyKilled() {
     // let _level = this.currentEnemy.level;
     //this.currentEnemy = null;
-    this.heroService.addGold(111);
     this.heroService.enemyKilled();
     //console.log('enemyKilled-------------');
     this.generateEnemy(this.heroService.getCurrentLevel());// this.generateEnemy(_level + 1);

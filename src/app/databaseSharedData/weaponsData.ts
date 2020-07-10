@@ -5,8 +5,7 @@ import { ElementTypes } from '../enums/elementTypes';
 
 interface WeapondDatabaseData {
     readonly id: number;
-    //level: number[];
-    damageList: number[] ;
+    damageList: number[];
     priceList: number[];
     attackFrequencyList: number[];
     readonly element: ElementTypes;
@@ -19,17 +18,37 @@ export class SharedDataWeapons {
     private firstWeaponStages: Weapon[] = [];
     private maxWeaponLevel = 25;
     private priceFactor = 0.1; // 10% increase of price for each new level of weapon
-    private damageFactor = 1.1; // 110% increase of damage for each new level of weapon
+    private damageFactor = 1.1; //  1.1 - 110% increase of damage for each new level of weapon
     public static get getWeaponData(): WeapondDatabaseData[] {
         return this.weaponList.slice();
     }
+
+
     constructor() {
-        if (SharedDataWeapons.weaponList.length === 0) {
-            this.generateWeaponList();
-        }
+            this.generateWeaponListForDB();
     }
 
-    private generateWeaponList() {
+    public static getWeaponByIDandLevel(id: number, level: number) {
+        console.log('dsfsdfsd');
+        console.log(this.weaponList);
+        const foundWeapon = this.weaponList.find(w => w.id === id);
+        console.log(foundWeapon);
+        if (foundWeapon) {
+            const updatedWeapon = new Weapon(foundWeapon.id,
+                level,
+                foundWeapon.damageList[level],
+                foundWeapon.priceList[level],
+                foundWeapon.attackFrequencyList[level],
+                foundWeapon.element,
+                foundWeapon.availability,
+                foundWeapon.UrlImg);
+            return updatedWeapon;
+        }
+        return null;
+    }
+
+    private generateWeaponListForDB() {
+        if (SharedDataWeapons.weaponList.length === 0) {
         if (this.firstWeaponStages.length === 0) {
             this.fillStaticDataForWeaponStages();
         }
@@ -44,6 +63,7 @@ export class SharedDataWeapons {
             }
         )
     }
+}
 
     private addUpdatedWeapon(weapon: Weapon): Weapon {
         const UpdatedWeapon: Weapon = { ...weapon };
