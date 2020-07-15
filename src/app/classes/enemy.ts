@@ -1,5 +1,3 @@
-import { Enemies } from '../services/fixed-data';
-
 export class Enemy {
     id: number;
     name: string;
