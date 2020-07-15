@@ -1,7 +1,7 @@
 import { Hero } from '../../classes/hero';
 import * as StoreHeroActions from './store-hero.actiobs';
 import { Weapon } from 'src/app/classes/weapon';
-
+import { StaticDataStore } from '../staticData/StaticDataStore';
 
 export interface HeroState {
     hero: Hero;
@@ -40,13 +40,17 @@ export function heroReducer(state = initialHeroState, action: StoreHeroActions.H
             const updatedMostersDownOnCurrentLevel = state.hero.mostersDownOnCurrentLevel + action.payload;
             return getChnagedHeroState(state, 'mostersDownOnCurrentLevel', updatedMostersDownOnCurrentLevel);
         case StoreHeroActions.WEAPON_LEVEL_UP:
-            const updatedWeapon = action.payload;
-            return getChnagedHeroForWeapon(state, updatedWeapon);
+            if (isThereEnoughGold(state, action.payload.price)) {
+                const updatedWeapon = getUpdatedWeapon(action.payload.id, action.payload.level + 1);
+                return getChnagedHeroForWeapon(state, updatedWeapon);
+            }
+            return state;
         default:
             return state;
     }
 }
 
+// -----------------------General--------------------------------
 function getChnagedHeroState(state: HeroState, valueName: string, newValue: number) {
     return {
         ...state,
@@ -59,7 +63,7 @@ function getChnagedHeroState(state: HeroState, valueName: string, newValue: numb
 
 function getChnagedHeroForWeapon(state: HeroState, weapon: Weapon) {
     const updateWeapons = [...state.hero.weapons];
-    const index = updateWeapons.findIndex(w => w.id === weapon.id)
+    const index = updateWeapons.findIndex(w => w.id === weapon.id);
     updateWeapons[index] = weapon;
     return {
         ...state,
@@ -68,4 +72,12 @@ function getChnagedHeroForWeapon(state: HeroState, weapon: Weapon) {
             weapons: updateWeapons
         }
     }
+}
+// -----------------------Weapon--------------------------------
+function getUpdatedWeapon(id: number, level: number) {
+    return StaticDataStore.Instance.getWeaponByIDandLevel(id, level);
+}
+// -----------------------Gold--------------------------------
+function isThereEnoughGold(state: HeroState, price: number): boolean {
+    return state.hero.gold >= price ? true : false;
 }

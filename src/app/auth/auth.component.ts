@@ -9,7 +9,6 @@ import { Store } from '@ngrx/store';
 import * as fromHeroActions from '../store/hero/store-hero.actiobs';
 import { Hero } from '../classes/hero';
 import { SharedDataWeapons } from '../databaseSharedData/weaponsData';
-import { WeaponService } from '../services/weapon.service';
 import * as fromEnemyActions from '../store/enemy/store-enemy.actions';
 
 
@@ -28,8 +27,7 @@ export class AuthComponent {
   constructor(
     private authService: AuthService,
     private routesService: RoutesService,
-    private store: Store<fromAppStore.AppState>,
-    private weaponService: WeaponService) { }
+    private store: Store<fromAppStore.AppState>) { }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -85,10 +83,10 @@ export class AuthComponent {
     // this.store.dispatch(new fromHeroActions.AddGoldBonus(999));
     // this.store.dispatch(new fromHeroActions.AddGold(500));
     // console.log(hero);
-    console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
-      this.store.dispatch(new fromHeroActions.WeaponLevelUp(this.weaponService.getWeaponByIDandLevel(1,5)));
-      console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
-    console.log(SharedDataWeapons.getWeaponByIDandLevel(2,2));
+    // console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
+    //   this.store.dispatch(new fromHeroActions.WeaponLevelUp(this.weaponService.getWeaponByIDandLevel(1,5)));
+    //   console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
+    // console.log(SharedDataWeapons.getWeaponByIDandLevel(2,2));
     
     
      setInterval(() => { this.store.dispatch(new fromEnemyActions.EnemyIsDamaged(100)); }, 1000);

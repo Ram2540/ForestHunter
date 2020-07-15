@@ -23,6 +23,7 @@ export class DataStorageService {
   //private urlFirebase = 'https://foresthunter-f42be.firebaseio.com/';
   public loadedHero = new BehaviorSubject<Hero>(null);
   public enemyRewards = new BehaviorSubject<enemyReward[]>(null);
+
   private subscriptionToUser: Subscription;
   private get heroDBRefData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.Hero));
@@ -34,9 +35,9 @@ export class DataStorageService {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
   }
 
-  constructor(private http: HttpClient, 
-              private authService: AuthService, 
-              private sharedDataService: SharedDataService, 
+  constructor(private http: HttpClient,
+              private authService: AuthService,
+              private sharedDataService: SharedDataService,
               private store: Store<fromAppStore.AppState>) {
     this.subscriptionToUser = this.authService.userChanged.subscribe((value) => {
       if (this.authService.user.value) {

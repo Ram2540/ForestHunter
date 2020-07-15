@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { SharedDataGold, enemyReward } from './gold';
 import { SharedDataWeapons } from './weaponsData';
 import { pipe } from 'rxjs';
-import { WeaponService } from '../services/weapon.service';
+import { StaticDataStore } from '../store/staticData/StaticDataStore';
 
 // update data in firebase for weapons and enemy rewards
 
@@ -13,7 +13,7 @@ import { WeaponService } from '../services/weapon.service';
 export class SharedDataService {
   public goldPath = 'sharedData/enemyRewards';
   public weaponsPath = 'sharedData/weapons';
-  constructor(private weaponService: WeaponService) { }
+  constructor() { }
 
   public UpdateAllSharedDataToDB() {
     this.setEnemyRewardsToDB();
@@ -31,7 +31,7 @@ export class SharedDataService {
 
   private setWeaponsToDB() {
     this.getRef(this.weaponsPath)
-      .set(this.weaponService.getWeaponData);
+      .set(StaticDataStore.Instance.getWeaponList);
     // const firstInit = new SharedDataWeapons();
     // this.getRef(this.weaponsPath)
     //   .set(SharedDataWeapons.getWeaponData);
