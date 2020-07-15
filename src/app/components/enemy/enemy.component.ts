@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Enemy } from '../../classes/enemy'
-import { EnemyService } from '../../services/enemy.service'
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromAppStore from '../../store/app-store';
 
 @Component({
   selector: 'app-enemy',
   templateUrl: './enemy.component.html',
   styleUrls: ['./enemy.component.css']
 })
-export class EnemyComponent implements OnInit {
-  enemy: Enemy;
-  img = new Image;
-  canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("enemy");
+export class EnemyComponent implements OnInit, OnDestroy {
+  enemy: Enemy = new Enemy(1, 1);
+  img = new Image();
+  canvas: HTMLCanvasElement = document.getElementById('enemy') as HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   positions: {
     x: number,
@@ -18,57 +20,54 @@ export class EnemyComponent implements OnInit {
     width: number,
     height: number
   };
+  private enemyStateSubscription: Subscription;
 
-  constructor(private enemyService: EnemyService) { }
+  constructor(private store: Store<fromAppStore.AppState>) { }
 
   ngOnInit() {
-    this.enemy = this.enemyService.getEnemy();
+    this.enemyStateSubscription = this.store.select('enemyState').subscribe((enemyState) => {
+      if (this.enemy !== enemyState.enemy) {
+        if (this.enemy.url !== enemyState.enemy.url) {
+          this.enemy = enemyState.enemy;
+          this.drawEnemy();
+        }
+        else {
+          this.enemy = enemyState.enemy;
+        }
+      }
+    });
+
     this.canvas = <HTMLCanvasElement>document.getElementById("enemy");
     this.ctx = this.canvas.getContext("2d");
-
-
 
     this.img.onload = () => {
       this.ctx.clearRect(0, 0, 500, 500);
       this.ctx.drawImage(this.img, 100, 30, 150, 100);
     }
-    this.img.src = this.enemyService.getEnemy().url;
-    //this.drawEnemy();
+    this.img.src = this.enemy.url;
+
 
   }
-
-  ngDoCheck(): void {
-    const changes = this.enemy !== this.enemyService.getEnemy();
-    if (changes) {
-      this.drawEnemy();
-
+  ngOnDestroy() {
+    if (this.enemyStateSubscription) {
+      this.enemyStateSubscription.unsubscribe();
     }
   }
-  drawEnemy(): void {
-    this.img.src = this.enemyService.getEnemy().url;
-  }
 
-  // drawClick(): void {
-  //   "https://icon2.cleanpng.com/20171221/gzq/spot-light-effect-5a3c269dd233a5.025279141513891485861.jpg"
-  // }
+  drawEnemy(): void {
+    this.img.src = this.enemy.url;
+  }
 
   clickEnemy(event: Event) {
     //     console.log(event);
     // console.log(this.getMousePos(this.canvas,event));
   }
   getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     return {
       x: evt.clientX - rect.left,
       y: evt.clientY - rect.top
     };
-
-
   }
-  // private initStartPositions(): void {
-  //   this.positions.x = 50;
-  //   this.positions.y = 30;
-  //   this.positions.width = 150;
-  //   this.positions.height = 100;
-  // }
+
 }

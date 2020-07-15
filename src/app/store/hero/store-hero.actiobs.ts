@@ -1,7 +1,8 @@
 import { Hero } from '../../classes/hero';
-import { Action } from '@ngrx/store'
+import { Action } from '@ngrx/store';
 import { Weapon } from 'src/app/classes/weapon';
 
+export const LOAD_HERO = 'LOAD_HERO';
 export const ADD_GOLD = 'ADD_GOLD';
 export const ADD_GOLD_BONUS = 'ADD_GOLD_BONUS';
 export const ADD_DPS_MULTIPLIER = 'ADD_DPS_MULTIPLIER';
@@ -15,6 +16,11 @@ export const WEAPON_LEVEL_UP = 'WEAPON_LEVEL_UP';
 
 // avaliableWeapons: Weapon[];
 // weapons: Weapon[];
+
+export class LoadHero implements Action {
+    readonly type = LOAD_HERO;
+    constructor(public payload: Hero) { }
+}
 
 export class AddGold implements Action {
     readonly type = ADD_GOLD;
@@ -53,7 +59,8 @@ export class WeaponLevelUp implements Action {
     constructor(public payload: Weapon) { }
 }
 
-export type HeroActions = AddGold
+export type HeroActions = LoadHero
+                        | AddGold
                         | AddGoldBonus
                         | AddDPSMultilier
                         | AddLevel

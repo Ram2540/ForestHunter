@@ -32,6 +32,14 @@ export class WeaponService {
     return null;
 }
 
+public getNextWeaponByWeapon(currentWeapon: Weapon) {
+  const nextWeapon =  this.getWeaponByIDandLevel(currentWeapon.id, currentWeapon.level + 1);//+1 level but wit the same ID
+  if (nextWeapon) {
+    return nextWeapon;
+  }
+  return currentWeapon;
+}
+
   private generateDataForDB() {
     if (this.weaponList.length === 0) {
       if (this.firstWeaponStages.length === 0) {

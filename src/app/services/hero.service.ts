@@ -7,6 +7,10 @@ import { Weapon } from '../classes/weapon';
 import { DataStorageService } from './data-storage/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
+import { WeaponService } from './weapon.service';
+import { Store } from '@ngrx/store';
+import * as fromAppStore from '../store/app-store';
+import * as fromHeroActions from '../store/hero/store-hero.actiobs';
 
 
 @Injectable({
@@ -20,16 +24,32 @@ export class HeroService {
   /*----------------------*/
   weaponsChanged = new EventEmitter<Weapon[]>();
 
-  constructor(private goldService: GoldService, private dataStorageService: DataStorageService, private authService: AuthService) {
-    this.subscriptionToDataStorageHero = this.dataStorageService.loadedHero.subscribe(hero => {
-      console.log('next(hero);');
-      if (hero) {
-        console.log('this.superHero.next(hero);');
-        this.superHero.next(hero);
-        this.emitWeaponsChanged(this.superHero.getValue().weapons);
-        this.recalculateDamage();
-      }
-    });
+  constructor(private goldService: GoldService,
+    private dataStorageService: DataStorageService,
+    private authService: AuthService,
+    private weaponService: WeaponService,
+    private store: Store<fromAppStore.AppState>) {
+
+      this.store.select('heroState').subscribe(heroState => {
+        if (heroState.hero) {
+
+              //console.log('this.superHero.next(hero) ----------------------;');
+              console.log( heroState.hero);
+              this.superHero.next(heroState.hero);
+              //console.log( this.superHero.getValue());
+              this.emitWeaponsChanged(heroState.hero.weapons);
+              this.recalculateDamage();
+            }
+      })
+    // this.subscriptionToDataStorageHero = this.dataStorageService.loadedHero.subscribe(hero => {
+    //   console.log('next(hero);');
+    //   if (hero) {
+    //     console.log('this.superHero.next(hero);');
+    //     this.superHero.next(hero);
+    //     this.emitWeaponsChanged(this.superHero.getValue().weapons);
+    //     this.recalculateDamage();
+    //   }
+    // });
 
   }
 
@@ -41,9 +61,9 @@ export class HeroService {
     return this.superHero.getValue().goldBonus;
   }
 
-  public addGold(gold: number): void {
-    this.superHero.getValue().gold += gold;
-  }
+  // public addGold(gold: number): void {
+  //   this.superHero.getValue().gold += gold;
+  // }
 
   public addGoldBonus(bonus: number): void {
     this.superHero.getValue().goldBonus += bonus;
@@ -84,20 +104,32 @@ export class HeroService {
   }
 
   public levelUp(id: number) {
+    const currentWeapon = this.superHero.getValue().weapons.find(w => w.id === id);
+    console.log('levelUp(id: number)' + id);
+    console.log('currentWeapon' );
+    console.log(currentWeapon );
+    const upgratedWeapon = this.weaponService.getNextWeaponByWeapon(currentWeapon);
+    console.log('upgratedWeapon' );
+    console.log(upgratedWeapon );
+    if (this.isThereEnoughGold(currentWeapon.price)) {
+      this.store.dispatch(new fromHeroActions.WeaponLevelUp(upgratedWeapon));
+    }
+
     for (let i = 0; this.superHero.getValue().weapons.length > i; i++) {
       if (this.superHero.getValue().weapons[i].id === id) {
         if (this.isThereEnoughGold(this.superHero.getValue().weapons[i].price)) {
-          this.addGold(this.superHero.getValue().weapons[i].price * -1);
-          this.superHero.getValue().weapons[i].level++;
-          this.superHero.getValue().weapons[i].damage = Math.floor((this.superHero.getValue().weapons[i].damage * 1.1));
-          this.superHero.getValue().weapons[i].price = Math.floor(this.superHero.getValue().weapons[i].price * 1.2);
-          this.dataStorageService.postWeaponLog(this.superHero.getValue().weapons[i]);
+          this.goldService.addGold(this.superHero.getValue().weapons[i].price * -1);
+          // this.superHero.getValue().weapons[i].level++;
+          // this.superHero.getValue().weapons[i].damage = Math.floor((this.superHero.getValue().weapons[i].damage * 1.1));
+          // this.superHero.getValue().weapons[i].price = Math.floor(this.superHero.getValue().weapons[i].price * 1.2);
+          //this.dataStorageService.postWeaponLog(this.superHero.getValue().weapons[i]);
           this.emitWeaponsChanged(this.superHero.getValue().weapons);
           break;
         }
       }
     }
     this.recalculateDamage();
+
   }
   /*------------------------Level-----------------------------*/
   getCurrentLevel(): number {
@@ -113,9 +145,9 @@ export class HeroService {
   }
 
   enemyKilled() {
-    this.addGold(this.goldService.getRewardForEnemy(this.getCurrentLevel()));
-    
-    this.dataStorageService.postEnemyLog({currentLevel: this.superHero.getValue().currentLevel, text: 'enemyDied'});
+    this.goldService.addGoldRewardForEnemy(this.getCurrentLevel());
+
+    this.dataStorageService.postEnemyLog({ currentLevel: this.superHero.getValue().currentLevel, text: 'enemyDied' });
     this.superHero.getValue().mostersDownOnCurrentLevel++;
     if (this.superHero.getValue().mostersDownOnCurrentLevel === this.superHero.getValue().maxMosterOnLevel) {
       this.superHero.getValue().mostersDownOnCurrentLevel = 0;

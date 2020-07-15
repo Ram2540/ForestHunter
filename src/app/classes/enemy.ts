@@ -1,11 +1,11 @@
 import { Enemies } from '../services/fixed-data';
 
 export class Enemy {
-    private id: number;
+    id: number;
     name: string;
     HP: number;
     FullHP: number;
-    gold?: number;
+    //gold?: number;
     url: string;
     level: number;
 
@@ -13,6 +13,7 @@ export class Enemy {
         this.id = id;
         this.HP = 250 * 2 ** level;
         this.FullHP = this.HP;
+        this.level = level;
 
         const r = Math.floor(Math.random() * 3);
         switch (r) {

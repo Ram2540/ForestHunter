@@ -11,8 +11,8 @@ export function getRewards(): [{ HP: number, gold: number }] {
     // let DowngradeHPmultiplier: number;
     // let DowngradeGoldmultiplier: number;
 
-    let HP: number = 10;
-    let gold: number = 1;
+    let HP = 10;
+    let gold = 1;
 
 
     for (let i = 0; i < 100; i++) {
@@ -28,18 +28,18 @@ export function getWeaponsList() {
     const weapons: Weapon[] = [];
 
 
-weapons.push(new Weapon(7, 0, 6000, 125000,  1,  ElementTypes.Wind,  true,  weaponUrls.weapon7));
-    weapons.push(new Weapon( 6,  0,  1600,  25000,  1,  ElementTypes.Wind,  true,  weaponUrls.weapon6 ));
-    weapons.push(new Weapon(5,  0,  450,  5500,  1,  ElementTypes.Wind,  true,  weaponUrls.weapon5 ));
-    weapons.push(new Weapon( 4,  0,  120,  1250,  1,  ElementTypes.Wind,  true,  weaponUrls.weapon4 ));
-    weapons.push(new Weapon(3,  0,  24,  250,  1,  ElementTypes.Water,  true,  weaponUrls.weapon3 ));
-    weapons.push(new Weapon( 2,  0,  5,  50,  1,  ElementTypes.Fire,  true,  weaponUrls.weapon2 ));
-  weapons.push(new Weapon( 1,  0,  1,  10,  1,  ElementTypes.Earth,  true,  weaponUrls.weapon1 ));
+    weapons.push(new Weapon(7, 0, 6000, 125000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
+    weapons.push(new Weapon(6, 0, 1600, 25000, 1, ElementTypes.Wind, true, weaponUrls.weapon6));
+    weapons.push(new Weapon(5, 0, 450, 5500, 1, ElementTypes.Wind, true, weaponUrls.weapon5));
+    weapons.push(new Weapon(4, 0, 120, 1250, 1, ElementTypes.Wind, true, weaponUrls.weapon4));
+    weapons.push(new Weapon(3, 0, 24, 250, 1, ElementTypes.Water, true, weaponUrls.weapon3));
+    weapons.push(new Weapon(2, 0, 5, 50, 1, ElementTypes.Fire, true, weaponUrls.weapon2));
+    weapons.push(new Weapon(1, 0, 1, 10, 1, ElementTypes.Earth, true, weaponUrls.weapon1));
 
 
-//let x = new Weapon( id: 1, level: 0, damage: 1, price: 10, attackFrequency: 1, element: ElementTypes.Earth, availability: true, UrlImg: weaponUrls.weapon1 );
+    //let x = new Weapon( id: 1, level: 0, damage: 1, price: 10, attackFrequency: 1, element: ElementTypes.Earth, availability: true, UrlImg: weaponUrls.weapon1 );
 
-//let t = new Weapon(1,0,1,1,1,ElementTypes.Earth,true, weaponUrls.weapon1);
+    //let t = new Weapon(1,0,1,1,1,ElementTypes.Earth,true, weaponUrls.weapon1);
 
     // weapons.push(new Weapon({id: 7, level: 0, damage: 6000, price: 125000, attackFrequency: 1, element: ElementTypes.Wind, availability: true, UrlImg: weaponUrls.weapon7}));
     // weapons.push(new Weapon({ id: 6, level: 0, damage: 1600, price: 25000, attackFrequency: 1, element: ElementTypes.Wind, availability: true, UrlImg: weaponUrls.weapon6 }));
@@ -47,7 +47,7 @@ weapons.push(new Weapon(7, 0, 6000, 125000,  1,  ElementTypes.Wind,  true,  weap
     // weapons.push(new Weapon({ id: 4, level: 0, damage: 120, price: 1250, attackFrequency: 1, element: ElementTypes.Wind, availability: true, UrlImg: weaponUrls.weapon4 }));
     // weapons.push(new Weapon({ id: 3, level: 0, damage: 24, price: 250, attackFrequency: 1, element: ElementTypes.Water, availability: true, UrlImg: weaponUrls.weapon3 }));
     // weapons.push(new Weapon({ id: 2, level: 0, damage: 5, price: 50, attackFrequency: 1, element: ElementTypes.Fire, availability: true, UrlImg: weaponUrls.weapon2 }));
-  //weapons.push(new Weapon({ id: 1, level: 0, damage: 1, price: 10, attackFrequency: 1, element: ElementTypes.Earth, availability: true, UrlImg: weaponUrls.weapon1 }));
+    //weapons.push(new Weapon({ id: 1, level: 0, damage: 1, price: 10, attackFrequency: 1, element: ElementTypes.Earth, availability: true, UrlImg: weaponUrls.weapon1 }));
 
 
 

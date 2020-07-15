@@ -16,7 +16,6 @@ import { TextButtonComponent } from './components/buttons/text-button/text-butto
 import { TabComponent } from './components/tab/tab.component';
 import { HeroService } from './services/hero.service';
 import { GoldService } from './services/gold.service';
-import { EnemyService } from './services/enemy.service';
 import { EnemyComponent } from './components/enemy/enemy.component';
 import { EnemyDataComponent } from './components/enemy-data/enemy-data.component';
 import { DamagePanelComponent } from './components/damage-panel/damage-panel.component';
@@ -75,7 +74,6 @@ firebase.initializeApp(environment.firebaseConfig);
   providers: [
     HeroService,
     GoldService,
-    EnemyService,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -11,6 +11,9 @@ import { Reference } from '@angular/compiler/src/render3/r3_ast';
 import { DatabaseDataLinks } from './database-enums';
 import { SharedDataService } from 'src/app/databaseSharedData/shared-data.service';
 import { enemyReward } from 'src/app/databaseSharedData/gold';
+import { Store } from '@ngrx/store';
+import * as fromAppStore from '../../store/app-store';
+import * as fromHeroActions from '../../store/hero/store-hero.actiobs';
 
 
 @Injectable({
@@ -31,7 +34,10 @@ export class DataStorageService {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
   }
 
-  constructor(private http: HttpClient, private authService: AuthService, private sharedDataService: SharedDataService) {
+  constructor(private http: HttpClient, 
+              private authService: AuthService, 
+              private sharedDataService: SharedDataService, 
+              private store: Store<fromAppStore.AppState>) {
     this.subscriptionToUser = this.authService.userChanged.subscribe((value) => {
       if (this.authService.user.value) {
         this.getHero();
@@ -62,6 +68,7 @@ export class DataStorageService {
           const leadedHero = snapshot.val();
           if (leadedHero) {
             this.loadedHero.next(leadedHero);
+            this.store.dispatch(new fromHeroActions.LoadHero(leadedHero));
           }
         });
     }

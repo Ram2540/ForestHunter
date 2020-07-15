@@ -1,27 +1,21 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HeroService } from '../../services/hero.service'
+import { HeroService } from '../../services/hero.service';
+import * as fromAppStore from '../../store/app-store';
+import { Store } from '@ngrx/store';
+
 @Component({
   selector: 'app-resource-gold',
   templateUrl: './resource-gold.component.html',
   styleUrls: ['./resource-gold.component.css']
 })
 export class ResourceGoldComponent implements OnInit {
-  // resourceValue: number;
+  resourceValue: number;
   // bonusValue: number;
 
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService, private store: Store<fromAppStore.AppState>) { }
 
 
   ngOnInit() {
-    // this.resourceValue = this.heroService.getGold();
-    // this.bonusValue = this.heroService.getGoldBonus();
-
-
-    // setTimeout(() => { 
-    //   this.resourceValue = this.heroService.getGold();
-    //   this.bonusValue = this.heroService.getGoldBonus();
-
-    // },5000);
   }
   getGold(): number {
     return this.heroService.getGold();

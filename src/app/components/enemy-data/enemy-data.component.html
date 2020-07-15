@@ -1,13 +1,13 @@
 <div class="enemy-box-all">
-    <div class="lvl-prg">{{this.getMostersDownOnCurrentLevel()}}/{{this.getMaxMosterOnLevel()}}</div>
+    <div class="lvl-prg">{{MostersDownOnCurrentLevel}}/{{MaxMosterOnLevel}}</div>
     <div class="name">Normal Tentacle Beast</div>
     <div class="health">
         <div class="p100">
-            <div class="prg"  [ngStyle]="{'width.%': this.getPercentHP()}"></div>
+            <div class="prg"  [ngStyle]="{'width.%': this.PercentHP}"></div>
         </div>
         <div class="num pulse">
-            <div class="from">{{this.getEnemyHP()}}/</div>
-            <div class="to">{{this.getFullHP()}}</div>
+            <div class="from">{{this.EnemyHP}}/</div>
+            <div class="to">{{this.FullHP}}</div>
         </div>
     </div>
     <div class="boss-lvl ">
@@ -18,7 +18,7 @@
     <div class="loc-list">
         <div class="locs">
             <div class="loc">
-                <div class="loc-text">{{this.getCurrentLevel()}}</div>
+                <div class="loc-text">{{this.CurrentLevel}}</div>
                 <div class="loc-text2">lvl</div>
             </div>
         </div>

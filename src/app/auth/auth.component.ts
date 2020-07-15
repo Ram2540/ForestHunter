@@ -6,10 +6,11 @@ import { RoutesService } from '../services/routes.service';
 import { SharedDataService } from '../databaseSharedData/shared-data.service';
 import * as fromAppStore from '../store/app-store';
 import { Store } from '@ngrx/store';
-import * as fromHeroActions from '../store/hero/store.actiobs';
+import * as fromHeroActions from '../store/hero/store-hero.actiobs';
 import { Hero } from '../classes/hero';
 import { SharedDataWeapons } from '../databaseSharedData/weaponsData';
 import { WeaponService } from '../services/weapon.service';
+import * as fromEnemyActions from '../store/enemy/store-enemy.actions';
 
 
 
@@ -88,6 +89,16 @@ export class AuthComponent {
       this.store.dispatch(new fromHeroActions.WeaponLevelUp(this.weaponService.getWeaponByIDandLevel(1,5)));
       console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
     console.log(SharedDataWeapons.getWeaponByIDandLevel(2,2));
+    
+    
+     setInterval(() => { this.store.dispatch(new fromEnemyActions.EnemyIsDamaged(100)); }, 1000);
+    // this.store.select('enemyState').subscribe(enemy => {
+    //   console.log(enemy);
+    // });
+    this.store.dispatch(new fromEnemyActions.GenerateEnemy(5));
 
+    this.store.select('enemyState').subscribe(enemy => {
+      console.log(enemy);
+    });
   }
 }
