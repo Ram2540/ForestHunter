@@ -8,7 +8,9 @@ import { AngularFireDatabase } from '@angular/fire/database';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import { Hero } from '../classes/hero';
+import * as fromAppStore from '../store/app-store';
+import { Store } from '@ngrx/store';
+import { ControllerActions } from '../store/controller/controller.actions';
 
 export interface AuthResponseData {
   kind: string;
@@ -31,10 +33,13 @@ export class AuthService {
   private database = firebase.database();
   isLogined = false;
 
-  constructor(private http: HttpClient, private authFirebase: AngularFireAuth) {
-    this.user.subscribe(user => {
-      if (user) {
-        localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
+  constructor(private http: HttpClient, 
+    private authFirebase: AngularFireAuth, 
+    private store: Store<fromAppStore.AppState>,
+    private controllerActions: ControllerActions) {
+    this.store.select('authState').subscribe(authState => {
+      if (authState.user) {
+        localStorage.setItem(this.localStorageUserKey, JSON.stringify(authState.user));
       }
     });
 
@@ -49,7 +54,7 @@ export class AuthService {
   onTest() {
     firebase
       .database()
-      .ref('userData/' + this.user.getValue().uid + '/')
+      .ref('userData/' + this.controllerActions.geAuthState().user.uid + '/')
       .on('value', ((snapshot) => {
         console.log(snapshot.val());
       }));
@@ -81,9 +86,10 @@ export class AuthService {
   }
 
   logout() {
-    this.user.next(null);
-    this.authFirebase.signOut();
-    this.isLogined = true;
+    // this.user.next(null);
+    // this.authFirebase.signOut();
+    // this.isLogined = true;
+    this.controllerActions.UserLogout();
     localStorage.removeItem(this.localStorageUserKey);
   }
 
@@ -102,8 +108,11 @@ export class AuthService {
       idToken,
       user.refreshToken,
       expirationDate);
-    this.user.next(loadedUser);
-    this.user.complete();
+      console.log(loadedUser);
+    // this.user.next(loadedUser);
+    // this.user.complete();
+
+    this.controllerActions.UserLogin(loadedUser);
     this.isLogined = true;
   }
 

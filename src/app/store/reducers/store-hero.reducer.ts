@@ -1,6 +1,6 @@
 import { Hero } from '../../classes/hero';
 import { Weapon } from 'src/app/classes/weapon';
-import { StaticDataWeaponStore } from '../staticData/StaticDataWeaponStore';
+import { StaticDataWeaponStore } from '../../databaseSharedData/StaticDataWeaponStore';
 import { appActions } from '../app-store';
 import { ControllerActions } from '../controller/controller.actions';
 

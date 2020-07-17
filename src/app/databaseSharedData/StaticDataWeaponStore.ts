@@ -1,4 +1,4 @@
-import { Weapon } from '../../classes/weapon';
+import { Weapon } from '../classes/weapon';
 import { ElementTypes } from 'src/app/enums/elementTypes';
 import { weaponUrls } from 'src/app/enums/imageUrls';
 

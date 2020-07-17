@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { SharedDataGold, enemyReward } from './gold';
 import { SharedDataWeapons } from './weaponsData';
 import { pipe } from 'rxjs';
-import { StaticDataWeaponStore } from '../store/staticData/StaticDataWeaponStore';
+import { StaticDataWeaponStore } from './StaticDataWeaponStore';
 
 // update data in firebase for weapons and enemy rewards
 

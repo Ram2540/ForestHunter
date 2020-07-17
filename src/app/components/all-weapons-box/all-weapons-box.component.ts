@@ -16,11 +16,8 @@ export class AllWeaponsBoxComponent implements OnInit {
   constructor(private store: Store<fromAppStore.AppState>) { }
 
   ngOnInit() {
-    
     this.store.select('heroState').subscribe((heroState) => {
-      console.log(this.weapons);
-      console.log(this.nextToBuyWeapon);
-      this.weapons = heroState.hero.weapons.filter(w => w.level > 0).sort((a, b) => a.id > b.id ? -1 : 1);;
+      this.weapons = heroState.hero.weapons.filter(w => w.level > 0).sort((a, b) => a.id > b.id ? -1 : 1);
       this.nextToBuyWeapon = heroState.hero.weapons.filter(w => w.level === 0).sort((n1, n2) => {
         if (n1.price > n2.price) {
           return 1;

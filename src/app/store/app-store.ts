@@ -1,6 +1,7 @@
 import { ActionReducerMap } from '@ngrx/store';
-import * as fromStoreHeroReducer from './hero/store-hero.reducer';
-import * as fromStoreEnemyReducer  from './enemy/store-enemy.reducer';
+import * as fromStoreHeroReducer from './reducers/store-hero.reducer';
+import * as fromStoreEnemyReducer  from './reducers/store-enemy.reducer';
+import * as fromStoreAuthReducer  from './reducers/store-auth.reducer';
 //import { HeroActions } from './hero/store-hero.actiobs';
 //import { EnemyActions } from './enemy/store-enemy.actions';
 import { Action } from '@ngrx/store';
@@ -9,6 +10,7 @@ import { Action } from '@ngrx/store';
 export interface AppState {
     heroState: fromStoreHeroReducer.HeroState;
     enemyState: fromStoreEnemyReducer.EnemyState;
+    authState: fromStoreAuthReducer.AuthState;
 }
 //export type appActions = HeroActions | EnemyActions;
 export interface appActions {
@@ -20,6 +22,7 @@ export interface appActions {
 
 export const appReducer: ActionReducerMap<AppState>  = {
     heroState : fromStoreHeroReducer.heroReducer,
-    enemyState : fromStoreEnemyReducer.enemyReducer
+    enemyState : fromStoreEnemyReducer.enemyReducer,
+    authState : fromStoreAuthReducer.userReducer
 }
 

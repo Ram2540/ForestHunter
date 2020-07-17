@@ -1,5 +1,5 @@
 import { Weapon } from './weapon';
-import { StaticDataWeaponStore } from '../store/staticData/StaticDataWeaponStore';
+import { StaticDataWeaponStore } from '../databaseSharedData/StaticDataWeaponStore';
 
 export class Hero {
     id: number;

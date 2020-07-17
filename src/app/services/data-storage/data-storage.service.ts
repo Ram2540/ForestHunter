@@ -41,38 +41,25 @@ export class DataStorageService {
               private sharedDataService: SharedDataService,
               private store: Store<fromAppStore.AppState>,
               private controllerActions: ControllerActions) {
-    this.subscriptionToUser = this.authService.userChanged.subscribe((value) => {
-      if (this.authService.user.value) {
+
+    this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
+      console.log('this.authService.user.subscribe((value)');
+      if (authState.user) {
         this.getHero();
       }
     });
+
   }
 
   public postHero(postData: Hero) {
-    if (this.authService.user.value && postData) {
+    if (this.controllerActions.geAuthState().user && postData) {
       this.heroDBRefData
         .set(postData);
     }
   }
 
-  // public postEnemyLog(enemyPostData) {
-  //   this.postDataToRef(this.enemyLogDBData, enemyPostData);
-  // }
-
-  // public deleteData()
-  // {
-  //   const test = this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog));
-  //   console.log(test);
-  //   test.set(null);
-  // }
-  // public postWeaponLog(weaponPostData) {
-  //   this.postDataToRef(this.weaponLogDBData, weaponPostData);
-  // }
-
-
-
-  public getHero(): void {
-    if (this.authService.user.value) {
+   public getHero(): void {
+    if (this.controllerActions.geAuthState().user) {
       this.heroDBRefData
         .on('value', (snapshot) => {
           const leadedHero = snapshot.val();
@@ -99,7 +86,7 @@ public get EnemyRewardsFromDB() {
 
 
   private postDataToRef(postDataRef: firebase.database.Reference, postData) {
-    if (this.authService.user.value && postData && postDataRef) {
+    if (this.controllerActions.geAuthState().user && postData && postDataRef) {
       postDataRef
         .set(postData);
     }
@@ -110,7 +97,7 @@ public get EnemyRewardsFromDB() {
       .ref(ref);
   }
   private get RefForUserData() {
-    return 'userData/' + this.authService.user.getValue().uid + '/';
+    return 'userData/' + this.controllerActions.geAuthState().user.uid + '/';
   }
   private RefForDataTo(branch: string) {
     return this.RefForUserData + branch + '/';

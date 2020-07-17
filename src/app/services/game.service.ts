@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import * as fromAppStore from '../store/app-store';
 import { map, tap } from 'rxjs/operators';
 import { DataStorageService } from './data-storage/data-storage.service';
+import { SharedDataGold } from '../databaseSharedData/gold';
 
 @Injectable({
     providedIn: 'root'
@@ -17,12 +18,12 @@ export class GameService {
     }
 
     constructor(private controllerActions: ControllerActions,
-                private store: Store<fromAppStore.AppState>,
-                private dataStorageService: DataStorageService) {
+        private store: Store<fromAppStore.AppState>,
+        private dataStorageService: DataStorageService) {
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {
             console.log('this.controllerActions.EnemyIsDamaged(100);');
-            this.controllerActions.EnemyIsDamaged(this.heroDamage);
+            this.controllerActions.EnemyIsDamaged(this.heroDamage + 10000);
         }, 1000);
         // ------------------------------ENEMY------------------------------
         this.store.select('enemyState').pipe(
@@ -31,14 +32,13 @@ export class GameService {
                     // -------------ALL LOGIC ENEMY DEAD APLLY HERE------------------
                     this.controllerActions.EnemyIsKilled();
                     this.controllerActions.HeroAddMonsterDownOnCurrentLevel();
-                    // this.dataStorageService.enemyRewards.getValue().find((e) => e.level === enemyState.enemy.level).gold;
-                    const goldReward = 1000;
+                    const goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
                     if (goldReward) {
                         this.controllerActions.HeroAddGold(goldReward);
                     }
                     // generate new enemy
                     this.controllerActions.EnemyGenerate(enemyState.enemy.level);
-                    }
+                }
                 return null;
             })).subscribe((value) => {
                 return value;
@@ -51,7 +51,7 @@ export class GameService {
                     this.controllerActions.EnemySetLevel(heroState.hero.currentLevel);
                 }
                 // hero Damage
-                this.heroDamage  = heroState.hero.weapons.filter(w => w.level > 0).reduce((prev, curr) => prev + curr.damage, 0);
+                this.heroDamage = heroState.hero.weapons.filter(w => w.level > 0).reduce((prev, curr) => prev + curr.damage, 0);
             })
         ).subscribe(
             (value) => {

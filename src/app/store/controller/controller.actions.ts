@@ -6,8 +6,10 @@ import { AppState } from '../app-store';
 import { Hero } from 'src/app/classes/hero';
 import { Weapon } from 'src/app/classes/weapon';
 import { take } from 'rxjs/operators';
-import { EnemyState } from '../enemy/store-enemy.reducer';
-import { HeroState } from '../hero/store-hero.reducer';
+import { EnemyState } from '../reducers/store-enemy.reducer';
+import { HeroState } from '../reducers/store-hero.reducer';
+import { User } from 'src/app/auth/user.model';
+import { AuthState } from '../reducers/store-auth.reducer';
 //import {AppState} from '../../models/appState';
 
 @Injectable({
@@ -30,6 +32,8 @@ export class ControllerActions {
   static HERO_MONSTER_DOWN_ON_CURRENT_LEVEL = 'HERO_MONSTER_DOWN_ON_CURRENT_LEVEL';
   static HERO_WEAPON_LEVEL_UP = 'HERO_WEAPON_LEVEL_UP';
 
+  static USER_LOGIN = 'USER_LOGIN';
+  static USER_LOGOUT = 'USER_LOGOUT';
 
   constructor(private store: Store<AppState>) {
 
@@ -92,6 +96,16 @@ export class ControllerActions {
   public EnemySetLevel(level: number) {
     this.store.dispatch(createAction(ControllerActions.ENEMY_SET_LEVEL, level));
   }
+
+// -----------------------USER-------------------------------------
+public UserLogin(user: User) {
+  this.store.dispatch(createAction(ControllerActions.USER_LOGIN, user));
+}
+
+public UserLogout() {
+  this.store.dispatch(createAction(ControllerActions.USER_LOGOUT));
+}
+
   // -----------------------GET STATES-------------------------------------
   public getEnemyState(): EnemyState {
     let state: EnemyState;
@@ -106,6 +120,15 @@ export class ControllerActions {
     let state: HeroState;
 
     this.store.select('heroState').pipe(take(1)).subscribe(
+      s => state = s
+    );
+    return state;
+  }
+
+  public geAuthState(): AuthState {
+    let state: AuthState;
+
+    this.store.select('authState').pipe(take(1)).subscribe(
       s => state = s
     );
     return state;
