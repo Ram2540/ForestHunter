@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HeroService } from '../../services/hero.service';
 import * as fromAppStore from '../../store/app-store';
 import { Store } from '@ngrx/store';
 
@@ -10,19 +9,19 @@ import { Store } from '@ngrx/store';
 })
 export class ResourceGoldComponent implements OnInit {
   resourceValue: number;
-  // bonusValue: number;
+  bonusValue: number;
 
-  constructor(private heroService: HeroService, private store: Store<fromAppStore.AppState>) { }
+  constructor(private store: Store<fromAppStore.AppState>) { }
 
 
   ngOnInit() {
+    this.store.select('heroState').subscribe((heroState) => {
+      if(this.resourceValue !== heroState.hero.gold) {
+        this.resourceValue = heroState.hero.gold;
+      }
+      if(this.bonusValue !== heroState.hero.goldBonus) {
+        this.bonusValue = heroState.hero.goldBonus;
+      }
+    });
   }
-  getGold(): number {
-    return this.heroService.getGold();
-  }
-
-  getGoldBonus(): number {
-    return this.heroService.getGoldBonus();
-  }
-
 }

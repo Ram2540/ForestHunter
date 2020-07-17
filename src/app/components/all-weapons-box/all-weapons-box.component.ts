@@ -1,6 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { HeroService } from '../../services/hero.service'
 import { Weapon } from 'src/app/classes/weapon';
+import { ControllerActions } from 'src/app/store/controller/controller.actions';
+import * as fromAppStore from '../../store/app-store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-all-weapons-box',
@@ -11,27 +13,23 @@ export class AllWeaponsBoxComponent implements OnInit {
   nextToBuyWeapon: Weapon;
   weapons: Weapon[] = [];
 
-  constructor(private heroService: HeroService) { }
+  constructor(private store: Store<fromAppStore.AppState>) { }
 
   ngOnInit() {
-    this.onUpdateData();
-    this.heroService.weaponsChanged.subscribe(
-      (newWeapons: Weapon[]) => {
-        // this.weapons= newWeapons;
-        this.onUpdateData();
-      }
-    )
-
-    /*----------------------------------TEST for reload-------------------------- */
-    // setInterval(() => {
-    //   this.onUpdateData()
-    // }, 15000);
-
+    
+    this.store.select('heroState').subscribe((heroState) => {
+      console.log(this.weapons);
+      console.log(this.nextToBuyWeapon);
+      this.weapons = heroState.hero.weapons.filter(w => w.level > 0).sort((a, b) => a.id > b.id ? -1 : 1);;
+      this.nextToBuyWeapon = heroState.hero.weapons.filter(w => w.level === 0).sort((n1, n2) => {
+        if (n1.price > n2.price) {
+          return 1;
+        }
+        if (n1.price < n2.price) {
+          return -1;
+        }
+        return 0;
+      })[0];
+    });
   }
-
-  onUpdateData() {
-    this.nextToBuyWeapon = this.heroService.getNextWeaponToBuy();
-    this.weapons = this.heroService.getHeroWeapons();
-  }
-
 }

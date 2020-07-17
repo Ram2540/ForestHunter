@@ -29,6 +29,7 @@ export class AuthService {
   private api = 'AIzaSyDWyCa698JnaQrv1z1PjSIkErIhiLSAFPo';
   private localStorageUserKey = 'userData';
   private database = firebase.database();
+  isLogined = false;
 
   constructor(private http: HttpClient, private authFirebase: AngularFireAuth) {
     this.user.subscribe(user => {
@@ -82,6 +83,8 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.authFirebase.signOut();
+    this.isLogined = true;
+    localStorage.removeItem(this.localStorageUserKey);
   }
 
   private async handleUserAssign(
@@ -101,6 +104,7 @@ export class AuthService {
       expirationDate);
     this.user.next(loadedUser);
     this.user.complete();
+    this.isLogined = true;
   }
 
 

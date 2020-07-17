@@ -14,8 +14,7 @@ import { AllWeaponsBoxComponent } from './components/all-weapons-box/all-weapons
 import { BuyButtonComponent } from './components/buttons/buy-button/buy-button.component';
 import { TextButtonComponent } from './components/buttons/text-button/text-button.component';
 import { TabComponent } from './components/tab/tab.component';
-import { HeroService } from './services/hero.service';
-import { GoldService } from './services/gold.service';
+//import { HeroService } from './services/hero.service';
 import { EnemyComponent } from './components/enemy/enemy.component';
 import { EnemyDataComponent } from './components/enemy-data/enemy-data.component';
 import { DamagePanelComponent } from './components/damage-panel/damage-panel.component';
@@ -34,6 +33,7 @@ import { AngularFireDatabaseModule  } from '@angular/fire/database';
 import { StoreModule } from '@ngrx/store';
 import * as fromStoreApp from './store/app-store';
 import * as firebase from 'firebase';
+import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -72,9 +72,9 @@ firebase.initializeApp(environment.firebaseConfig);
     StoreModule.forRoot(fromStoreApp.appReducer)
   ],
   providers: [
-    HeroService,
-    GoldService,
+    //HeroService,
     AuthService,
+    //GameService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

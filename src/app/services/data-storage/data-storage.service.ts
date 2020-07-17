@@ -13,7 +13,8 @@ import { SharedDataService } from 'src/app/databaseSharedData/shared-data.servic
 import { enemyReward } from 'src/app/databaseSharedData/gold';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
-import * as fromHeroActions from '../../store/hero/store-hero.actiobs';
+import { ControllerActions } from 'src/app/store/controller/controller.actions';
+import { ConditionalExpr } from '@angular/compiler';
 
 
 @Injectable({
@@ -38,7 +39,8 @@ export class DataStorageService {
   constructor(private http: HttpClient,
               private authService: AuthService,
               private sharedDataService: SharedDataService,
-              private store: Store<fromAppStore.AppState>) {
+              private store: Store<fromAppStore.AppState>,
+              private controllerActions: ControllerActions) {
     this.subscriptionToUser = this.authService.userChanged.subscribe((value) => {
       if (this.authService.user.value) {
         this.getHero();
@@ -53,12 +55,19 @@ export class DataStorageService {
     }
   }
 
-  public postEnemyLog(enemyPostData) {
-    this.postDataToRef(this.enemyLogDBData, enemyPostData);
-  }
-  public postWeaponLog(weaponPostData) {
-    this.postDataToRef(this.weaponLogDBData, weaponPostData);
-  }
+  // public postEnemyLog(enemyPostData) {
+  //   this.postDataToRef(this.enemyLogDBData, enemyPostData);
+  // }
+
+  // public deleteData()
+  // {
+  //   const test = this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog));
+  //   console.log(test);
+  //   test.set(null);
+  // }
+  // public postWeaponLog(weaponPostData) {
+  //   this.postDataToRef(this.weaponLogDBData, weaponPostData);
+  // }
 
 
 
@@ -68,8 +77,10 @@ export class DataStorageService {
         .on('value', (snapshot) => {
           const leadedHero = snapshot.val();
           if (leadedHero) {
-            this.loadedHero.next(leadedHero);
-            this.store.dispatch(new fromHeroActions.LoadHero(leadedHero));
+            //this.loadedHero.next(leadedHero);
+            //this.store.dispatch(new fromHeroActions.LoadHero(leadedHero));
+            console.log(leadedHero);
+            this.controllerActions.HeroLoad(leadedHero);
           }
         });
     }

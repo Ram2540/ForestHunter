@@ -2,8 +2,8 @@ import { Weapon } from '../../classes/weapon';
 import { ElementTypes } from 'src/app/enums/elementTypes';
 import { weaponUrls } from 'src/app/enums/imageUrls';
 
-export class StaticDataStore {
-    private static _instance: StaticDataStore;
+export class StaticDataWeaponStore {
+    private static _instance: StaticDataWeaponStore;
     private weaponList: Weapon[];
     private firstWeaponStages: Weapon[];
     private maxWeaponLevel = 100;
@@ -11,6 +11,10 @@ export class StaticDataStore {
     private damageFactor = 1.1; //  1.1 - 110% increase of damage for each new level of weapon
     get getWeaponList(): Weapon[] {
         return this.weaponList;
+    }
+
+    get getFirstWeapons(): Weapon[]{
+        return this.firstWeaponStages;
     }
 
     private constructor() {

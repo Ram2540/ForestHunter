@@ -1,5 +1,5 @@
 import { Weapon } from './weapon';
-import { StaticDataStore } from '../store/staticData/StaticDataStore';
+import { StaticDataWeaponStore } from '../store/staticData/StaticDataWeaponStore';
 
 export class Hero {
     id: number;
@@ -20,13 +20,13 @@ export class Hero {
         this.avaliableWeapons = [];
         this.weapons = [];
         this.level = 1;
-        this.gold = 100999;
+        this.gold = 10;
         this.goldBonus = 0;
 
         this.currentLevel = 1;
         this.maxMosterOnLevel = 10;
         this.mostersDownOnCurrentLevel = 0;
         this.DPSMultiplier = 0;
-        this.weapons = [];
+        this.weapons = StaticDataWeaponStore.Instance.getFirstWeapons;
     }
 }

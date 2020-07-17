@@ -6,10 +6,12 @@ import { RoutesService } from '../services/routes.service';
 import { SharedDataService } from '../databaseSharedData/shared-data.service';
 import * as fromAppStore from '../store/app-store';
 import { Store } from '@ngrx/store';
-import * as fromHeroActions from '../store/hero/store-hero.actiobs';
+//import * as fromHeroActions from '../store/hero/store-hero.actiobs';
 import { Hero } from '../classes/hero';
 import { SharedDataWeapons } from '../databaseSharedData/weaponsData';
-import * as fromEnemyActions from '../store/enemy/store-enemy.actions';
+//import * as fromEnemyActions from '../store/enemy/store-enemy.actions';
+import { ControllerActions } from '../store/controller/controller.actions';
+import { DataStorageService } from '../services/data-storage/data-storage.service';
 
 
 
@@ -27,7 +29,9 @@ export class AuthComponent {
   constructor(
     private authService: AuthService,
     private routesService: RoutesService,
-    private store: Store<fromAppStore.AppState>) { }
+    private store: Store<fromAppStore.AppState>,
+    private controllerActions: ControllerActions,
+    private dataStorageService: DataStorageService) { }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -72,6 +76,10 @@ export class AuthComponent {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  onLogout(){
+    this.authService.logout();
+  }
+
   onTest() {
     // this.authService.onTest();
     // let testHero: Observable<{ hero: Hero }>;
@@ -88,15 +96,15 @@ export class AuthComponent {
     //   console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
     // console.log(SharedDataWeapons.getWeaponByIDandLevel(2,2));
     
-    
-     setInterval(() => { this.store.dispatch(new fromEnemyActions.EnemyIsDamaged(100)); }, 1000);
+    this.controllerActions.EnemyGenerate(10);
+    //this.dataStorageService.deleteData();
     // this.store.select('enemyState').subscribe(enemy => {
     //   console.log(enemy);
     // });
-    this.store.dispatch(new fromEnemyActions.GenerateEnemy(5));
+    //this.store.dispatch(new fromEnemyActions.GenerateEnemy(5));
 
-    this.store.select('enemyState').subscribe(enemy => {
-      console.log(enemy);
-    });
+    // this.store.select('enemyState').subscribe(enemy => {
+    //   console.log(enemy);
+    // });
   }
 }

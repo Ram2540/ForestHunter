@@ -1,7 +1,8 @@
 import { Hero } from '../../classes/hero';
-import * as StoreHeroActions from './store-hero.actiobs';
 import { Weapon } from 'src/app/classes/weapon';
-import { StaticDataStore } from '../staticData/StaticDataStore';
+import { StaticDataWeaponStore } from '../staticData/StaticDataWeaponStore';
+import { appActions } from '../app-store';
+import { ControllerActions } from '../controller/controller.actions';
 
 export interface HeroState {
     hero: Hero;
@@ -10,39 +11,38 @@ const initialHeroState: HeroState = {
     hero: new Hero()
 };
 
-
-export function heroReducer(state = initialHeroState, action: StoreHeroActions.HeroActions) {
+export function heroReducer(state = initialHeroState, action: appActions) {
     switch (action.type) {
-        case StoreHeroActions.LOAD_HERO:
+        case ControllerActions.HERO_LOAD:
             return {
                 ...state,
                 hero: action.payload
             }
-        case StoreHeroActions.ADD_GOLD:
+        case ControllerActions.HERO_ADD_GOLD:
             const updatedGold = state.hero.gold + action.payload;
             return getChnagedHeroState(state, 'gold', updatedGold);
-        case StoreHeroActions.ADD_GOLD_BONUS:
+        case ControllerActions.HERO_ADD_GOLD_BONUS:
             const updatedGoldBonus = state.hero.goldBonus + action.payload;
             return getChnagedHeroState(state, 'goldBonus', updatedGoldBonus);
-        case StoreHeroActions.ADD_DPS_MULTIPLIER:
+        case ControllerActions.HERO_ADD_DPS_MULTIPLIER:
             const updatedDPSMultiplier = state.hero.DPSMultiplier + action.payload;
             return getChnagedHeroState(state, 'DPSMultiplier', updatedDPSMultiplier);
-        case StoreHeroActions.ADD_LEVEL:
+        case ControllerActions.HERO_ADD_LEVEL:
             const updatedlevel = state.hero.level + action.payload;
             return getChnagedHeroState(state, 'level', updatedlevel);
-        case StoreHeroActions.ADD_CURRENT_LEVEL:
+        case ControllerActions.HERO_ADD_CURRENT_LEVEL:
             const updatedCurrentlevel = state.hero.currentLevel + action.payload;
             return getChnagedHeroState(state, 'currentLevel', updatedCurrentlevel);
-        case StoreHeroActions.SET_MAX_MONSTER_ON_LEVEL:
+        case ControllerActions.HERO_SET_MAX_MONSTER_ON_LEVEL:
             const updatedmaxMosterOnLevel = state.hero.maxMosterOnLevel + action.payload;
             return getChnagedHeroState(state, 'maxMosterOnLevel', updatedmaxMosterOnLevel);
-        case StoreHeroActions.MONSTER_DOWN_ON_CURRENT_LEVEL:
+        case ControllerActions.HERO_MONSTER_DOWN_ON_CURRENT_LEVEL:
             const updatedMostersDownOnCurrentLevel = state.hero.mostersDownOnCurrentLevel + action.payload;
-            return getChnagedHeroState(state, 'mostersDownOnCurrentLevel', updatedMostersDownOnCurrentLevel);
-        case StoreHeroActions.WEAPON_LEVEL_UP:
+            return getChnagedMonsterDownOnCurrentLevel(state, updatedMostersDownOnCurrentLevel);
+        case ControllerActions.HERO_WEAPON_LEVEL_UP:
             if (isThereEnoughGold(state, action.payload.price)) {
                 const updatedWeapon = getUpdatedWeapon(action.payload.id, action.payload.level + 1);
-                return getChnagedHeroForWeapon(state, updatedWeapon);
+                return getChnagedHeroWithWeaponAndMinusPrice(state, updatedWeapon, action.payload.price);
             }
             return state;
         default:
@@ -60,8 +60,20 @@ function getChnagedHeroState(state: HeroState, valueName: string, newValue: numb
         }
     };
 }
-
-function getChnagedHeroForWeapon(state: HeroState, weapon: Weapon) {
+// -----------------------Hero--------------------------------
+function getChnagedMonsterDownOnCurrentLevel(state: HeroState, updatedMostersDownOnCurrentLevel: number) {
+    let updatedCurrentLevel = state.hero.currentLevel;
+    if (updatedMostersDownOnCurrentLevel >= state.hero.maxMosterOnLevel) {
+        updatedCurrentLevel++;
+        updatedMostersDownOnCurrentLevel = 0;
+    }
+    return getChnagedHeroState(
+        getChnagedHeroState(state, 'mostersDownOnCurrentLevel', updatedMostersDownOnCurrentLevel),
+        'currentLevel',
+        updatedCurrentLevel);
+}
+// -----------------------Weapon--------------------------------
+function getChnagedHeroWithWeaponAndMinusPrice(state: HeroState, weapon: Weapon, price: number) {
     const updateWeapons = [...state.hero.weapons];
     const index = updateWeapons.findIndex(w => w.id === weapon.id);
     updateWeapons[index] = weapon;
@@ -69,13 +81,14 @@ function getChnagedHeroForWeapon(state: HeroState, weapon: Weapon) {
         ...state,
         hero: {
             ...state.hero,
+            gold: state.hero.gold - price,
             weapons: updateWeapons
         }
     }
 }
-// -----------------------Weapon--------------------------------
+
 function getUpdatedWeapon(id: number, level: number) {
-    return StaticDataStore.Instance.getWeaponByIDandLevel(id, level);
+    return StaticDataWeaponStore.Instance.getWeaponByIDandLevel(id, level);
 }
 // -----------------------Gold--------------------------------
 function isThereEnoughGold(state: HeroState, price: number): boolean {

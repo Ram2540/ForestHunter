@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HeroService } from 'src/app/services/hero.service';
+import * as fromAppStore from '../../store/app-store';
+import { Store } from '@ngrx/store';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-damage-panel',
@@ -7,17 +9,18 @@ import { HeroService } from 'src/app/services/hero.service';
   styleUrls: ['./damage-panel.component.css']
 })
 export class DamagePanelComponent implements OnInit {
-  constructor(private heroService: HeroService) { }
+  DPSMultiplier = 0;
+  Damage = 0;
+  constructor(private store: Store<fromAppStore.AppState>, private gameService: GameService) { }
 
   ngOnInit() {
-  }
-
-  public getDPSMultiplier() {
-    return this.heroService.getDPSMultiplier();
-  }
-
-  public getDamage() {
-    return this.heroService.getDamage();
-  }
-
+    this.store.select('heroState').subscribe((heroState) => {
+      if (this.DPSMultiplier !== heroState.hero.DPSMultiplier) {
+        this.DPSMultiplier = heroState.hero.DPSMultiplier;
+      }
+      if (this.Damage !== this.gameService.getHeroDamage) {
+        this.Damage = this.gameService.getHeroDamage;
+      }
+    });
+   }
 }

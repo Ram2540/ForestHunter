@@ -14,7 +14,7 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
   PercentHP = 0;
   EnemyHP = 0;
   FullHP = 0;
-  CurrentLevel = 1;
+  EnemyCurrentLevel = 1;
   private storeEnemySubscriprion: Subscription;
   private storeHeroSubscriprion: Subscription;
 
@@ -25,7 +25,7 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
       this.PercentHP = enemyState.enemy.HP / enemyState.enemy.FullHP * 100;
       this.FullHP = enemyState.enemy.FullHP;
       this.EnemyHP = enemyState.enemy.HP;
-      this.CurrentLevel = enemyState.enemy.level;
+      this.EnemyCurrentLevel = enemyState.enemy.level;
     });
 
     this.storeHeroSubscriprion = this.store.select('heroState').subscribe((heroState) => {

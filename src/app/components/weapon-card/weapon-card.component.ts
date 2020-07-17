@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Weapon } from 'src/app/classes/weapon';
-import {HeroService} from '../../services/hero.service';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
-import * as fromHeroActions from '../../store/hero/store-hero.actiobs';
+import { ControllerActions } from 'src/app/store/controller/controller.actions';
 
 @Component({
   selector: 'app-weapon-card',
@@ -12,15 +11,15 @@ import * as fromHeroActions from '../../store/hero/store-hero.actiobs';
 })
 export class WeaponCardComponent implements OnInit {
   @Input() weapon: Weapon;
-  @Output() weaponClicked = new EventEmitter();
+  //@Output() weaponClicked = new EventEmitter();
 
-  constructor(private store: Store<fromAppStore.AppState>) { }
+  constructor(private controllerActions: ControllerActions) { }
 
   ngOnInit() {
   }
 
   levelUp() {
-    this.store.dispatch(new fromHeroActions.WeaponLevelUp(this.weapon))
-    this.weaponClicked.emit();
+    this.controllerActions.HeroWeaponLevelUp(this.weapon);
+    //this.weaponClicked.emit();
   }
 }
