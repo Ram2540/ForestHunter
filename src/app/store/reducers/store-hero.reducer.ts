@@ -8,7 +8,7 @@ export interface HeroState {
     hero: Hero;
 }
 const initialHeroState: HeroState = {
-    hero: new Hero()
+    hero: new Hero(0),  // 0 as a default hero which will not be poster
 };
 
 export function heroReducer(state = initialHeroState, action: appActions) {
@@ -16,7 +16,10 @@ export function heroReducer(state = initialHeroState, action: appActions) {
         case ControllerActions.HERO_LOAD:
             return {
                 ...state,
-                hero: action.payload
+                hero: {
+                    ...action.payload,
+                    weapons: [...action.payload.weapons]
+                }
             }
         case ControllerActions.HERO_ADD_GOLD:
             const updatedGold = state.hero.gold + action.payload;

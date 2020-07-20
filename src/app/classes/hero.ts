@@ -13,9 +13,8 @@ export class Hero {
     maxMosterOnLevel: number;
     mostersDownOnCurrentLevel: number;
 
-    //constructor(id: number, avaliableWeapons?: Weapon[], weapons?: Weapon[], lvl?: number, gold?: number, ) {
-    constructor() {
-        this.id = 1;
+    constructor(id = 0) {   // 0 - as a default hero
+        this.id = id;
 
         this.avaliableWeapons = [];
         this.weapons = [];

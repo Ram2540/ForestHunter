@@ -18,6 +18,7 @@ import { AuthState } from '../reducers/store-auth.reducer';
 export class ControllerActions {
 
   static ENEMY_GENERATE = 'ENEMY_GENERATE';
+  static ENEMY_LOAD_NEW = 'ENEMY_LOAD_NEW';
   static ENEMY_IS_DAMAGED = 'ENEMY_IS_DAMAGED';
   static ENEMY_IS_KILLED = 'ENEMY_IS_KILLED';
   static ENEMY_SET_LEVEL = 'ENEMY_SET_LEVEL';
@@ -42,6 +43,7 @@ export class ControllerActions {
 
   // -----------------------HERO-------------------------------------
   public HeroLoad(loadedHero: Hero) {
+    console.log(loadedHero);
     this.store.dispatch(createAction(ControllerActions.HERO_LOAD, loadedHero));
   }
 
@@ -83,6 +85,10 @@ export class ControllerActions {
   // -----------------------ENEMY-------------------------------------
   public EnemyGenerate(level: number) {
     this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE, level));
+  }
+
+  public EnemyLoadNew(level: number) {
+    this.store.dispatch(createAction(ControllerActions.ENEMY_LOAD_NEW, level));
   }
 
   EnemyIsDamaged(damage: number) {

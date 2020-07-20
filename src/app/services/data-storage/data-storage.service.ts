@@ -21,8 +21,7 @@ import { ConditionalExpr } from '@angular/compiler';
   providedIn: 'root'
 })
 export class DataStorageService {
-  //private urlFirebase = 'https://foresthunter-f42be.firebaseio.com/';
-  public loadedHero = new BehaviorSubject<Hero>(null);
+  // private urlFirebase = 'https://foresthunter-f42be.firebaseio.com/';
   public enemyRewards = new BehaviorSubject<enemyReward[]>(null);
 
   private subscriptionToUser: Subscription;
@@ -43,14 +42,12 @@ export class DataStorageService {
               private controllerActions: ControllerActions) {
 
     this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
-      console.log('this.authService.user.subscribe((value)');
       if (authState.user) {
-        this.getHero();
+        this.tryToPostNewHeroOrGetExistingOne();
       }
     });
 
   }
-
   public postHero(postData: Hero) {
     if (this.controllerActions.geAuthState().user && postData) {
       this.heroDBRefData
@@ -58,30 +55,56 @@ export class DataStorageService {
     }
   }
 
-   public getHero(): void {
+  // public tryToPostHeroIfDoesNotExist(postData: Hero): void {
+  //   this.heroDBRefData
+  //     .once('value', (snapshot) => {
+  //       const leadedHero = snapshot.val();
+  //       if (!leadedHero) {
+  //         this.postHero(postData);
+  //       }
+  //     });
+  // }
+
+  public getHero(): void {
     if (this.controllerActions.geAuthState().user) {
       this.heroDBRefData
-        .on('value', (snapshot) => {
-          const leadedHero = snapshot.val();
+        .once('value', (snapshot) => {
+          const leadedHero: Hero = snapshot.val();
           if (leadedHero) {
-            //this.loadedHero.next(leadedHero);
-            //this.store.dispatch(new fromHeroActions.LoadHero(leadedHero));
-            console.log(leadedHero);
             this.controllerActions.HeroLoad(leadedHero);
+            this.controllerActions.EnemyLoadNew(leadedHero.currentLevel);
           }
         });
     }
   }
 
-// EnemyRewardsFromDB
-public get EnemyRewardsFromDB() {
-  return this.sharedDataService.getRefForEnemyRewards().on('value', (snapshot) => {
-    const tempEnemyRewards = snapshot.val();
-    if(tempEnemyRewards){
-      this.enemyRewards.next(tempEnemyRewards);
-    }
-  });
-}
+  public tryToPostNewHeroOrGetExistingOne() {
+    console.log('tryToPostNewHeroOrGetExistingOne');
+    this.heroDBRefData
+      .once('value', (snapshot) => {
+        const leadedHero = snapshot.val();
+        if (!leadedHero) {
+          console.log('new hero has been created');
+          this.postHero(new Hero(1));
+          //  this.controllerActions.HeroLoad(new Hero());
+          //  this.controllerActions.EnemyLoadNew(1);
+          return;
+        }
+        this.getHero();
+      });
+  }
+
+
+
+  // EnemyRewardsFromDB
+  public get EnemyRewardsFromDB() {
+    return this.sharedDataService.getRefForEnemyRewards().on('value', (snapshot) => {
+      const tempEnemyRewards = snapshot.val();
+      if (tempEnemyRewards) {
+        this.enemyRewards.next(tempEnemyRewards);
+      }
+    });
+  }
 
 
 
@@ -104,12 +127,12 @@ public get EnemyRewardsFromDB() {
   }
 
 
-//   private prepareHeroToPost(hero: Hero)
-// {
+  //   private prepareHeroToPost(hero: Hero)
+  // {
 
-// }
+  // }
 
-// get
+  // get
   /*
   public postHero(postData: Hero) {
     if (this.authService.user.value) {
@@ -138,7 +161,7 @@ public get EnemyRewardsFromDB() {
   }
 
   */
-  //old one
+  // old one
   // private getUrlForUserData(): string {
   //   return this.urlFirebase + '/userData/hero/' + this.authService.user.value.uid + '.json';
   // }
