@@ -10,7 +10,7 @@
         dps
         <div class="weapon-dps">{{weapon.damage}}</div>
     </div>
-    <app-buy-button class="color-btn-green" (buttonClicked)="levelUp()" [myValue] = "weapon.price"></app-buy-button>
+    <app-buy-button appButtonHighlighter class="color-btn-green" (buttonClicked)="levelUp()" [myValue]="weapon.price"
+        [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}">
+    </app-buy-button>
 </div>
-
-

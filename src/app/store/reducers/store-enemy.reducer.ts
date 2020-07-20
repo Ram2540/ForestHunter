@@ -23,6 +23,12 @@ export function enemyReducer(state = initialEnemyState, action: appActions) {
                 enemy: state.enemy.HP <= 0 ? new Enemy(1, action.payload) : state.enemy,
                 isEnemyAlive: true
             };
+        case ControllerActions.ENEMY_LOAD_NEW:
+                return {
+                    ...state,
+                    enemy: new Enemy(1, action.payload),
+                    isEnemyAlive: true
+                };
         case ControllerActions.ENEMY_IS_DAMAGED:
             return {
                 ...state,

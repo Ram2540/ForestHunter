@@ -1,6 +1,6 @@
 .dps {
     width:100px;
-    height: 70px;
+    height: 75px;
     left: 250px; 
     position: relative;
     border-radius: 35px;
@@ -10,6 +10,6 @@
 
 .title {
     left :40px;
-    top: 10px;
+    top: 3px;
     position: relative;
 }

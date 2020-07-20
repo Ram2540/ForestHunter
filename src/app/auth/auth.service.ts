@@ -26,30 +26,37 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
-  userChanged: Observable<User> = this.user.asObservable();
+  // user = new BehaviorSubject<User>(null);
+  // userChanged: Observable<User> = this.user.asObservable();
   private api = 'AIzaSyDWyCa698JnaQrv1z1PjSIkErIhiLSAFPo';
   private localStorageUserKey = 'userData';
   private database = firebase.database();
   isLogined = false;
 
-  constructor(private http: HttpClient, 
-    private authFirebase: AngularFireAuth, 
-    private store: Store<fromAppStore.AppState>,
-    private controllerActions: ControllerActions) {
+  constructor(private http: HttpClient,
+              private authFirebase: AngularFireAuth,
+              private store: Store<fromAppStore.AppState>,
+              private controllerActions: ControllerActions) {
+    
+    
+    this.authFirebase.authState.subscribe(user => {
+      if (user) {
+        console.log('------------------------------------------- b,b,bg,g,rgg g ggggggggghis.authFirebase.authState.subscribe(');
+        this.handleUserAssign(user);
+      }
+    }
+    );
+
     this.store.select('authState').subscribe(authState => {
       if (authState.user) {
         localStorage.setItem(this.localStorageUserKey, JSON.stringify(authState.user));
       }
     });
 
-    this.authFirebase.authState.subscribe(user => {
-      if (user) {
-        this.handleUserAssign(user);
-      }
-    }
-    );
+
   }
+
+
 
   onTest() {
     firebase
@@ -108,7 +115,7 @@ export class AuthService {
       idToken,
       user.refreshToken,
       expirationDate);
-      console.log(loadedUser);
+    console.log(loadedUser);
     // this.user.next(loadedUser);
     // this.user.complete();
 

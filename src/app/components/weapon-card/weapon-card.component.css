@@ -76,6 +76,16 @@ left:10;
     background: linear-gradient(0deg,#7cbc30,#baf279);
 }
 
+.color-btn-grey {
+    width: 50%;
+    right: 10px;
+    BOTTOM: 25px;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block; 
+    background: linear-gradient(0deg,#a1aa95,#aabd96);
+}
+
 /*
 [class^="color-btn"] {
     width: 50%;

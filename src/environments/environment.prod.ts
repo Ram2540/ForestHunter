@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   firebaseConfig : {
     apiKey: 'AIzaSyDWyCa698JnaQrv1z1PjSIkErIhiLSAFPo',
     authDomain: 'foresthunter-f42be.firebaseapp.com',

@@ -32,6 +32,7 @@ import { AngularFireDatabaseModule  } from '@angular/fire/database';
 import { StoreModule } from '@ngrx/store';
 import * as fromStoreApp from './store/app-store';
 import * as firebase from 'firebase';
+import { ButtonHighlighterDirective } from './decorators/button-highlighter.directive';
 // import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -56,7 +57,8 @@ firebase.initializeApp(environment.firebaseConfig);
     DamagePanelComponent,
     LeftSideHeroComponent,
     LeftSideQuestsComponent,
-    AuthComponent
+    AuthComponent,
+    ButtonHighlighterDirective
   ],
   imports: [
     BrowserModule,
