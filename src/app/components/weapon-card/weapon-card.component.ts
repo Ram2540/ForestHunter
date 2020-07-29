@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './weapon-card.component.html',
   styleUrls: ['./weapon-card.component.css']
 })
-export class WeaponCardComponent implements OnInit,OnDestroy {
+export class WeaponCardComponent implements OnInit, OnDestroy {
   @Input() weapon: Weapon;
   currentGoldValue = 0;
   private goldSubscription: Subscription;

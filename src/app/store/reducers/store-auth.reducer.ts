@@ -18,13 +18,15 @@ export function userReducer(state = initialState, action: appActions): AuthState
         case ControllerActions.USER_LOGIN: {
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
+                isLoginedIn: true
             };
         }
         case ControllerActions.USER_LOGOUT: {
             return {
                 ...state,
-                user: null
+                user: null,
+                isLoginedIn: false
             }
         }
         default : return state;

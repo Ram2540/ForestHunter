@@ -14,6 +14,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class GameService {
     private damageInterval: any;
     private heroDamage = 0;
+    private numberOfDamagesPerSecond = 4;
+    private isUserLoginedIn = false;
     public get getHeroDamage(): number {
         return this.heroDamage;
     }
@@ -23,8 +25,11 @@ export class GameService {
                 private dataStorageService: DataStorageService) {
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {
-            this.controllerActions.EnemyIsDamaged(this.heroDamage);
-        }, 1000);
+            console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
+            if (this.isUserLoginedIn) {
+                this.controllerActions.EnemyIsDamaged(Math.floor(this.heroDamage / this.numberOfDamagesPerSecond));
+            }
+        }, (1000 / this.numberOfDamagesPerSecond));
         // ------------------------------ENEMY------------------------------
         this.store.select('enemyState').pipe(
             map((enemyState) => {
@@ -59,17 +64,21 @@ export class GameService {
             (value) => {
                 return value;
             });
-        this.store.select('authState').pipe(take(1)).subscribe(value => {
+        this.store.select('authState').subscribe(value => {
+            console.log("this.authState ", value.isLoginedIn);
+            this.isUserLoginedIn = value.isLoginedIn;
             this.updateHeroOnDB();
             return value;
-            });
-        
+        });
     }
 
     private updateHeroOnDB() {
+
         this.store.select('heroState').pipe(debounceTime(2000)).subscribe(heroState => {
-            if (heroState.hero && heroState.hero.id > 0) {
-                this.dataStorageService.postHero(heroState.hero);
+            if (this.isUserLoginedIn) {
+                if (heroState.hero && heroState.hero.id > 0) {
+                    this.dataStorageService.postHero(heroState.hero);
+                }
             }
         });
     }

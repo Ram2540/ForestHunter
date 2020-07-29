@@ -43,7 +43,6 @@ export class ControllerActions {
 
   // -----------------------HERO-------------------------------------
   public HeroLoad(loadedHero: Hero) {
-    console.log(loadedHero);
     this.store.dispatch(createAction(ControllerActions.HERO_LOAD, loadedHero));
   }
 
@@ -110,6 +109,9 @@ public UserLogin(user: User) {
 
 public UserLogout() {
   this.store.dispatch(createAction(ControllerActions.USER_LOGOUT));
+  this.HeroLoad(new Hero(0));
+  this.EnemyGenerate(1);
+  console.log('USER LOGOUT');
 }
 
   // -----------------------GET STATES-------------------------------------

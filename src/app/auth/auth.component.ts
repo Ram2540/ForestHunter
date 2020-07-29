@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService, AuthResponseData } from './auth.service';
-import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { Observable, Subscription } from 'rxjs';
 import { RoutesService } from '../services/routes.service';
-import { SharedDataService } from '../databaseSharedData/shared-data.service';
 import * as fromAppStore from '../store/app-store';
 import { Store } from '@ngrx/store';
-//import * as fromHeroActions from '../store/hero/store-hero.actiobs';
-import { Hero } from '../classes/hero';
-import { SharedDataWeapons } from '../databaseSharedData/weaponsData';
-//import * as fromEnemyActions from '../store/enemy/store-enemy.actions';
 import { ControllerActions } from '../store/controller/controller.actions';
 import { DataStorageService } from '../services/data-storage/data-storage.service';
 
@@ -20,19 +15,29 @@ import { DataStorageService } from '../services/data-storage/data-storage.servic
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit, OnDestroy{
+  isUserLoginedIn = false;
   isFormOpened = false;
   isLoginMode = true;
   isLoading = false;
   error: string = null;
   openFormSignIn = false;
+  private authStateSubscription: Subscription;
+
+
+
   constructor(
     private authService: AuthService,
     private routesService: RoutesService,
     private store: Store<fromAppStore.AppState>,
     private controllerActions: ControllerActions,
     private dataStorageService: DataStorageService) { }
-
+  ngOnInit() {
+    this.authStateSubscription = this.store.select('authState').subscribe(value => {
+      this.isUserLoginedIn = value.isLoginedIn;
+      return value;
+  });
+  }
   onSubmit(form: NgForm) {
     if (!form.valid) {
       return;
@@ -76,35 +81,17 @@ export class AuthComponent {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onLogout(){
+  onLogout() {
     this.authService.logout();
   }
 
-  onTest() {
-    // this.authService.onTest();
-    // let testHero: Observable<{ hero: Hero }>;
-    // testHero = this.store.select('heroState');
-
-    // const hero = this.store.select('heroState');
-
-    // console.log (testHero.subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
-    // this.store.dispatch(new fromHeroActions.AddGoldBonus(999));
-    // this.store.dispatch(new fromHeroActions.AddGold(500));
-    // console.log(hero);
-    // console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
-    //   this.store.dispatch(new fromHeroActions.WeaponLevelUp(this.weaponService.getWeaponByIDandLevel(1,5)));
-    //   console.log (this.store.select('heroState').subscribe((tttt) => {console.log(tttt); console.log('console.log(tttt);');}));
-    // console.log(SharedDataWeapons.getWeaponByIDandLevel(2,2));
-    
-    this.controllerActions.EnemyGenerate(10);
-    //this.dataStorageService.deleteData();
-    // this.store.select('enemyState').subscribe(enemy => {
-    //   console.log(enemy);
-    // });
-    //this.store.dispatch(new fromEnemyActions.GenerateEnemy(5));
-
-    // this.store.select('enemyState').subscribe(enemy => {
-    //   console.log(enemy);
-    // });
+  ngOnDestroy() {
+    if (this.authStateSubscription) {
+      this.authStateSubscription.unsubscribe();
+    }
   }
+
+  onTest() {
+  }
+
 }

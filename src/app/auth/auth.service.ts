@@ -41,7 +41,6 @@ export class AuthService {
     
     this.authFirebase.authState.subscribe(user => {
       if (user) {
-        console.log('------------------------------------------- b,b,bg,g,rgg g ggggggggghis.authFirebase.authState.subscribe(');
         this.handleUserAssign(user);
       }
     }
@@ -52,8 +51,6 @@ export class AuthService {
         localStorage.setItem(this.localStorageUserKey, JSON.stringify(authState.user));
       }
     });
-
-
   }
 
 
