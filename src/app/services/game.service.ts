@@ -63,7 +63,6 @@ export class GameService {
             this.updateHeroOnDB();
             return value;
             });
-
         
     }
 
