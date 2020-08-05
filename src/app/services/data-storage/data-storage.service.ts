@@ -1,20 +1,16 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Hero } from '../../classes/hero';
 import { AuthService } from 'src/app/auth/auth.service';
-import { Weapon } from 'src/app/classes/weapon';
-import { map } from 'rxjs/operators';
-import { observable, Observable, Subject, BehaviorSubject, Subscription } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import * as firebase from 'firebase';
-import { Reference } from '@angular/compiler/src/render3/r3_ast';
 import { DatabaseDataLinks } from './database-enums';
 import { SharedDataService } from 'src/app/databaseSharedData/shared-data.service';
 import { enemyReward } from 'src/app/databaseSharedData/gold';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
-import { ConditionalExpr } from '@angular/compiler';
+import { Ratings } from 'src/app/classes/ratings';
 
 
 @Injectable({
@@ -25,6 +21,7 @@ export class DataStorageService {
   public enemyRewards = new BehaviorSubject<enemyReward[]>(null);
 
   private subscriptionToUser: Subscription;
+
   private get heroDBRefData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.Hero));
   }
@@ -33,6 +30,9 @@ export class DataStorageService {
   }
   private get weaponLogDBData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
+  }
+  private get ratingsDBRefData() {
+    return this.getRef(this.RefForDataTo(DatabaseDataLinks.Ratings));
   }
 
   constructor(private http: HttpClient,
@@ -44,8 +44,11 @@ export class DataStorageService {
     this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
       if (authState.user) {
         this.tryToPostNewHeroOrGetExistingOne();
+        this.tryToPostNewRatingsOrGetExistingOne();
       }
     });
+
+   
 
   }
   public postHero(postData: Hero) {
@@ -55,15 +58,6 @@ export class DataStorageService {
     }
   }
 
-  // public tryToPostHeroIfDoesNotExist(postData: Hero): void {
-  //   this.heroDBRefData
-  //     .once('value', (snapshot) => {
-  //       const leadedHero = snapshot.val();
-  //       if (!leadedHero) {
-  //         this.postHero(postData);
-  //       }
-  //     });
-  // }
 
   public getHero(): void {
     if (this.controllerActions.geAuthState().user) {
@@ -84,13 +78,46 @@ export class DataStorageService {
       .once('value', (snapshot) => {
         const leadedHero = snapshot.val();
         if (!leadedHero) {
-          console.log('new hero has been created');
-          this.postHero(new Hero(1));
-          //  this.controllerActions.HeroLoad(new Hero());
+          const newHero = new Hero(1);
+          this.postHero(newHero);
+          this.controllerActions.HeroLoad(newHero);
           //  this.controllerActions.EnemyLoadNew(1);
           return;
         }
         this.getHero();
+      });
+  }
+
+  public postRatings(postRatings: Ratings) {
+    if (this.controllerActions.geAuthState().user && postRatings) {
+      this.ratingsDBRefData
+        .set(postRatings);
+    }
+  }
+
+  public getRatings(): void {
+    if (this.controllerActions.geAuthState().user) {
+      this.ratingsDBRefData
+        .once('value', (snapshot) => {
+          const loadedRatings: Ratings = snapshot.val();
+          if (loadedRatings) {
+            this.controllerActions.ratingsLoad(loadedRatings);
+          }
+        });
+    }
+  }
+
+  public tryToPostNewRatingsOrGetExistingOne() {
+    this.ratingsDBRefData
+      .once('value', (snapshot) => {
+        const loadedRatings = snapshot.val();
+        if (!loadedRatings) {
+          const newRatings = new Ratings();
+          this.postRatings(newRatings);
+          this.controllerActions.ratingsLoad(newRatings);
+          return;
+        }
+        this.getRatings();
       });
   }
 

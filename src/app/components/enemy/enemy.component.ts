@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Enemy } from '../../classes/enemy'
+import {trigger } from '@angular/animations';
+import { Enemy } from '../../classes/enemy';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
@@ -7,9 +8,13 @@ import * as fromAppStore from '../../store/app-store';
 @Component({
   selector: 'app-enemy',
   templateUrl: './enemy.component.html',
-  styleUrls: ['./enemy.component.css']
+  styleUrls: ['./enemy.component.css'],
+  animations: [
+    trigger('enemyState', [])
+  ]
 })
 export class EnemyComponent implements OnInit, OnDestroy {
+
   enemy: Enemy = new Enemy(1, 1);
   img = new Image();
   canvas: HTMLCanvasElement = document.getElementById('enemy') as HTMLCanvasElement;

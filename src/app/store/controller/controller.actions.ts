@@ -10,6 +10,8 @@ import { EnemyState } from '../reducers/store-enemy.reducer';
 import { HeroState } from '../reducers/store-hero.reducer';
 import { User } from 'src/app/auth/user.model';
 import { AuthState } from '../reducers/store-auth.reducer';
+import { Ratings } from 'src/app/classes/ratings';
+import { RatingsState } from '../reducers/store-ratings.reducer';
 //import {AppState} from '../../models/appState';
 
 @Injectable({
@@ -36,12 +38,15 @@ export class ControllerActions {
   static USER_LOGIN = 'USER_LOGIN';
   static USER_LOGOUT = 'USER_LOGOUT';
 
+  static RATINGS_LOAD = "RATINGS_LOAD";
+  static RATINGS_CHNAGED = "RATINGS_CHNAGED";
+
   constructor(private store: Store<AppState>) {
 
   }
 
 
-  // -----------------------HERO-------------------------------------
+  // ----------------------------------------------HERO------------------------------------------------------------
   public HeroLoad(loadedHero: Hero) {
     this.store.dispatch(createAction(ControllerActions.HERO_LOAD, loadedHero));
   }
@@ -81,7 +86,7 @@ export class ControllerActions {
     this.store.dispatch(createAction(ControllerActions.HERO_WEAPON_LEVEL_UP, weapon));
   }
 
-  // -----------------------ENEMY-------------------------------------
+  // ----------------------------------------------ENEMY------------------------------------------------------------
   public EnemyGenerate(level: number) {
     this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE, level));
   }
@@ -102,7 +107,7 @@ export class ControllerActions {
     this.store.dispatch(createAction(ControllerActions.ENEMY_SET_LEVEL, level));
   }
 
-// -----------------------USER-------------------------------------
+// -------------------------------------------------------------USER------------------------------------------------------------
 public UserLogin(user: User) {
   this.store.dispatch(createAction(ControllerActions.USER_LOGIN, user));
 }
@@ -111,10 +116,24 @@ public UserLogout() {
   this.store.dispatch(createAction(ControllerActions.USER_LOGOUT));
   this.HeroLoad(new Hero(0));
   this.EnemyGenerate(1);
-  console.log('USER LOGOUT');
 }
 
-  // -----------------------GET STATES-------------------------------------
+// ----------------------------------------------RATINGS------------------------------------------------------------
+public ratingsLoad(ratings: Ratings) {
+    this.store.dispatch(createAction(ControllerActions.RATINGS_LOAD, ratings));
+}
+
+public ratingsChanged(ratings: Ratings) {
+  const currentState = this.geRatingsState();
+  for(const key of Object.keys(ratings)) {
+    if (currentState.ratings[key] !== ratings[key]) {
+      this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, {valueName: key, newValue: ratings[key]}));
+    }
+  }
+}
+
+
+  // ----------------------------------------------GET STATES------------------------------------------------------------
   public getEnemyState(): EnemyState {
     let state: EnemyState;
 
@@ -141,5 +160,15 @@ public UserLogout() {
     );
     return state;
   }
+
+  public geRatingsState(): RatingsState {
+    let state: RatingsState;
+
+    this.store.select('ratingsState').pipe(take(1)).subscribe(
+      s => state = s
+    );
+    return state;
+  }
+
 
 }

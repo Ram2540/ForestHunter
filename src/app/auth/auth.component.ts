@@ -15,7 +15,7 @@ import { DataStorageService } from '../services/data-storage/data-storage.servic
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit, OnDestroy{
+export class AuthComponent implements OnInit, OnDestroy {
   isUserLoginedIn = false;
   isFormOpened = false;
   isLoginMode = true;
@@ -55,6 +55,7 @@ export class AuthComponent implements OnInit, OnDestroy{
       const isPasswordTheSame = form.value.repeatpassword === form.value.password;
       if (!isPasswordTheSame) {
         this.error = 'passwords are different';
+        this.isLoading = false;
         return;
       }
       authObs = this.authService.signup(email, password);
@@ -92,6 +93,7 @@ export class AuthComponent implements OnInit, OnDestroy{
   }
 
   onTest() {
+    this.authService.onTest();
   }
 
 }

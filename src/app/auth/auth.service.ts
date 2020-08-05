@@ -11,6 +11,7 @@ import * as firebase from 'firebase';
 import * as fromAppStore from '../store/app-store';
 import { Store } from '@ngrx/store';
 import { ControllerActions } from '../store/controller/controller.actions';
+import { Hero } from '../classes/hero';
 
 export interface AuthResponseData {
   kind: string;
@@ -34,17 +35,16 @@ export class AuthService {
   isLogined = false;
 
   constructor(private http: HttpClient,
-              private authFirebase: AngularFireAuth,
-              private store: Store<fromAppStore.AppState>,
-              private controllerActions: ControllerActions) {
-    
-    
-    this.authFirebase.authState.subscribe(user => {
+    private authFirebase: AngularFireAuth,
+    private store: Store<fromAppStore.AppState>,
+    private controllerActions: ControllerActions) {
+
+
+    this.authFirebase.user.subscribe(user => {
       if (user) {
         this.handleUserAssign(user);
       }
-    }
-    );
+    });
 
     this.store.select('authState').subscribe(authState => {
       if (authState.user) {
@@ -56,12 +56,17 @@ export class AuthService {
 
 
   onTest() {
+    // firebase
+    //   .database()
+    //   .ref('userData/' + this.controllerActions.geAuthState().user.uid + '/')
+    //   .on('value', ((snapshot) => {
+    //     console.log(snapshot.val());
+    //   }));
+    const hero = new Hero(1);
     firebase
       .database()
-      .ref('userData/' + this.controllerActions.geAuthState().user.uid + '/')
-      .on('value', ((snapshot) => {
-        console.log(snapshot.val());
-      }));
+      .ref('ratings/test/')
+      .set(hero);
   }
   signup(email: string, password: string): Promise<boolean | Observable<never>> {
     return this.authFirebase.createUserWithEmailAndPassword(email, password)
@@ -101,10 +106,6 @@ export class AuthService {
     user: firebase.User
   ) {
     const idToken = await firebase.auth().currentUser.getIdToken();
-
-    console.log('------------------authFirebase.authState-----------------------');
-    console.log(idToken);
-    console.log(user.linkWithCredential);
     const expirationDate = new Date(new Date().getTime() + 3600000);
     const loadedUser = new User(
       user.email,
@@ -112,9 +113,6 @@ export class AuthService {
       idToken,
       user.refreshToken,
       expirationDate);
-    console.log(loadedUser);
-    // this.user.next(loadedUser);
-    // this.user.complete();
 
     this.controllerActions.UserLogin(loadedUser);
     this.isLogined = true;
@@ -154,107 +152,107 @@ export class AuthService {
   }
 }
 
-  /*
-   login(email: string, password: string) {
-      return this.http
-        .post<AuthResponseData>(
-          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
-          {
-            email: email,
-            password: password,
-            returnSecureToken: true
-          }
-        )
-        .pipe(
-          catchError(this.handleError),
-          tap(resData => {
-            this.handleAuthentication(
-              resData.email,
-              resData.localId,
-              resData.idToken,
-              +resData.expiresIn
-            );
-          })
-        );
-    }
-  
-  signup(email: string, password: string) {
-      return this.http
-        .post<AuthResponseData>(
-          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.api,
-          {
-            email: email,
-            password: password,
-            returnSecureToken: true
-          }
-        )
-        .pipe(
-          catchError(this.handleError),
-          tap(resData => {
-            this.handleAuthentication(
-              resData.email,
-              resData.localId,
-              resData.idToken,
-              +resData.expiresIn
-            );
-          })
-        );
-    }
-
-
-    autoLogin() {
-    const userData: {
-      email: string;
-      uid: string;
-      _token: string;
-      _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem('userData'));
-    if (!userData) {
-      return;
-    }
-    console.log(' ------------------------------------------------------------------------=');
-    const loadedUser = new User(userData.email, userData.uid, userData._token, new Date(userData._tokenExpirationDate));
-    if (loadedUser.token) {
-      this.user.next(loadedUser);
-    }
+/*
+ login(email: string, password: string) {
+    return this.http
+      .post<AuthResponseData>(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.api,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
   }
 
-  logout() {
-    this.user.next(null);
+signup(email: string, password: string) {
+    return this.http
+      .post<AuthResponseData>(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.api,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
   }
 
-  private handleAuthentication(
-    email: string,
-    userId: string,
-    token: string,
-    expiresIn: number
-  ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, token, expirationDate);
-    this.user.next(user);
-    this.user.complete();
-  }
 
-  private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-    if (!errorRes.error || !errorRes.error.error) {
-      return throwError(errorMessage);
-    }
-    switch (errorRes.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email exists already';
-        break;
-      case 'EMAIL_NOT_FOUND':
-        errorMessage = 'This email does not exist.';
-        break;
-      case 'INVALID_PASSWORD':
-        errorMessage = 'This password is not correct.';
-        break;
-    }
+  autoLogin() {
+  const userData: {
+    email: string;
+    uid: string;
+    _token: string;
+    _tokenExpirationDate: string;
+  } = JSON.parse(localStorage.getItem('userData'));
+  if (!userData) {
+    return;
+  }
+  console.log(' ------------------------------------------------------------------------=');
+  const loadedUser = new User(userData.email, userData.uid, userData._token, new Date(userData._tokenExpirationDate));
+  if (loadedUser.token) {
+    this.user.next(loadedUser);
+  }
+}
+
+logout() {
+  this.user.next(null);
+}
+
+private handleAuthentication(
+  email: string,
+  userId: string,
+  token: string,
+  expiresIn: number
+) {
+  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+  const user = new User(email, userId, token, expirationDate);
+  this.user.next(user);
+  this.user.complete();
+}
+
+private handleError(errorRes: HttpErrorResponse) {
+  let errorMessage = 'An unknown error occurred!';
+  if (!errorRes.error || !errorRes.error.error) {
     return throwError(errorMessage);
   }
-  
-  */
+  switch (errorRes.error.error.message) {
+    case 'EMAIL_EXISTS':
+      errorMessage = 'This email exists already';
+      break;
+    case 'EMAIL_NOT_FOUND':
+      errorMessage = 'This email does not exist.';
+      break;
+    case 'INVALID_PASSWORD':
+      errorMessage = 'This password is not correct.';
+      break;
+  }
+  return throwError(errorMessage);
+}
+
+*/
 
 
 

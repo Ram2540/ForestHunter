@@ -6,6 +6,7 @@ import { map, tap, debounceTime, take } from 'rxjs/operators';
 import { DataStorageService } from './data-storage/data-storage.service';
 import { SharedDataGold } from '../databaseSharedData/gold';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Ratings } from '../classes/ratings';
 
 @Injectable({
     providedIn: 'root'
@@ -14,18 +15,19 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class GameService {
     private damageInterval: any;
     private heroDamage = 0;
-    private numberOfDamagesPerSecond = 4;
+    private numberOfDamagesPerSecond = 1;
     private isUserLoginedIn = false;
+    private currentRatings: Ratings;
     public get getHeroDamage(): number {
         return this.heroDamage;
     }
 
     constructor(private controllerActions: ControllerActions,
-                private store: Store<fromAppStore.AppState>,
-                private dataStorageService: DataStorageService) {
+        private store: Store<fromAppStore.AppState>,
+        private dataStorageService: DataStorageService) {
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {
-            console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
+            //console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
             if (this.isUserLoginedIn) {
                 this.controllerActions.EnemyIsDamaged(Math.floor(this.heroDamage / this.numberOfDamagesPerSecond));
             }
@@ -65,11 +67,42 @@ export class GameService {
                 return value;
             });
         this.store.select('authState').subscribe(value => {
-            console.log("this.authState ", value.isLoginedIn);
             this.isUserLoginedIn = value.isLoginedIn;
             this.updateHeroOnDB();
             return value;
         });
+// --------------------------------------------------------------RATINGS--------------------------------------------------------------
+        this.store.select('ratingsState').subscribe((ratingState) => {
+            if (ratingState.ratings) {
+                this.currentRatings = { ...ratingState.ratings };
+            }
+            if (ratingState.ratings && ratingState.ratings.maxLevel > 0) {
+                this.dataStorageService.postRatings({ ...ratingState.ratings }); // don't post default value for Redux
+            }
+        });
+
+
+        this.store.select('heroState').subscribe((heroState) => {
+            if (this.currentRatings && this.currentRatings.maxLevel > 0) { // don't post default value for Redux
+                let ratingsChnaged = false;
+                if (heroState.hero.currentLevel > this.currentRatings.maxLevel) {
+                    this.currentRatings.maxLevel = heroState.hero.currentLevel;
+                    ratingsChnaged = true;
+                }
+                if (heroState.hero.gold > this.currentRatings.maxGold) {
+                    this.currentRatings.maxGold = heroState.hero.gold;
+                    ratingsChnaged = true;
+                }
+                if (this.heroDamage > 0 && this.heroDamage > this.currentRatings.maxDPS) {
+                    this.currentRatings.maxDPS = this.heroDamage;
+                    ratingsChnaged = true;
+                }
+                if (ratingsChnaged) {
+                    this.controllerActions.ratingsChanged(this.currentRatings);
+                }
+            }
+        });
+
     }
 
     private updateHeroOnDB() {

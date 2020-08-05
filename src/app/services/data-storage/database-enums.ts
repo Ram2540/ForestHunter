@@ -1,5 +1,6 @@
 export enum DatabaseDataLinks {
     Hero = 'hero',
     EnemyLog = 'enemyLog',
-    WeaponLog = 'weaponLog'
+    WeaponLog = 'weaponLog',
+    Ratings = 'ratings'
 }

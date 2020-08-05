@@ -1,6 +1,6 @@
 <button (click)="onOpenForm()" *ngIf="!isFormOpened && !isUserLoginedIn" class="btn btn-outline-info"> SIGN IN</button>
 <button (click)="onLogout()" class="btn btn-outline-info" *ngIf="isUserLoginedIn">Logout</button>
-<!-- <button (click)="onTest()" class="btn btn-outline-info"> TEST</button> -->
+<button (click)="onTest()" class="btn btn-outline-info"> TEST</button>
 <div class="popupWrapper-diable" *ngIf="isFormOpened">
   <div class="login-div">
     <div class="alert alert-danger" *ngIf="error">
