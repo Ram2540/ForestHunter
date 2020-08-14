@@ -35,20 +35,19 @@ export class EnemyComponent implements OnInit, OnDestroy {
         if (this.enemy.url !== enemyState.enemy.url) {
           this.enemy = enemyState.enemy;
           this.drawEnemy();
-        }
-        else {
+        } else {
           this.enemy = enemyState.enemy;
         }
       }
     });
 
-    this.canvas = <HTMLCanvasElement>document.getElementById("enemy");
-    this.ctx = this.canvas.getContext("2d");
+    this.canvas = document.getElementById('enemy') as HTMLCanvasElement;
+    this.ctx = this.canvas.getContext('2d');
 
     this.img.onload = () => {
       this.ctx.clearRect(0, 0, 500, 500);
       this.ctx.drawImage(this.img, 100, 30, 150, 100);
-    }
+    };
     this.img.src = this.enemy.url;
 
 

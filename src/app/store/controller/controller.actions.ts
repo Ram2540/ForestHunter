@@ -12,7 +12,7 @@ import { User } from 'src/app/auth/user.model';
 import { AuthState } from '../reducers/store-auth.reducer';
 import { Ratings } from 'src/app/classes/ratings';
 import { RatingsState } from '../reducers/store-ratings.reducer';
-//import {AppState} from '../../models/appState';
+// import {AppState} from '../../models/appState';
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +38,8 @@ export class ControllerActions {
   static USER_LOGIN = 'USER_LOGIN';
   static USER_LOGOUT = 'USER_LOGOUT';
 
-  static RATINGS_LOAD = "RATINGS_LOAD";
-  static RATINGS_CHNAGED = "RATINGS_CHNAGED";
+  static RATINGS_LOAD = 'RATINGS_LOAD';
+  static RATINGS_CHNAGED = 'RATINGS_CHNAGED';
 
   constructor(private store: Store<AppState>) {
 
@@ -125,7 +125,7 @@ public ratingsLoad(ratings: Ratings) {
 
 public ratingsChanged(ratings: Ratings) {
   const currentState = this.geRatingsState();
-  for(const key of Object.keys(ratings)) {
+  for (const key of Object.keys(ratings)) {
     if (currentState.ratings[key] !== ratings[key]) {
       this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, {valueName: key, newValue: ratings[key]}));
     }

@@ -48,8 +48,6 @@ export class DataStorageService {
       }
     });
 
-   
-
   }
   public postHero(postData: Hero) {
     if (this.controllerActions.geAuthState().user && postData) {

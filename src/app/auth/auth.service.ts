@@ -35,9 +35,9 @@ export class AuthService {
   isLogined = false;
 
   constructor(private http: HttpClient,
-    private authFirebase: AngularFireAuth,
-    private store: Store<fromAppStore.AppState>,
-    private controllerActions: ControllerActions) {
+              private authFirebase: AngularFireAuth,
+              private store: Store<fromAppStore.AppState>,
+              private controllerActions: ControllerActions) {
 
 
     this.authFirebase.user.subscribe(user => {

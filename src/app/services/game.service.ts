@@ -23,11 +23,11 @@ export class GameService {
     }
 
     constructor(private controllerActions: ControllerActions,
-        private store: Store<fromAppStore.AppState>,
-        private dataStorageService: DataStorageService) {
+                private store: Store<fromAppStore.AppState>,
+                private dataStorageService: DataStorageService) {
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {
-            //console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
+            // console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
             if (this.isUserLoginedIn) {
                 this.controllerActions.EnemyIsDamaged(Math.floor(this.heroDamage / this.numberOfDamagesPerSecond));
             }
