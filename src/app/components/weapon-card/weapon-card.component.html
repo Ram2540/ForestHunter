@@ -1,16 +1,24 @@
 <div class="weapon-card">
     <div class="weapon-avatar-box">
-        <img class="weapon-avatar" src="{{weapon.UrlImg}}">
+        <img class="weapon-avatar" id="weapon-avatar-id" src="{{weapon.UrlImg}}">
     </div>
-    <div class="weapon-level-box">
-        level
-        <div class="weapon-level">{{weapon.level}}</div>
+    <div class="weapon-data-box">
+        <!-- <div class="weapon-level-box">
+            level
+            <div class="weapon-level">{{weapon.level}}</div>
+        </div> -->
+        <div class="weapon-level-box">
+            <div class="weapon-label-level-box">LEVEL</div>
+            <div class="weapon-level">{{weapon.level}}</div>
+        </div>
+        <div class="weapon-dps-box">
+            <div class="weapon-label-dps-box">DPS</div>
+            <div class="weapon-dps">{{weapon.damage}}</div>
+        </div>
+        <!-- <div class="weapon-name-box"></div> -->
+        <app-buy-button appButtonHighlighter class="color-btn-green" (buttonClicked)="levelUp()"
+            [myValue]="weapon.price" [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}">
+        </app-buy-button>
     </div>
-    <div class="weapon-dps-box">
-        dps
-        <div class="weapon-dps">{{weapon.damage}}</div>
-    </div>
-    <app-buy-button appButtonHighlighter class="color-btn-green" (buttonClicked)="levelUp()" [myValue]="weapon.price"
-        [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}">
-    </app-buy-button>
+
 </div>

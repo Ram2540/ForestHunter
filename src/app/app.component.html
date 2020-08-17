@@ -1,17 +1,23 @@
-<div class="main">
+<div class="app-main">
 
-<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
-<app-top-menu></app-top-menu>
-<app-tabs-all></app-tabs-all>
-<app-right-side></app-right-side>
-<div>
-    <!-- left-side -->
-    <router-outlet></router-outlet>
-</div>
-<app-auth></app-auth>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+    <div class="app-main-top">
+        <app-top-menu></app-top-menu>
+        <app-auth></app-auth>
+    </div>
+    <div class="app-main-area">
+        <div class="main-left-area">
+            <app-tabs-all></app-tabs-all>
+            <!-- left-side -->
+            <router-outlet></router-outlet>
+        </div>
+        <div class="main-right-area">
+            <app-right-side></app-right-side>
+        </div>
+    </div>
 
 </div>

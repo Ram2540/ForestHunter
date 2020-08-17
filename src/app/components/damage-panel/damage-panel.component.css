@@ -1,15 +1,24 @@
 .dps {
-    width:100px;
-    height: 75px;
-    left: 250px; 
+    width:6rem;
+    height: 3.5rem;
+    /* left: 250px;  */
     position: relative;
     border-radius: 35px;
-    background: linear-gradient(0deg,#dbdd67,#948d53 18%,rgb(131, 129, 120) 60%,#413409 85%,#493703);
+    background: linear-gradient(0deg,rgb(37, 110, 89),#4ac02d 50%,rgb(117, 143, 24) 75%,#af9439 85%,#77601b);
     color: white;
+    /* vertical-align: middle; */
+    font-size: 0.8rem;
 }
 
 .title {
     left :40px;
     top: 3px;
     position: relative;
+}
+
+.value ,
+.mlt-prm {
+    margin: 0;
+    padding: 0;
+    line-height: 0.9rem;
 }

@@ -1,7 +1,7 @@
-/* .left-side {
-    width: 620px;
-    height: 555px;
-    position: absolute;
-    bottom:5px;
-    right:50px;
-} */
+.right-side {
+    width: 100%;
+    height: 100%;
+    /* position: absolute; */
+    /* bottom:5px; */
+    /* right:50px; */
+}
