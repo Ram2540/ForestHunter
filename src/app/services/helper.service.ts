@@ -15,6 +15,9 @@ export class HelperService {
         rest = 3;
       }
       let lastSymboles = res.substring(rest, 3);
+      // for( let i = lastSymboles.length - 1;i >=0;i--) {
+
+      // }
       if (lastSymboles.length > 0) {
         lastSymboles = '.' + lastSymboles;
       }

@@ -5,8 +5,10 @@
     /* display: inline-block; */
     margin: auto;
     /* align-items: center; */
-    border: seagreen solid 0.2rem;
+    border: teal solid 0.2rem;
     border-radius: 1rem;
+    box-shadow:0.5rem 0.5rem 0.5rem teal;
+    background: linear-gradient(rgba(253, 253, 253, 1),teal 90%);
 }
 
 .app-main-top {
