@@ -1,20 +1,20 @@
-<div class="enemy-box-all">
-    <div class="lvl-prg">{{MostersDownOnCurrentLevel}}/{{MaxMosterOnLevel}}</div>
+<div class="enemy-box-data">
+    <div class="ratio-moster-down">{{MostersDownOnCurrentLevel}}/{{MaxMosterOnLevel}}</div>
     <div class="name">HERE IS A MONSTER NAME</div>
-    <div class="health">
-        <div class="p100">
-            <div class="prg"  [ngStyle]="{'width.%': this.PercentHP}"></div>
-        </div>
-        <div class="num pulse">
+    <div class="health-box">
+        <div class="health-data">
             <div class="from">{{this.EnemyHP}}/</div>
             <div class="to">{{this.FullHP}}</div>
         </div>
+        <div class="health-percentage">
+            <div class="prg"  [ngStyle]="{'width.%': this.PercentHP}"></div>
+        </div>
     </div>
-    <div class="boss-lvl ">
-        <div class="label">LVL</div>
+    <!-- <div class="boss-lvl ">
+        <div class="label"></div>
         <div class="icon"></div>
-        <div class="text">1</div>
-    </div>
+        <div class="text"></div>
+    </div> -->
     <div class="loc-list">
         <div class="locs">
             <div class="loc">

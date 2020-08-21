@@ -7,6 +7,7 @@ import * as fromAppStore from '../store/app-store';
 import { Store } from '@ngrx/store';
 import { ControllerActions } from '../store/controller/controller.actions';
 import { DataStorageService } from '../services/data-storage/data-storage.service';
+import { HelperService } from '../services/helper.service';
 
 
 
@@ -31,7 +32,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     private routesService: RoutesService,
     private store: Store<fromAppStore.AppState>,
     private controllerActions: ControllerActions,
-    private dataStorageService: DataStorageService) { }
+    private dataStorageService: DataStorageService,
+    private healperService: HelperService) { }
   ngOnInit() {
     this.authStateSubscription = this.store.select('authState').subscribe(value => {
       this.isUserLoginedIn = value.isLoginedIn;
@@ -93,6 +95,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onTest() {
+    console.log(this.healperService.getConvertedNumberToKs(652000));
     this.authService.onTest();
   }
 

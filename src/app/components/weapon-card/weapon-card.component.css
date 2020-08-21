@@ -1,12 +1,13 @@
 .weapon-card {
     top: 0.6rem;
-    width: 33%;
+    width: 31%;
     height: 8rem;
     position: relative;
     display: inline-block; 
     background-color: #5d5252;
     border-radius: 1rem;
     box-shadow: inset 0 -4px 0 rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,.35);
+    margin: 0.2rem 0.2rem;
 } 
 
  .weapon-avatar-box {
@@ -32,15 +33,16 @@ img {
 .weapon-dps-box,
 .weapon-name-box {
     height: 1.5rem;
+    width: 100%;
     /* top: 8px; */
     /* right: 6px; */
     background: linear-gradient(135deg,#1557b9,#8db2eb 50%,#661ea8);
     box-shadow: inset 0 10px 0 rgba(119, 240, 230, 0.1), 0 1px 1px rgba(0,0,0,.15);
     color: #fff;
-    font-size: 14px;
-    border-radius: 5px;
+    font-size: 0.9rem;
+    border-radius: 0.3rem;
     text-align: left;
-    margin: 0.5rem 0.5rem;
+    margin: 0.5rem 0.2rem;
     display: flex;
 }
 

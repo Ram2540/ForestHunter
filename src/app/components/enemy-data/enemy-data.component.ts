@@ -2,6 +2,7 @@ import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import * as fromAppStore from '../../store/app-store';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-enemy-data',
@@ -12,19 +13,19 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
   MostersDownOnCurrentLevel = 0;
   MaxMosterOnLevel = 0;
   PercentHP = 0;
-  EnemyHP = 0;
-  FullHP = 0;
+  EnemyHP  = '0';
+  FullHP = '0';
   EnemyCurrentLevel = 1;
   private storeEnemySubscriprion: Subscription;
   private storeHeroSubscriprion: Subscription;
 
-  constructor(private store: Store<fromAppStore.AppState>) { }
+  constructor(private store: Store<fromAppStore.AppState>, private helperService: HelperService) { }
 
   ngOnInit() {
     this.storeEnemySubscriprion = this.store.select('enemyState').subscribe((enemyState) => {
       this.PercentHP = enemyState.enemy.HP / enemyState.enemy.FullHP * 100;
-      this.FullHP = enemyState.enemy.FullHP;
-      this.EnemyHP = enemyState.enemy.HP;
+       this.FullHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.FullHP);
+       this.EnemyHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.HP);
       this.EnemyCurrentLevel = enemyState.enemy.level;
     });
 

@@ -1,12 +1,8 @@
 .battlefield {
-    
-    background-image: url(../../../assets/images/mysterious-forest.jpg);/*linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(back.png);*/
-    width: 90%;
+    background-image: url(../../../assets/images/mysterious-forest.jpg);
+    border-radius: 1rem;
+    width: 100%;
     height: 100%;
-    /* position: absolute; */
-    /* right: 0; */
-    /* top: 47px; */
-    /* height: 100vh; */
+    box-shadow: 0.5rem 0.5rem 0.5rem teal;
     font-weight: 400;
-    
 }

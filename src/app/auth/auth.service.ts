@@ -62,11 +62,11 @@ export class AuthService {
     //   .on('value', ((snapshot) => {
     //     console.log(snapshot.val());
     //   }));
-    const hero = new Hero(1);
-    firebase
-      .database()
-      .ref('ratings/test/')
-      .set(hero);
+    // const hero = new Hero(1);
+    // firebase
+    //   .database()
+    //   .ref('ratings/test/')
+    //   .set(hero);
   }
   signup(email: string, password: string): Promise<boolean | Observable<never>> {
     return this.authFirebase.createUserWithEmailAndPassword(email, password)

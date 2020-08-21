@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
 import { Subscription } from 'rxjs';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-weapon-card',
@@ -13,9 +14,13 @@ import { Subscription } from 'rxjs';
 export class WeaponCardComponent implements OnInit, OnDestroy {
   @Input() weapon: Weapon;
   currentGoldValue = 0;
+  weaponDPS = '0';
+  weaponPrice = '0';
   private goldSubscription: Subscription;
 
-  constructor(private controllerActions: ControllerActions, private store: Store<fromAppStore.AppState>) { }
+  constructor(private controllerActions: ControllerActions,
+              private store: Store<fromAppStore.AppState>,
+              private healperService: HelperService) { }
 
   ngOnInit() {
     this.goldSubscription = this.store.select('heroState').subscribe((heroState) => {
@@ -23,6 +28,8 @@ export class WeaponCardComponent implements OnInit, OnDestroy {
         this.currentGoldValue = heroState.hero.gold;
       }
     });
+    this.weaponDPS = this.healperService.getConvertedNumberToKs(this.weapon.damage);
+    this.weaponPrice = this.healperService.getConvertedNumberToKs(this.weapon.price);
   }
 
   levelUp() {

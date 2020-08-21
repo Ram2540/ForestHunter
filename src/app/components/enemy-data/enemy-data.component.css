@@ -1,106 +1,109 @@
-.enemy-box-all {
+.enemy-box-data {
     width: 100%;
     height: 0%;
  position: relative;
  display: inline-block;
- bottom: 100px;
+ bottom: 0rem;
  font-weight: 500;
- /* z-index: 1; */
+ color:white;
 }
 
 .name {
-    width: 100%;
+    width: 70%;
     height: auto;
     position: absolute;
-    top: -34px; 
-    left: 100px;
+    bottom: 3rem; 
+    left: 7rem;
     color: #fff;
-    font-size: 22px;
+    font-size: 1.4rem;
     /* font-weight: 700; */
     text-transform: capitalize;
-    text-shadow: 0 2px 4px rgba(0,0,0,.75);
+    text-shadow: 0 0.1rem 0.25rem rgba(0,0,0,.75);
 }
 
-.health {
-    width: 370px;
-    height: 46px;
+.health-box {
+    width: 60%;
+    height: 3rem;
     position: absolute;
-    top: 3px;
-    right: 0;
-    background: linear-gradient(0deg,#584a49,#3b302f);
-    background: linear-gradient(0deg,#ffe199,#f4c657 18%,#ffe199 60%,#f4c557 85%,#ffe199);
-    border-radius: 12px;
+    display: flex;
+    bottom: 0rem;
+    right: 0rem;
+    /* background: linear-gradient(0deg,#6c547e,#1b5963); */
+    /* background: linear-gradient(135deg,#1557b9,#8db2eb 50%,#661ea8); */
+    /* background: linear-gradient(0deg,#ffe199,#f4c657 18%,#ffe199 60%,#f4c557 85%,#ffe199); */
+    border-radius: 0.8rem;
+    vertical-align: auto;
+}
+.health-data {
+    display: inline-block;
+    vertical-align: middle;
+    margin: auto;
 }
 
-.p100 {
-    width: 200px;
-    height: 36px;
-    position: absolute;
-    top: 5px;
-    right: 5px;
+.health-percentage {
+    width: 60%;
+    height: 2.3rem;
+    display: inline-block;
+    margin: auto 1% auto auto;
+    /* margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto; 
+    margin-right: 1%; */
 }
 
 .prg {
     width: 100%;
-    height: 36px;
-    position: absolute;
+    height: 2.5rem;
+    /* position: absolute; */
     top: 0;
-    left: 0;
-    background: linear-gradient(90deg,#f1540e,#fff837);
+    right: 0.2rem;
+    background: linear-gradient(90deg,#3cb119 ,#f1dc16 85%, #f16d68);
     border-radius: 8px;
     box-shadow: inset 0 18px 0 hsla(0,0%,100%,.15);
     transition: width .3s;
 }
 
-.from {
-    height: 36px;
-    top: 5;
-    left: 20;
+.from,
+.to{
+    /* margin: auto; */
+    /* width: 3rem;; */
+    height: 2.5rem;
+    top: 0.3rem;
+    left: 1rem;
     display: inline-block;
-    position: relative;
-    /* color: #e8f1a6; */
-    font-size: 16px;
-    line-height: 36px;
+    /* position: relative; */
+    font-size: 1rem;
+    line-height: 2.3;
 }
 
-.to {
-    height: 36px;
-    top: 5;
-    left: 20;
-    display: inline-block;
-    position: relative;
-    /* color: #e8f1a6; */
-    font-size: 16px;
-    line-height: 36px;
-}
-
-.lvl-prg {
-    width: auto;
-    height: 24px;
+.ratio-moster-down {
+    width: 1rem;
+    height: 1.7rem;
     position: absolute;
-    top: -40px;
-    right: -20px;
-    border-radius: 24px;
-    line-height: 24px;
-    padding: 0 50px 0 15px;
-    color: #fff;
-    font-size: 18px;
+    bottom: 4rem;
+    right: -1.5rem;
+    border-radius: 1.3rem;
+    line-height: 1.6rem;
+    padding: 0 4rem 0 1rem;
+    /* color: #fff; */
+    font-size: 1.1rem;
     font-weight: 700;
-    border: 3px solid #a88a7f;
-    background: #3d3634;
-    box-shadow: 0 2px 3px #40372e, 0 3px 3px #40372e; 
+    border: 0.2rem solid #1b7f83;
+    /* background: linear-gradient(0deg,#6c547e,#1b5963); */
+    box-shadow: 0 0.1rem 0.2rem #40372e, 0 0.2rem 0.2rem #40372e; 
 }
 
 
 .loc-list
 {
-    width: 60px;
-    height: 60px;
+    width: 4rem;
+    height: 4rem;
     position: absolute;
-    bottom: 0px;
-    left: 50px;
+    bottom: 1rem;
+    left: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,.55);
-    background: linear-gradient(0deg,#ffe199,#f4c657 18%,#ffe199 60%,#f4c557 85%,#ffe199);
+    /* background: linear-gradient(0deg,#6c547e,#1b5963); */
+    /* background: linear-gradient(0deg,#ffe199,#f4c657 18%,#ffe199 60%,#f4c557 85%,#ffe199); */
     border-radius: 10px;
     overflow: hidden;
     font-weight: 400;
@@ -120,4 +123,10 @@
     font-size: 22px;
     align-content: center;
     position: absolute;
+}
+
+.loc-list,
+.ratio-moster-down,
+.health-box {
+    background: linear-gradient(0deg,#6c547e,#1b5963);
 }

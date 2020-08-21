@@ -1,24 +1,42 @@
 .dps {
-    width:6rem;
-    height: 3.5rem;
-    /* left: 250px;  */
+    width:22%;
+    height: 15%;
     position: relative;
-    border-radius: 35px;
-    background: linear-gradient(0deg,rgb(37, 110, 89),#4ac02d 50%,rgb(117, 143, 24) 75%,#af9439 85%,#77601b);
+    display: flex;
+    margin: auto;
+    border-radius: 0.5rem;
+    background: linear-gradient(0deg,#4b3333 15%,#812121 35%,rgb(113, 23, 131) 75%,#3d013f 85%,#4b0044);
     color: white;
     /* vertical-align: middle; */
-    font-size: 0.8rem;
+    font-size: 1.2rem;
 }
 
-.title {
-    left :40px;
-    top: 3px;
+.dps-titile-box,
+.dps-value-box {
+    display: inline-block;
+    margin: auto;
+}
+/* 
+.dps-titile-box {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dps-value-box {
+    margin-left: auto;
+    margin-right: auto;
+} */
+
+/* .title {
+    left :1rem;
+    top: 0.2rem;
     position: relative;
 }
 
 .value ,
-.mlt-prm {
+.dps-mlt {
     margin: 0;
     padding: 0;
     line-height: 0.9rem;
-}
+} */
+
