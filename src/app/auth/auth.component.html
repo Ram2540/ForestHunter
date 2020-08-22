@@ -1,7 +1,7 @@
 <button (click)="onOpenForm()" *ngIf="!isFormOpened && !isUserLoginedIn" class="btn btn-outline-info"> SIGN IN</button>
 <button (click)="onLogout()" class="btn btn-outline-info" *ngIf="isUserLoginedIn">Logout</button>
-<button (click)="onTest()" class="btn btn-outline-info"> TEST</button>
-<div class="popupWrapper-diable" *ngIf="isFormOpened">
+<!-- <button (click)="onTest()" class="btn btn-outline-info"> TEST</button> -->
+<div class="popupWrapper-diable" *ngIf="isFormOpened || !isUserLoginedIn">
   <div class="login-div">
     <div class="alert alert-danger" *ngIf="error">
       <p>{{error}}</p>
@@ -33,8 +33,7 @@
           </div>
         </div>
       </div>
-      <div>
-
+      <div class="buttons">
         <button type="submit" class="btn btn-success" [disabled]=!authForm.valid>Login</button>
         <button (click)="onOpenForm()" class="btn btn-danger">Cancel</button>
         <button (click)="onSwitchLoginToSignUp()" class="btn btn-info">Switch Login to Sign Up</button>

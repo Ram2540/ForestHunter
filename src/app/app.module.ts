@@ -33,6 +33,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromStoreApp from './store/app-store';
 import * as firebase from 'firebase';
 import { ButtonHighlighterDirective } from './decorators/button-highlighter.directive';
+import { DamageControlComponent } from './components/damage-control/damage-control.component';
 // import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -58,7 +59,8 @@ firebase.initializeApp(environment.firebaseConfig);
     LeftSideHeroComponent,
     LeftSideQuestsComponent,
     AuthComponent,
-    ButtonHighlighterDirective
+    ButtonHighlighterDirective,
+    DamageControlComponent
   ],
   imports: [
     BrowserModule,

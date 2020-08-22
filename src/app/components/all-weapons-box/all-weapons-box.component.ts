@@ -30,9 +30,11 @@ export class AllWeaponsBoxComponent implements OnInit, OnDestroy {
         }
         return 0;
       })[0];
+      // console.log('--------------------heroState.hero.weapons 11------------------',this.nextToBuyWeapon);
     }
     });
   }
+
   ngOnDestroy() {
     if (this.heroStateSubscription) {
       this.heroStateSubscription.unsubscribe();

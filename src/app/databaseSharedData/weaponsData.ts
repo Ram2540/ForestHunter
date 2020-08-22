@@ -91,6 +91,9 @@ export class SharedDataWeapons {
         this.firstWeaponStages.push(new Weapon(5, 0, 450, 5500, 1, ElementTypes.Wind, true, weaponUrls.weapon5));
         this.firstWeaponStages.push(new Weapon(6, 0, 1600, 25000, 1, ElementTypes.Wind, true, weaponUrls.weapon6));
         this.firstWeaponStages.push(new Weapon(7, 0, 6000, 125000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
+        // this.firstWeaponStages.push(new Weapon(8, 0, 23500, 690000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
+        // this.firstWeaponStages.push(new Weapon(9, 0, 90000, 3000000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
+        // this.firstWeaponStages.push(new Weapon(10, 0, 375000, 12500000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
     }
 
     private getDatabaseWeaponFromWeapon(weapon: Weapon): WeapondDatabaseData {

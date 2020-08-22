@@ -71,7 +71,6 @@ export class DataStorageService {
   }
 
   public tryToPostNewHeroOrGetExistingOne() {
-    console.log('tryToPostNewHeroOrGetExistingOne');
     this.heroDBRefData
       .once('value', (snapshot) => {
         const leadedHero = snapshot.val();

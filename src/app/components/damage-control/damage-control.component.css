@@ -1,0 +1,15 @@
+.damage-control {
+     width:8rem;
+    display: flex;
+    margin: auto;
+    border-radius: 0.5rem;
+    background: linear-gradient(0deg,#4b3333 15%,#812121 35%,rgb(113, 23, 131) 75%,#3d013f 85%,#4b0044);
+    color: white;
+    font-size: 1.2rem;
+    /* cursor: pointer; */
+}
+
+.damage-titile-box,
+.damage-value-box {
+    margin: auto;
+}

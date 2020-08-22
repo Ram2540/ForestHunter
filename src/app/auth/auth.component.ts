@@ -37,7 +37,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authStateSubscription = this.store.select('authState').subscribe(value => {
       this.isUserLoginedIn = value.isLoginedIn;
-      return value;
+       return value;
   });
   }
   onSubmit(form: NgForm) {
@@ -78,6 +78,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   onOpenForm() {
     this.isFormOpened = !this.isFormOpened;
+    //this.authService.autoLogin();
   }
 
   onSwitchLoginToSignUp() {

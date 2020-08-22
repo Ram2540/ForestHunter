@@ -1,8 +1,11 @@
 .app-main {
-    width: 80rem;
+    /* width: 80rem;
     height: 37rem;
-    position: relative;
-    /* display: inline-block; */
+    position: relative; */
+    min-width: 60rem;
+    max-width: 100rem;
+    display: flex;
+    flex-direction: column;
     margin: auto;
     /* align-items: center; */
     border: teal solid 0.2rem;
@@ -24,7 +27,7 @@
 .main-left-area,
 .main-right-area {
     width: 50%;
-    height: 30rem;
+    min-height: 30rem;
     vertical-align: top;
     display: inline-block;
     /* margin: auto; */
@@ -36,7 +39,8 @@
 
 
 .main-right-area {
-    height: 32rem;
+    min-height: 32rem;
+    /* height: 32rem; */
 }
 
 .app-main-top {

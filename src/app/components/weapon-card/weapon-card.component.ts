@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Weapon } from 'src/app/classes/weapon';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
@@ -11,11 +11,11 @@ import { HelperService } from 'src/app/services/helper.service';
   templateUrl: './weapon-card.component.html',
   styleUrls: ['./weapon-card.component.css']
 })
-export class WeaponCardComponent implements OnInit, OnDestroy {
+export class WeaponCardComponent implements OnInit, OnDestroy, OnChanges {
   @Input() weapon: Weapon;
   currentGoldValue = 0;
-  weaponDPS = '0';
-  weaponPrice = '0';
+  weaponDPS: string;
+  weaponPrice: string;
   private goldSubscription: Subscription;
 
   constructor(private controllerActions: ControllerActions,
@@ -28,6 +28,11 @@ export class WeaponCardComponent implements OnInit, OnDestroy {
         this.currentGoldValue = heroState.hero.gold;
       }
     });
+    // this.weaponDPS = this.healperService.getConvertedNumberToKs(this.weapon.damage);
+    // this.weaponPrice = this.healperService.getConvertedNumberToKs(this.weapon.price);
+  }
+
+  ngOnChanges() {
     this.weaponDPS = this.healperService.getConvertedNumberToKs(this.weapon.damage);
     this.weaponPrice = this.healperService.getConvertedNumberToKs(this.weapon.price);
   }
@@ -35,7 +40,7 @@ export class WeaponCardComponent implements OnInit, OnDestroy {
   levelUp() {
     this.controllerActions.HeroWeaponLevelUp(this.weapon);
   }
-  ngOnDestroy() {
+ngOnDestroy() {
     this.goldSubscription.unsubscribe();
   }
 }

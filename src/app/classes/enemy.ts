@@ -8,7 +8,7 @@ export class Enemy {
 
     constructor(id: number, level: number) {
         this.id = id;
-        this.HP = 250 * 2 ** level;
+        this.HP = 10 * 2 ** level;
         this.FullHP = this.HP;
         this.level = level;
 

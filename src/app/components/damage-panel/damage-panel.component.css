@@ -1,4 +1,14 @@
-.dps {
+.damage-panel {
+    display: flex;
+    border: 0.1rem solid teal;
+    box-shadow:0.1rem 0.1rem 0.1rem teal;
+}
+
+.app-damage-control {
+    margin: auto;
+}
+
+/* .damage-panel {
     width:22%;
     height: 15%;
     position: relative;
@@ -7,15 +17,14 @@
     border-radius: 0.5rem;
     background: linear-gradient(0deg,#4b3333 15%,#812121 35%,rgb(113, 23, 131) 75%,#3d013f 85%,#4b0044);
     color: white;
-    /* vertical-align: middle; */
     font-size: 1.2rem;
 }
 
-.dps-titile-box,
-.dps-value-box {
+.damage-titile-box,
+.damage-value-box {
     display: inline-block;
     margin: auto;
-}
+} */
 /* 
 .dps-titile-box {
     margin-left: auto;
