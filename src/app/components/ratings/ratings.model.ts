@@ -1,4 +1,6 @@
+
 export class Ratings {
+    public userName: string;
     public maxGold: number;
     public maxLevel: number;
     public maxDPS: number;
@@ -8,5 +10,6 @@ export class Ratings {
         this.maxLevel = maxLevel;
         this.maxDPS = 0;
         this.toDayPoints = 0;
+        this.userName = 'user 12345';
     }
 }

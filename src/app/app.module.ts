@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { DataTablesModule } from 'angular-datatables';
 
 import { AppComponent } from './app.component';
 import { BattleFieldComponent } from './components/battle-field/battle-field.component';
@@ -34,6 +35,8 @@ import * as fromStoreApp from './store/app-store';
 import * as firebase from 'firebase';
 import { ButtonHighlighterDirective } from './decorators/button-highlighter.directive';
 import { DamageControlComponent } from './components/damage-control/damage-control.component';
+import { RatingsComponent } from './components/ratings/ratings.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
 // import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -60,7 +63,9 @@ firebase.initializeApp(environment.firebaseConfig);
     LeftSideQuestsComponent,
     AuthComponent,
     ButtonHighlighterDirective,
-    DamageControlComponent
+    DamageControlComponent,
+    RatingsComponent,
+    AvatarComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +77,8 @@ firebase.initializeApp(environment.firebaseConfig);
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    StoreModule.forRoot(fromStoreApp.appReducer)
+    StoreModule.forRoot(fromStoreApp.appReducer),
+    DataTablesModule
   ],
   providers: [
     AuthService,

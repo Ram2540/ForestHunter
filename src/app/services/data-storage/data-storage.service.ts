@@ -10,7 +10,7 @@ import { enemyReward } from 'src/app/databaseSharedData/gold';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
-import { Ratings } from 'src/app/classes/ratings';
+import { Ratings } from '../../components/ratings/ratings.model';
 
 
 @Injectable({
@@ -31,15 +31,18 @@ export class DataStorageService {
   private get weaponLogDBData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
   }
-  private get ratingsDBRefData() {
-    return this.getRef(this.RefForDataTo(DatabaseDataLinks.Ratings));
+  private get ratingsDBRefAllRatings() {
+    return this.getRef(this.getRefForRatingsGeneral());
+  }
+  private get ratingsDBRefGeneralUserData() {
+    return this.getRef(this.getRefForGeneralUserRating());
   }
 
   constructor(private http: HttpClient,
-              private authService: AuthService,
-              private sharedDataService: SharedDataService,
-              private store: Store<fromAppStore.AppState>,
-              private controllerActions: ControllerActions) {
+    private authService: AuthService,
+    private sharedDataService: SharedDataService,
+    private store: Store<fromAppStore.AppState>,
+    private controllerActions: ControllerActions) {
 
     this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
       if (authState.user) {
@@ -49,6 +52,7 @@ export class DataStorageService {
     });
 
   }
+  // ------------------------------------------------------------HERO----------------------------------------------------------------------
   public postHero(postData: Hero) {
     if (this.controllerActions.geAuthState().user && postData) {
       this.heroDBRefData
@@ -84,34 +88,50 @@ export class DataStorageService {
         this.getHero();
       });
   }
-
+  // ------------------------------------------------------------RATINGS----------------------------------------------------------------------
   public postRatings(postRatings: Ratings) {
     if (this.controllerActions.geAuthState().user && postRatings) {
-      this.ratingsDBRefData
-        .set(postRatings);
+      this.ratingsDBRefGeneralUserData.set(postRatings);
     }
   }
 
   public getRatings(): void {
     if (this.controllerActions.geAuthState().user) {
-      this.ratingsDBRefData
+      this.ratingsDBRefGeneralUserData
         .once('value', (snapshot) => {
           const loadedRatings: Ratings = snapshot.val();
           if (loadedRatings) {
-            this.controllerActions.ratingsLoad(loadedRatings);
+            this.controllerActions.ratingLoad(loadedRatings);
           }
         });
     }
   }
 
+  public getAllRatings(): void {
+    if (this.controllerActions.geAuthState().user) {
+      const LastUpdateTime = new Date().valueOf() - (this.controllerActions.geRatingsState().lastGlobalRatingsUpdate ?? new Date('01/01/2010')).valueOf();
+      if (LastUpdateTime > (15 * 60 * 1000)) {
+        this.ratingsDBRefAllRatings
+          .once('value', (snapshot) => {
+            const ratings: Ratings[] = [];
+            snapshot.forEach(item => {
+              const rating = item.child('/ratings').val();
+              ratings.push(rating);
+            });
+            this.controllerActions.ratingsGlobalLoad(ratings);
+          });
+      }
+    }
+  }
+
   public tryToPostNewRatingsOrGetExistingOne() {
-    this.ratingsDBRefData
+    this.ratingsDBRefGeneralUserData
       .once('value', (snapshot) => {
         const loadedRatings = snapshot.val();
         if (!loadedRatings) {
           const newRatings = new Ratings();
           this.postRatings(newRatings);
-          this.controllerActions.ratingsLoad(newRatings);
+          this.controllerActions.ratingLoad(newRatings);
           return;
         }
         this.getRatings();
@@ -149,6 +169,16 @@ export class DataStorageService {
   private RefForDataTo(branch: string) {
     return this.RefForUserData + branch + '/';
   }
+
+  private getRefForRatingsGeneral() {
+    return DatabaseDataLinks.Ratings + '/';
+  }
+
+  private getRefForGeneralUserRating() {
+    return this.getRefForRatingsGeneral() + this.controllerActions.geAuthState().user.uid + '/' + DatabaseDataLinks.Ratings;
+  }
+
+
 
 
   //   private prepareHeroToPost(hero: Hero)

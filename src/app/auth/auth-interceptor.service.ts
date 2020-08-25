@@ -15,7 +15,7 @@ import { User } from './user.model';
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
   constructor(private authService: AuthService,
-    private controllerActions: ControllerActions) { }
+              private controllerActions: ControllerActions) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const user = new Observable<User>((observer) => {

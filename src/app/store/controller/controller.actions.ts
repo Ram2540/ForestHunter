@@ -10,7 +10,7 @@ import { EnemyState } from '../reducers/store-enemy.reducer';
 import { HeroState } from '../reducers/store-hero.reducer';
 import { User } from 'src/app/auth/user.model';
 import { AuthState } from '../reducers/store-auth.reducer';
-import { Ratings } from 'src/app/classes/ratings';
+import { Ratings } from '../../components/ratings/ratings.model';
 import { RatingsState } from '../reducers/store-ratings.reducer';
 // import {AppState} from '../../models/appState';
 
@@ -40,6 +40,7 @@ export class ControllerActions {
 
   static RATINGS_LOAD = 'RATINGS_LOAD';
   static RATINGS_CHNAGED = 'RATINGS_CHNAGED';
+  static RATINGS_GLOBAL_LOAD = 'RATINGS_GLOBAL_LOAD';
 
   constructor(private store: Store<AppState>) {
 
@@ -119,19 +120,21 @@ public UserLogout() {
 }
 
 // ----------------------------------------------RATINGS------------------------------------------------------------
-public ratingsLoad(ratings: Ratings) {
-    this.store.dispatch(createAction(ControllerActions.RATINGS_LOAD, ratings));
+public ratingLoad(rating: Ratings) {
+    this.store.dispatch(createAction(ControllerActions.RATINGS_LOAD, rating));
 }
 
-public ratingsChanged(ratings: Ratings) {
+public ratingsChanged(chnagedRating: Ratings) {
   const currentState = this.geRatingsState();
-  for (const key of Object.keys(ratings)) {
-    if (currentState.ratings[key] !== ratings[key]) {
-      this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, {valueName: key, newValue: ratings[key]}));
+  for (const key of Object.keys(chnagedRating)) {
+    if (currentState.rating[key] !== chnagedRating[key]) {
+      this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, {valueName: key, newValue: chnagedRating[key]}));
     }
   }
 }
-
+public ratingsGlobalLoad(globalRatings: Ratings[]) {
+  this.store.dispatch(createAction(ControllerActions.RATINGS_GLOBAL_LOAD, globalRatings));
+}
 
   // ----------------------------------------------GET STATES------------------------------------------------------------
   public getEnemyState(): EnemyState {

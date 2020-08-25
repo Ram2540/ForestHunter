@@ -1,13 +1,17 @@
 import { ControllerActions } from '../controller/controller.actions';
-import { Ratings } from 'src/app/classes/ratings';
+import { Ratings } from '../../components/ratings/ratings.model';
 import { appActions } from '../app-store';
 
 export interface RatingsState {
-    ratings: Ratings;
+    rating: Ratings;
+    globalRatings: Ratings[];
+    lastGlobalRatingsUpdate: Date;
 }
 
 const initialRatingsState: RatingsState = {
-    ratings: new Ratings(0), // 0 as a default ratings which will not be poster
+    rating: new Ratings(0), // 0 as a default ratings which will not be poster
+    globalRatings: [],
+    lastGlobalRatingsUpdate: null,
 };
 
 export function ratingsReducer(state = initialRatingsState, action: appActions) {
@@ -15,11 +19,18 @@ export function ratingsReducer(state = initialRatingsState, action: appActions) 
         case ControllerActions.RATINGS_LOAD: {
             return {
                 ...state,
-                ratings: action.payload
+                rating: action.payload
             };
         }
         case ControllerActions.RATINGS_CHNAGED: {
             return getChnagedRatingsState(state, action.payload.valueName, action.payload.newValue);
+        }
+        case ControllerActions.RATINGS_GLOBAL_LOAD: {
+            return {
+                ...state,
+                globalRatings: action.payload,
+                lastGlobalRatingsUpdate: new Date()
+            };
         }
         default: return state;
     }
@@ -31,8 +42,8 @@ export function ratingsReducer(state = initialRatingsState, action: appActions) 
 function getChnagedRatingsState(state: RatingsState, valueName: string, newValue: number) {
     return {
         ...state,
-        ratings: {
-            ...state.ratings,
+        rating: {
+            ...state.rating,
             [valueName]: newValue
         }
     };

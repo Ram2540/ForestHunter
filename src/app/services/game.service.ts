@@ -6,7 +6,7 @@ import { map, tap, debounceTime, take } from 'rxjs/operators';
 import { DataStorageService } from './data-storage/data-storage.service';
 import { SharedDataGold } from '../databaseSharedData/gold';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Ratings } from '../classes/ratings';
+import { Ratings } from '../components/ratings/ratings.model';
 
 @Injectable({
     providedIn: 'root'
@@ -39,8 +39,10 @@ export class GameService {
                     // -------------ALL LOGIC ENEMY DEAD APLLY HERE------------------
                     this.controllerActions.EnemyIsKilled();
                     this.controllerActions.HeroAddMonsterDownOnCurrentLevel();
-                    const goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
+                    let goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
                     if (goldReward) {
+                        // add bonus
+                        goldReward += goldReward * (this.controllerActions.geHeroState().hero.goldBonus / 100);
                         this.controllerActions.HeroAddGold(goldReward);
                     }
                     // generate new enemy
@@ -73,11 +75,11 @@ export class GameService {
         });
 // --------------------------------------------------------------RATINGS--------------------------------------------------------------
         this.store.select('ratingsState').subscribe((ratingState) => {
-            if (ratingState.ratings) {
-                this.currentRatings = { ...ratingState.ratings };
+            if (ratingState.rating) {
+                this.currentRatings = { ...ratingState.rating };
             }
-            if (ratingState.ratings && ratingState.ratings.maxLevel > 0) {
-                this.dataStorageService.postRatings({ ...ratingState.ratings }); // don't post default value for Redux
+            if (ratingState.rating && ratingState.rating.maxLevel > 0) {
+                this.dataStorageService.postRatings({ ...ratingState.rating }); // don't post default value for Redux
             }
         });
 

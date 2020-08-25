@@ -96,8 +96,13 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onTest() {
-    console.log(this.healperService.getConvertedNumberToKs(652000));
-    this.authService.onTest();
+    // //console.log(this.healperService.getConvertedNumberToKs(652000));
+
+    // this.store.select('ratingsState').subscribe(r => {
+    //   console.log(r.globalRatings);
+    // })
+
+    // this.dataStorageService.getAllRatings();
   }
 
 }

@@ -67,6 +67,7 @@ export class AuthService {
     //   .database()
     //   .ref('ratings/test/')
     //   .set(hero);
+    //this.dataStorageService.getRatings();
   }
   signup(email: string, password: string): Promise<boolean | Observable<never>> {
     return this.authFirebase.createUserWithEmailAndPassword(email, password)

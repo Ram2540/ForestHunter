@@ -5,24 +5,31 @@
 
 
 .tab {
-    width: 118px;
-    height: 40px;
-    position: relative;
-    top: 5;
-    display: inline-block;
-    margin: 0 2px 0 0; 
+    min-width: 5rem;; 
+    min-height: 2rem;
+    display: flex;
+    /* position: relative; */
+    margin: auto; 
     cursor: pointer;
     background-color: #1d5064;
     border-radius: 1.5rem 1.5rem 0 0; 
+    align-content: center;
+
+}
+.tab-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .tab-name {
-   right: 14px;
-   width: 60px;
-   top: 10px;
-   position: absolute;
+    margin:auto;
    text-transform: capitalize;
    color: white;
+}
+
+.tab-pic {
+    width: 20%;
 }
 
 

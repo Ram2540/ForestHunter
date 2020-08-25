@@ -1,0 +1,25 @@
+<!-- <app-rating-card *ngFor="let rating of this.ratingsList" [ratingData]="rating"></app-rating-card> -->
+<button class="btn btn-outline-info" (click)="sortByMaxLevel()">max level</button>
+<button class="btn btn-outline-info" (click)="sortByMaxDPS()">max DPS</button>
+<button class="btn btn-outline-info" (click)="sortByMaxGold()">max gold</button>
+<button class="btn btn-outline-info" (click)="sortByDailyPoints()">daily points</button>
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover" cellspacing="0" width="100%" height="100%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Max Level</th>
+        <th>Max DPS</th>
+        <th>Max Gold</th>
+        <th>Daily Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rating of ratingsList">
+        <td>{{ rating.userName }}</td>
+        <td>{{ rating.maxLevel }}</td>
+        <td>{{ rating.maxDPS }}</td>
+        <td>{{ rating.maxGold }}</td>
+        <td>{{ rating.toDayPoints }}</td>
+      </tr>
+    </tbody>
+    </table>
