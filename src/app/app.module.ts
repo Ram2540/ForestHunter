@@ -37,6 +37,7 @@ import { ButtonHighlighterDirective } from './decorators/button-highlighter.dire
 import { DamageControlComponent } from './components/damage-control/damage-control.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
+import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
 // import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -65,7 +66,8 @@ firebase.initializeApp(environment.firebaseConfig);
     ButtonHighlighterDirective,
     DamageControlComponent,
     RatingsComponent,
-    AvatarComponent
+    AvatarComponent,
+    UserStatisticsComponent
   ],
   imports: [
     BrowserModule,

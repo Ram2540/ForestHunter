@@ -10,7 +10,9 @@ import { enemyReward } from 'src/app/databaseSharedData/gold';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
-import { Ratings } from '../../components/ratings/ratings.model';
+import { Ratings, RatingsDB } from '../../components/ratings/ratings.model';
+import { ParseService } from '../parse.service';
+import { UserDataInfo } from 'src/app/classes/userDataInfo';
 
 
 @Injectable({
@@ -19,11 +21,13 @@ import { Ratings } from '../../components/ratings/ratings.model';
 export class DataStorageService {
   // private urlFirebase = 'https://foresthunter-f42be.firebaseio.com/';
   public enemyRewards = new BehaviorSubject<enemyReward[]>(null);
-
   private subscriptionToUser: Subscription;
 
   private get heroDBRefData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.Hero));
+  }
+  private get userDataInfoDBRefData() {
+    return this.getRef(this.RefForDataTo(DatabaseDataLinks.UserDataInfo));
   }
   private get enemyLogDBData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.EnemyLog) + new Date().getTime().toString());
@@ -39,22 +43,57 @@ export class DataStorageService {
   }
 
   constructor(private http: HttpClient,
-    private authService: AuthService,
-    private sharedDataService: SharedDataService,
-    private store: Store<fromAppStore.AppState>,
-    private controllerActions: ControllerActions) {
+              private authService: AuthService,
+              private sharedDataService: SharedDataService,
+              private store: Store<fromAppStore.AppState>,
+              private controllerActions: ControllerActions,
+              private parseService: ParseService) {
 
     this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
       if (authState.user) {
-        this.tryToPostNewHeroOrGetExistingOne();
-        this.tryToPostNewRatingsOrGetExistingOne();
+          this.tryToPostNewHeroOrGetExistingOne();
+          this.tryToPostNewRatingsOrGetExistingOne();
+          this.tryToPostNewUserDataInfoOrGetExistingOne();
       }
     });
 
   }
   // ------------------------------------------------------------HERO----------------------------------------------------------------------
+  public postUserDataInfo(postUserData: UserDataInfo) {
+    if (this.controllerActions.getAuthState().user && postUserData) {
+      this.userDataInfoDBRefData
+        .set(postUserData);
+    }
+  }
+
+  public getUserDataInfo(): void {
+    if (this.controllerActions.getAuthState().user) {
+      this.userDataInfoDBRefData
+        .once('value', (snapshot) => {
+          const leadredUserDataInfo: UserDataInfo = snapshot.val();
+          if (leadredUserDataInfo) {
+            this.controllerActions.UserUserDataInfoLoad(leadredUserDataInfo);
+          }
+        });
+    }
+  }
+
+  public tryToPostNewUserDataInfoOrGetExistingOne() {
+    this.userDataInfoDBRefData
+      .once('value', (snapshot) => {
+        const leadredUserDataInfo = snapshot.val();
+        if (!leadredUserDataInfo) {
+          const newUserDataInfo = new UserDataInfo('user ' + this.controllerActions.getAuthState().user.uid.substring(0, 5));
+          this.postUserDataInfo(newUserDataInfo);
+          this.controllerActions.UserUserDataInfoLoad(newUserDataInfo);
+          return;
+        }
+        this.getUserDataInfo();
+      });
+  }
+  // ------------------------------------------------------------HERO----------------------------------------------------------------------
   public postHero(postData: Hero) {
-    if (this.controllerActions.geAuthState().user && postData) {
+    if (this.controllerActions.getAuthState().user && postData) {
       this.heroDBRefData
         .set(postData);
     }
@@ -62,7 +101,7 @@ export class DataStorageService {
 
 
   public getHero(): void {
-    if (this.controllerActions.geAuthState().user) {
+    if (this.controllerActions.getAuthState().user) {
       this.heroDBRefData
         .once('value', (snapshot) => {
           const leadedHero: Hero = snapshot.val();
@@ -90,16 +129,16 @@ export class DataStorageService {
   }
   // ------------------------------------------------------------RATINGS----------------------------------------------------------------------
   public postRatings(postRatings: Ratings) {
-    if (this.controllerActions.geAuthState().user && postRatings) {
-      this.ratingsDBRefGeneralUserData.set(postRatings);
+    if (this.controllerActions.getAuthState().user && postRatings) {
+      this.ratingsDBRefGeneralUserData.set(this.parseService.parseRatingsToDB(postRatings));
     }
   }
 
   public getRatings(): void {
-    if (this.controllerActions.geAuthState().user) {
+    if (this.controllerActions.getAuthState().user) {
       this.ratingsDBRefGeneralUserData
         .once('value', (snapshot) => {
-          const loadedRatings: Ratings = snapshot.val();
+          const loadedRatings: Ratings = this.parseService.parseDBToRatings(snapshot.val());
           if (loadedRatings) {
             this.controllerActions.ratingLoad(loadedRatings);
           }
@@ -108,12 +147,12 @@ export class DataStorageService {
   }
 
   public getAllRatings(): void {
-    if (this.controllerActions.geAuthState().user) {
-      const LastUpdateTime = new Date().valueOf() - (this.controllerActions.geRatingsState().lastGlobalRatingsUpdate ?? new Date('01/01/2010')).valueOf();
-      if (LastUpdateTime > (15 * 60 * 1000)) {
+    if (this.controllerActions.getAuthState().user) {
+      const LastUpdateTime = new Date().valueOf() - (this.controllerActions.getRatingsState().lastGlobalRatingsUpdate ?? new Date('01/01/2010')).valueOf();
+      if (LastUpdateTime > (5 * 60 * 1000)) {
         this.ratingsDBRefAllRatings
           .once('value', (snapshot) => {
-            const ratings: Ratings[] = [];
+            const ratings: RatingsDB[] = [];
             snapshot.forEach(item => {
               const rating = item.child('/ratings').val();
               ratings.push(rating);
@@ -151,9 +190,9 @@ export class DataStorageService {
   }
 
 
-
+// -----------------------------------------------------------GENERAL-----------------------------------------------------------
   private postDataToRef(postDataRef: firebase.database.Reference, postData) {
-    if (this.controllerActions.geAuthState().user && postData && postDataRef) {
+    if (this.controllerActions.getAuthState().user && postData && postDataRef) {
       postDataRef
         .set(postData);
     }
@@ -164,7 +203,7 @@ export class DataStorageService {
       .ref(ref);
   }
   private get RefForUserData() {
-    return 'userData/' + this.controllerActions.geAuthState().user.uid + '/';
+    return 'userData/' + this.controllerActions.getAuthState().user.uid + '/';
   }
   private RefForDataTo(branch: string) {
     return this.RefForUserData + branch + '/';
@@ -175,7 +214,7 @@ export class DataStorageService {
   }
 
   private getRefForGeneralUserRating() {
-    return this.getRefForRatingsGeneral() + this.controllerActions.geAuthState().user.uid + '/' + DatabaseDataLinks.Ratings;
+    return this.getRefForRatingsGeneral() + this.controllerActions.getAuthState().user.uid + '/' + DatabaseDataLinks.Ratings;
   }
 
 

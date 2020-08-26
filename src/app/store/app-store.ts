@@ -3,9 +3,7 @@ import * as fromStoreHeroReducer from './reducers/store-hero.reducer';
 import * as fromStoreEnemyReducer  from './reducers/store-enemy.reducer';
 import * as fromStoreAuthReducer  from './reducers/store-auth.reducer';
 import * as fromStoreRatingsReducer from './reducers/store-ratings.reducer';
-//import { HeroActions } from './hero/store-hero.actiobs';
-//import { EnemyActions } from './enemy/store-enemy.actions';
-import { Action } from '@ngrx/store';
+import * as fromStoreUserDataInfoStateReducer from './reducers/store-userDataInfo.reducer';
 
 
 export interface AppState {
@@ -13,6 +11,7 @@ export interface AppState {
     enemyState: fromStoreEnemyReducer.EnemyState;
     authState: fromStoreAuthReducer.AuthState;
     ratingsState: fromStoreRatingsReducer.RatingsState;
+    userDataInfoState: fromStoreUserDataInfoStateReducer.UserDataInfoState;
 }
 //export type appActions = HeroActions | EnemyActions;
 export interface appActions {
@@ -27,5 +26,6 @@ export const appReducer: ActionReducerMap<AppState>  = {
     enemyState : fromStoreEnemyReducer.enemyReducer,
     authState : fromStoreAuthReducer.userReducer,
     ratingsState : fromStoreRatingsReducer.ratingsReducer,
+    userDataInfoState : fromStoreUserDataInfoStateReducer.userDataInfoStateReducer
 }
 

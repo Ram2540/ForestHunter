@@ -42,7 +42,7 @@ export class GameService {
                     let goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
                     if (goldReward) {
                         // add bonus
-                        goldReward += goldReward * (this.controllerActions.geHeroState().hero.goldBonus / 100);
+                        goldReward += goldReward * (this.controllerActions.getHeroState().hero.goldBonus / 100);
                         this.controllerActions.HeroAddGold(goldReward);
                     }
                     // generate new enemy

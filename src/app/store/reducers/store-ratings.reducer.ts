@@ -1,10 +1,10 @@
 import { ControllerActions } from '../controller/controller.actions';
-import { Ratings } from '../../components/ratings/ratings.model';
+import { Ratings, RatingsDB } from '../../components/ratings/ratings.model';
 import { appActions } from '../app-store';
 
 export interface RatingsState {
     rating: Ratings;
-    globalRatings: Ratings[];
+    globalRatings: RatingsDB[];
     lastGlobalRatingsUpdate: Date;
 }
 

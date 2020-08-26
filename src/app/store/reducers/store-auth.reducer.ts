@@ -2,6 +2,7 @@ import { INITIAL_STATE } from '@ngrx/store';
 import { appActions } from '../app-store';
 import { ControllerActions } from '../controller/controller.actions';
 import { User } from 'src/app/auth/user.model';
+import { UserDataInfo } from 'src/app/classes/userDataInfo';
 
 export interface AuthState {
     user: User;
@@ -10,7 +11,7 @@ export interface AuthState {
 
 const initialState: AuthState = {
     user: null,
-    isLoginedIn: false
+    isLoginedIn: false,
 }
 
 export function userReducer(state = initialState, action: appActions): AuthState {

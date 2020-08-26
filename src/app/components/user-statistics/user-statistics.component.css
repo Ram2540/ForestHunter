@@ -1,0 +1,80 @@
+.wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top:0;
+    Left:0;
+    /* background-color: rgba(131, 131, 131, 0.5); */
+    /* z-index: 200; */
+}
+.screen-block {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    Left:0;
+    background-color: rgba(131, 131, 131, 0.5);
+    z-index: 100; 
+}
+
+.statistics-box {
+    position: relative;
+    background-color: rgba(44, 188, 224);
+    padding: 2rem;
+    border: 0.4rem solid rgb(10, 142, 151);
+    margin: auto;
+    color: white;
+    z-index: 101; 
+}
+
+.statistic-header {
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    margin: auto;
+}
+.statistic-name{
+    margin-right: auto;
+    padding-right: 1rem;
+}
+.statistic-value{
+    margin-left: auto;
+    padding-left: 1rem;
+    font:inherit;
+}
+
+.statistic-value-input{
+    max-width: 35%;
+    /* border: none; */
+    background-color: transparent;
+    color: white;
+}
+
+
+.editModeIcon{
+    background: url(../../../assets/images/edit.png); 
+}
+.acceptChnage {
+    background: url(../../../assets/images/tick-check-mark.png);
+}
+
+.cancelChnage{
+    background: url(../../../assets/images/cancel.png);
+}
+
+.editModeIcon,
+.acceptChnage,
+.cancelChnage{
+    background-size: contain;
+    background-repeat: no-repeat;
+     width: 1.5rem;
+     height: inherit;
+    max-width: 10%;
+    max-height: 10%;
+}

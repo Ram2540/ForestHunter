@@ -1,0 +1,18 @@
+<div class="wrapper" *ngIf="isOpened">
+    <div class="screen-block" (click)="closeUserStatistics()"></div>
+    <div class="statistics-box">
+        <div class="statistic-header">STATISTICS</div>
+        <div class="row">
+            <div class="statistic-name">User Name</div>
+            <div class="statistic-value" *ngIf="!this.isEditMode">{{userName}}</div>
+            <input class="statistic-value statistic-value-input" *ngIf="this.isEditMode" type="text" maxlength=20 minlength=3 [(ngModel)]="userName" />
+            <div class="editModeIcon" *ngIf="!this.isEditMode" (click)="onEditMode()"></div>
+            <div class="acceptChnage" *ngIf="this.isEditMode" (click)="changeUserName()"></div>
+            <div class="cancelChnage" *ngIf="this.isEditMode" (click)="onEditMode()"></div>
+        </div>
+        <div class="row" *ngFor="let item of this.ratings | keyvalue">
+            <div class="statistic-name">{{item.key}}</div>
+            <div class="statistic-value">{{item.value}}</div>
+        </div>
+    </div>
+</div>

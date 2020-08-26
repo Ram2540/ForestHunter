@@ -4,7 +4,7 @@ import * as fromAppStore from '../../store/app-store';
 import { Store } from '@ngrx/store';
 import { Subscription, Subject } from 'rxjs';
 import { timeInterval } from 'rxjs/operators';
-import { Ratings } from './ratings.model';
+import { Ratings, RatingsDB } from './ratings.model';
 import { DataTableDirective } from 'angular-datatables';
 
 @Component({
@@ -19,11 +19,11 @@ export class RatingsComponent implements OnInit, OnDestroy, AfterViewInit {
   dtTrigger: Subject<any> = new Subject();
   @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
-dtInstance: Promise<DataTables.Api>;
+  dtInstance: Promise<DataTables.Api>;
 
 
   private ratingSubscription: Subscription;
-  ratingsList: Ratings[] = [];
+  ratingsList: RatingsDB[] = [];
   private timeInterval;
   private whereInitdtTrigger = false;  // true - init in ngAfterViewInit false - init in ngOnInit
 
@@ -38,9 +38,9 @@ dtInstance: Promise<DataTables.Api>;
       search: false,
       scrollY: '27rem',
       scrollCollapse: true,
-      //ordering: false,
+      ordering: false,
       searching: false,
-      order: [[ 2, 'asc' ]]
+      // order: [[ 2, 'asc' ]]
     };
   }
 
@@ -73,30 +73,26 @@ dtInstance: Promise<DataTables.Api>;
    }
 
   sortByMaxLevel() {
-    this.dtOptions.order =[ [ 1, 'desc' ] ];
-    this.rerender();
+    this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxLevel - r.maxLevel);
   }
   sortByMaxDPS() {
-    this.dtOptions.order = [ [ 2, 'desc' ] ];
-    this.rerender();
+    this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxDPS - r.maxDPS);
   }
 
   sortByMaxGold() {
-    this.dtOptions.order = [ [ 3, 'desc' ] ];
-    this.rerender();
+    this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxGold - r.maxGold);
   }
 
   sortByDailyPoints() {
-    this.dtOptions.order = [ [ 4, 'desc' ] ];
-    this.rerender();
+    this.ratingsList = this.ratingsList.sort((r, r1) => r1.toDayPoints - r.toDayPoints);
   }
 
-  private rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.destroy();
-        this.dtTrigger.next();
-    });
-}
+//   private rerender(): void {
+//     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+//         dtInstance.destroy();
+//         this.dtTrigger.next();
+//     });
+// }
   ngOnDestroy() {
     if (this.ratingSubscription) {
       this.ratingSubscription.unsubscribe();

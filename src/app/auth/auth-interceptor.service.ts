@@ -19,7 +19,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const user = new Observable<User>((observer) => {
-      observer.next(this.controllerActions.geAuthState().user);
+      observer.next(this.controllerActions.getAuthState().user);
       observer.complete();
     });
     return user.pipe(

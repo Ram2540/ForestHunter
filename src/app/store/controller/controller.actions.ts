@@ -10,8 +10,10 @@ import { EnemyState } from '../reducers/store-enemy.reducer';
 import { HeroState } from '../reducers/store-hero.reducer';
 import { User } from 'src/app/auth/user.model';
 import { AuthState } from '../reducers/store-auth.reducer';
-import { Ratings } from '../../components/ratings/ratings.model';
+import { Ratings, RatingsDB } from '../../components/ratings/ratings.model';
 import { RatingsState } from '../reducers/store-ratings.reducer';
+import { UserDataInfo } from 'src/app/classes/userDataInfo';
+import { UserDataInfoState } from '../reducers/store-userDataInfo.reducer';
 // import {AppState} from '../../models/appState';
 
 @Injectable({
@@ -37,6 +39,9 @@ export class ControllerActions {
 
   static USER_LOGIN = 'USER_LOGIN';
   static USER_LOGOUT = 'USER_LOGOUT';
+  
+  static USER_DATA_INFO_CHANGE_NAME = 'USER_DATA_INFO_CHANGE_NAME';
+  static USER_DATA_INFO_LOAD = 'USER_DATA_INFO_LOAD';
 
   static RATINGS_LOAD = 'RATINGS_LOAD';
   static RATINGS_CHNAGED = 'RATINGS_CHNAGED';
@@ -119,20 +124,29 @@ public UserLogout() {
   this.EnemyGenerate(1);
 }
 
+// -------------------------------------------------------------USER DATA INFO------------------------------------------------------------
+public UserChangeName(newUserName: string[20]) {
+  this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_CHANGE_NAME, newUserName));
+}
+
+public UserUserDataInfoLoad(userDataInfo: UserDataInfo) {
+  this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_LOAD, userDataInfo));
+}
+
 // ----------------------------------------------RATINGS------------------------------------------------------------
 public ratingLoad(rating: Ratings) {
     this.store.dispatch(createAction(ControllerActions.RATINGS_LOAD, rating));
 }
 
 public ratingsChanged(chnagedRating: Ratings) {
-  const currentState = this.geRatingsState();
+  const currentState = this.getRatingsState();
   for (const key of Object.keys(chnagedRating)) {
     if (currentState.rating[key] !== chnagedRating[key]) {
       this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, {valueName: key, newValue: chnagedRating[key]}));
     }
   }
 }
-public ratingsGlobalLoad(globalRatings: Ratings[]) {
+public ratingsGlobalLoad(globalRatings: RatingsDB[]) {
   this.store.dispatch(createAction(ControllerActions.RATINGS_GLOBAL_LOAD, globalRatings));
 }
 
@@ -146,7 +160,7 @@ public ratingsGlobalLoad(globalRatings: Ratings[]) {
     return state;
   }
 
-  public geHeroState(): HeroState {
+  public getHeroState(): HeroState {
     let state: HeroState;
 
     this.store.select('heroState').pipe(take(1)).subscribe(
@@ -155,7 +169,7 @@ public ratingsGlobalLoad(globalRatings: Ratings[]) {
     return state;
   }
 
-  public geAuthState(): AuthState {
+  public getAuthState(): AuthState {
     let state: AuthState;
 
     this.store.select('authState').pipe(take(1)).subscribe(
@@ -164,10 +178,19 @@ public ratingsGlobalLoad(globalRatings: Ratings[]) {
     return state;
   }
 
-  public geRatingsState(): RatingsState {
+  public getRatingsState(): RatingsState {
     let state: RatingsState;
 
     this.store.select('ratingsState').pipe(take(1)).subscribe(
+      s => state = s
+    );
+    return state;
+  }
+
+  public getUserDataInfoState(): UserDataInfoState {
+    let state: UserDataInfoState;
+
+    this.store.select('userDataInfoState').pipe(take(1)).subscribe(
       s => state = s
     );
     return state;
