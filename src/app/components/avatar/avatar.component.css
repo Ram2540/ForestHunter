@@ -2,6 +2,11 @@
     height: 4.5rem;
     width: 4.5rem;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    /* justify-content: center; */
+    align-items: center;
     /* background-image: url('../../../assets/images/avarat-bird.png'); */
 }
 
@@ -9,23 +14,21 @@
     border-radius: 50%;
     width: 3.5rem;
     height: 3.5rem;
-    border: 1px solid black;
+    border: 0.25rem solid rgb(1, 53, 83);
+    background: url('../../../assets/images/cartoon-avatar-gamer.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    /* position: relative; */
     /* background-color:transparent; */
     /* background-image: url('../../../assets/images/avarat-bird.png'); */
 }
-.avatar-pic img {
-    max-height:100%;
-    max-width:100%;
-    overflow: hidden;
-    background-image: url('../../../assets/images/avarat-bird.png');
-   background-repeat: no-repeat;
-   /*https://www.nicepng.com/png/detail/209-2099655_anime-avatar-png-avatar-gamer.png */
-}
-
 
 .avatar-name {
     position: absolute;
-    left:-1rem;
+    bottom: 0;
     overflow: hidden;
     white-space: nowrap;
 }

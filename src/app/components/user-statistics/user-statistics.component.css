@@ -24,7 +24,7 @@
 .statistics-box {
     position: relative;
     background-color: rgba(44, 188, 224);
-    padding: 2rem;
+    padding: 0.5rem 2rem 1rem 2rem;
     border: 0.4rem solid rgb(10, 142, 151);
     margin: auto;
     color: white;
@@ -33,6 +33,7 @@
 
 .statistic-header {
     text-align: center;
+    font-weight: bold;
 }
 
 .row {
@@ -73,8 +74,8 @@
 .cancelChnage{
     background-size: contain;
     background-repeat: no-repeat;
-     width: 1.5rem;
-     height: inherit;
+    width: 1.5rem;
+    height: inherit;
     max-width: 10%;
     max-height: 10%;
 }

@@ -26,9 +26,20 @@ export function userDataInfoStateReducer(state = initialState, action: appAction
         case ControllerActions.USER_DATA_INFO_LOAD: {
             return {
                 ...state,
-                userDataInfo: {...action.payload
+                userDataInfo: {...action.payload,
+                    lastTimeUserLogin: state.userDataInfo.lastTimeUserLogin,
+                    previousTimeUserLogin: state.userDataInfo.lastTimeUserLogin
                 }
             };
+        }
+        case ControllerActions.USER_DATA_INFO_SET_LAST_DATE_LOGIN: {
+            return {
+                ...state,
+                userDataInfo: {
+                    ...state.userDataInfo,
+                    lastTimeUserLogin: new Date().getTime()
+                }
+            }
         }
         default : return state;
     }

@@ -1,7 +1,7 @@
 .weapon-card {
     top: 0.6rem;
     width: 31%;
-    height: 8rem;
+    /* height: 8rem; */
     position: relative;
     display: inline-block; 
     background-color: #5d5252;
@@ -25,6 +25,7 @@ img {
 }
 
 .weapon-data-box {
+    vertical-align: top;
     display: inline-block;
     width: 45%;
 }
@@ -72,3 +73,9 @@ img {
     display: inline-block; 
     background: linear-gradient(0deg,#a1aa95,#aabd96);
 }
+
+@media screen and (max-width: 80rem) {
+    .weapon-card {
+      width:48%;
+    }
+  }

@@ -68,18 +68,24 @@ export class GameService {
             (value) => {
                 return value;
             });
+
         this.store.select('authState').subscribe(value => {
             this.isUserLoginedIn = value.isLoginedIn;
             this.updateHeroOnDB();
             return value;
         });
+// --------------------------------------------------------------USER DATA INFO-------------------------------------------------------
+        this.store.select('userDataInfoState').pipe(debounceTime(2000)).subscribe(userDataInfoState => {
+            if (userDataInfoState.userDataInfo.userName !== 'user') { // don't post default value for Redux
+                this.dataStorageService.postUserDataInfo(userDataInfoState.userDataInfo);
+            }
+            return userDataInfoState;
+        });
 // --------------------------------------------------------------RATINGS--------------------------------------------------------------
         this.store.select('ratingsState').subscribe((ratingState) => {
-            if (ratingState.rating) {
+            if (ratingState.rating && ratingState.rating.maxLevel > 0) { // don't post default value for Redux
                 this.currentRatings = { ...ratingState.rating };
-            }
-            if (ratingState.rating && ratingState.rating.maxLevel > 0) {
-                this.dataStorageService.postRatings({ ...ratingState.rating }); // don't post default value for Redux
+                this.dataStorageService.postRatings({ ...ratingState.rating });
             }
         });
 

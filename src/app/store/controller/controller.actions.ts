@@ -39,9 +39,10 @@ export class ControllerActions {
 
   static USER_LOGIN = 'USER_LOGIN';
   static USER_LOGOUT = 'USER_LOGOUT';
-  
+
   static USER_DATA_INFO_CHANGE_NAME = 'USER_DATA_INFO_CHANGE_NAME';
   static USER_DATA_INFO_LOAD = 'USER_DATA_INFO_LOAD';
+  static USER_DATA_INFO_SET_LAST_DATE_LOGIN = 'USER_DATA_INFO_SET_LAST_DATE_LOGIN';
 
   static RATINGS_LOAD = 'RATINGS_LOAD';
   static RATINGS_CHNAGED = 'RATINGS_CHNAGED';
@@ -116,6 +117,7 @@ export class ControllerActions {
 // -------------------------------------------------------------USER------------------------------------------------------------
 public UserLogin(user: User) {
   this.store.dispatch(createAction(ControllerActions.USER_LOGIN, user));
+  this.UserUserDataInfoSetLastDateLogin();
 }
 
 public UserLogout() {
@@ -132,6 +134,11 @@ public UserChangeName(newUserName: string[20]) {
 public UserUserDataInfoLoad(userDataInfo: UserDataInfo) {
   this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_LOAD, userDataInfo));
 }
+
+private UserUserDataInfoSetLastDateLogin() {
+  this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_SET_LAST_DATE_LOGIN));
+}
+
 
 // ----------------------------------------------RATINGS------------------------------------------------------------
 public ratingLoad(rating: Ratings) {
