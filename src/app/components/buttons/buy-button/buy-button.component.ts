@@ -9,6 +9,7 @@ export class BuyButtonComponent implements OnInit {
   @Output() buttonClicked = new EventEmitter();
   @Input() text;
   @Input() myValue: number;
+  @Input() isCoin = false;
 
   constructor() { }
 

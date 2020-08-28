@@ -1,3 +1,14 @@
-/* .all-weapons-box {
+.all-weapons-box {
     display: flex;
-} */
+    flex-wrap: wrap;
+}
+
+.app-weapon-card {
+    width:32%;
+}
+
+@media screen and (max-width: 80rem) {
+    .app-weapon-card {
+      width:49%;
+    }
+  }

@@ -17,7 +17,7 @@
         </div>
         <!-- <div class="weapon-name-box"></div> -->
         <app-buy-button appButtonHighlighter class="color-btn-green" (buttonClicked)="levelUp()"
-            [myValue]="weaponPrice" [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}">
+            [myValue]="weaponPrice" [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}" [isCoin]="true">
         </app-buy-button>
     </div>
 

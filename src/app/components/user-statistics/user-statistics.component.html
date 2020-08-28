@@ -4,7 +4,7 @@
         <div class="statistic-header">STATISTICS</div>
         <div class="row">
             <div class="statistic-name">User Name</div>
-            <div class="statistic-value" *ngIf="!this.isEditMode">{{userName}}</div>
+            <div class="statistic-value" *ngIf="!this.isEditMode" (click)="onEditMode()">{{userName}}</div>
             <input class="statistic-value statistic-value-input" *ngIf="this.isEditMode" type="text" maxlength=20 minlength=3 [(ngModel)]="userName" />
             <div class="editModeIcon" *ngIf="!this.isEditMode" (click)="onEditMode()"></div>
             <div class="acceptChnage" *ngIf="this.isEditMode" (click)="changeUserName()"></div>

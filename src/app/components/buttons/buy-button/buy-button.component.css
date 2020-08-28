@@ -1,3 +1,15 @@
 .color-btn-text {
+    display: flex;
     text-align: center;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+
+.f-gold {
+    width: 1.3rem;
+    height: inherit;
+    background: url('../../../../assets/images/coin.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 0.5rem;
 }
