@@ -31,7 +31,7 @@ export class StaticDataWeaponStore {
     }
 
     public getNextWeaponByWeapon(currentWeapon: Weapon) {
-        const nextWeapon =  this.getWeaponByIDandLevel(currentWeapon.id, currentWeapon.level + 1);//+1 level but wit the same ID
+        const nextWeapon =  this.getWeaponByIDandLevel(currentWeapon.id, currentWeapon.level + 1); // +1 level but wit the same ID
         if (nextWeapon) {
           return nextWeapon;
         }

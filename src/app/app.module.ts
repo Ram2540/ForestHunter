@@ -38,6 +38,7 @@ import { DamageControlComponent } from './components/damage-control/damage-contr
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
+import { VillageComponent } from './components/village/village.component';
 // import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -67,7 +68,8 @@ firebase.initializeApp(environment.firebaseConfig);
     DamageControlComponent,
     RatingsComponent,
     AvatarComponent,
-    UserStatisticsComponent
+    UserStatisticsComponent,
+    VillageComponent
   ],
   imports: [
     BrowserModule,

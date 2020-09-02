@@ -4,6 +4,6 @@
 }
 
 .app-tab {
-    margin: auto;
-    width: 20%;
+    /* margin: auto; */
+    min-width: 20%;
 }

@@ -38,7 +38,7 @@ export class RatingsComponent implements OnInit, OnDestroy, AfterViewInit {
       search: false,
       scrollY: '27rem',
       scrollCollapse: true,
-      ordering: false,
+      // ordering: false,
       searching: false,
       // order: [[ 2, 'asc' ]]
     };
@@ -72,20 +72,20 @@ export class RatingsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
    }
 
-  sortByMaxLevel() {
-    this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxLevel - r.maxLevel);
-  }
-  sortByMaxDPS() {
-    this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxDPS - r.maxDPS);
-  }
+  // sortByMaxLevel() {
+  //   this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxLevel - r.maxLevel);
+  // }
+  // sortByMaxDPS() {
+  //   this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxDPS - r.maxDPS);
+  // }
 
-  sortByMaxGold() {
-    this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxGold - r.maxGold);
-  }
+  // sortByMaxGold() {
+  //   this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxGold - r.maxGold);
+  // }
 
-  sortByDailyPoints() {
-    this.ratingsList = this.ratingsList.sort((r, r1) => r1.toDayPoints - r.toDayPoints);
-  }
+  // sortByDailyPoints() {
+  //   this.ratingsList = this.ratingsList.sort((r, r1) => r1.toDayPoints - r.toDayPoints);
+  // }
 
 //   private rerender(): void {
 //     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
