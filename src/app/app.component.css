@@ -1,13 +1,11 @@
 .app-main {
-    /* width: 80rem;
-    height: 37rem;
-    position: relative; */
-    min-width: 60rem;
-    max-width: 100rem;
-    display: flex;
-    flex-direction: column;
+    min-width: 55rem;
+    max-width: 80rem;
+    display: grid;
+    grid-template-areas:"header"
+                        "main";
+    grid-template-rows: 13% 87%;
     margin: auto;
-    /* align-items: center; */
     border: teal solid 0.2rem;
     border-radius: 1rem;
     box-shadow:0.5rem 0.5rem 0.5rem teal;
@@ -16,7 +14,7 @@
 
 .app-main-top {
     margin: 0.5rem 0.5rem;
-    display: flex;
+    grid-area: header;
 }
 
 .app-avatar {
@@ -25,23 +23,25 @@
 
 
  .app-main-area {
-    width: 100%;
-    height: 100%;
+    display: grid;
+    grid-template-areas:"left battlefiled";
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 32rem;
+    grid-area: main;
+    grid-gap: 0.1rem;
+    min-height: 0;  /* NEW */
+    min-width: 0;   /* NEW; needed for Firefox */
 } 
-.main-left-area,
-.main-right-area {
-    width: 50%;
-    min-height: 26rem;
-    vertical-align: top;
-    display: inline-block;
-    margin:0;
-    padding: 0;
+
+.main-left-area {
+    grid-area: left;
+    overflow: hidden;  /* NEW */
+    min-width: 0;      /* NEW; needed for Firefox */
 }
 
-
 .main-right-area {
-    min-height: 32rem;
-    /* height: 32rem; */
+    right: 0;
+    grid-area: battlefiled;
 }
 
 .app-main-top {

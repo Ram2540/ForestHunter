@@ -28,7 +28,7 @@ img {
     vertical-align: top;
     display: flex;
     flex-direction: column;
-    width: 45%;
+    width: 48%;
 }
 
 .weapon-level-box,
@@ -74,8 +74,12 @@ img {
     background: linear-gradient(0deg,#a1aa95,#aabd96);
 }
 
-/* @media screen and (max-width: 80rem) {
-    .weapon-card {
-      width:48%;
+@media screen and (max-width: 60rem) {
+    .weapon-avatar-box {
+      width:40%;
     }
-  } */
+
+    .weapon-data-box {
+        width:58%;
+    }
+  }

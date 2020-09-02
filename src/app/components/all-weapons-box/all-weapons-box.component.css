@@ -7,7 +7,7 @@
     width:32%;
 }
 
-@media screen and (max-width: 80rem) {
+@media screen and (max-width: 70rem) {
     .app-weapon-card {
       width:49%;
     }
