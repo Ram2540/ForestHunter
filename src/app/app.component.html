@@ -1,4 +1,4 @@
-<div class="app-main" onmousedown="return false" onselectstart="return false">
+<div class="app-main" >
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
@@ -11,12 +11,12 @@
         <app-auth></app-auth>
     </div>
     <div class="app-main-area">
-        <div class="main-left-area">
+        <div class="main-left-area" onmousedown="return false" onselectstart="return false">
             <app-tabs-all></app-tabs-all>
             <!-- left-side -->
             <router-outlet></router-outlet>
         </div>
-        <div class="main-right-area" >
+        <div class="main-right-area" onmousedown="return false" onselectstart="return false">
             <app-right-side></app-right-side>
         </div>
     </div>
