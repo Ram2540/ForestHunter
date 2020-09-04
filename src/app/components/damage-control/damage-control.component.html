@@ -1,7 +1,12 @@
 <div class="damage-control">
     <div class="damage-titile-box">
+        <div class="icon-damage" 
+        [class.icon-animation] = "this.damageControlData.valueChanged"
+        *ngIf="this.damageControlData.icon ? true : false"
+        [style.background]="'url(../../../assets/images/'+this.damageControlData.icon +')'"
+        [style.background-repeat]="'no-repeat'"
+        [style.background-size]="'contain'"></div>
         <div class="title">{{this.damageControlData.titile}}</div>
-        <div class="icon-damage"></div>
     </div>
     <div class="damage-value-box">
         <div class="damage-value">{{this.damageControlData.damage}}</div>

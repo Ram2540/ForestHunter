@@ -6,8 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./damage-control.component.css']
 })
 export class DamageControlComponent implements OnInit {
-  @Input() damageControlData: DamageControl;
   constructor() { }
+  @Input() damageControlData: DamageControl;
 
   ngOnInit(): void {
   }
@@ -23,4 +23,5 @@ export interface DamageControl {
   multiplierInNumber: number;
   damageInNymber: number;
   description?: string;
+  valueChanged: boolean;
 }
