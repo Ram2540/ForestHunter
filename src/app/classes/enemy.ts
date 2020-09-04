@@ -22,8 +22,8 @@ export class Enemy {
                       break;
             case (3): this.url = 'https://vignette.wikia.nocookie.net/creaturequest/images/d/dc/235_SwampCreature.png/revision/latest/top-crop/width/360/height/450?cb=20170316001734';
                       break;
-            case (4): this.url = 'https://i.dlpng.com/static/png/6686966_preview.png';
-                      break;
+            // case (4): this.url = 'https://i.dlpng.com/static/png/6686966_preview.png';
+            //           break;
             default: this.url  = 'https://xgm.guru/files/649/130131/screenshot2.png';
 
         }
