@@ -16,6 +16,7 @@ export class WeaponCardComponent implements OnInit, OnDestroy, OnChanges {
   currentGoldValue = 0;
   weaponDPS: string;
   weaponPrice: string;
+
   private goldSubscription: Subscription;
 
   constructor(private controllerActions: ControllerActions,
@@ -28,8 +29,6 @@ export class WeaponCardComponent implements OnInit, OnDestroy, OnChanges {
         this.currentGoldValue = heroState.hero.gold;
       }
     });
-    // this.weaponDPS = this.healperService.getConvertedNumberToKs(this.weapon.damage);
-    // this.weaponPrice = this.healperService.getConvertedNumberToKs(this.weapon.price);
   }
 
   ngOnChanges() {

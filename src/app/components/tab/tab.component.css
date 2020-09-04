@@ -5,15 +5,11 @@
 
 
 .tab {
-    /* min-width: 5rem;;  */
     min-height: 2rem;
     display: flex;
-    /* position: relative; */
-    /* margin: auto;  */
     cursor: pointer;
     background-color: #1d5064;
     border-radius: 1.5rem 1.5rem 0 0; 
-    /* align-content: center; */
     margin: 0 0.1rem;
 }
 .tab-box{
@@ -26,23 +22,13 @@
 .tab-name {
     text-transform: capitalize;
     color: white;
+    transition: color 1s;
 }
 
 .tab-pic {
     width: 20%;
 }
 
-
-
-
-/* [class^="tabs-all-"] {
-    width: 118px;
-    height: 40px;
-    position: relative;
-    top: 5;
-     display: inline-block;
-     margin: 0 2px 0 0; 
-    cursor: pointer;
-    background-color: #9c8b7c;
-    border-radius: 24px 24px 0 0; 
-} */
+.tab-name:hover {
+    color: rgb(59, 201, 78);
+}

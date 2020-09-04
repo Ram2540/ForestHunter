@@ -13,13 +13,16 @@ import { Subscription } from 'rxjs';
 export class AllWeaponsBoxComponent implements OnInit, OnDestroy {
   nextToBuyWeapon: Weapon;
   weapons: Weapon[] = [];
+
+  private currentVersionOfWeapons = -1;
   private heroStateSubscription: Subscription;
 
   constructor(private store: Store<fromAppStore.AppState>) { }
 
   ngOnInit() {
     this.heroStateSubscription = this.store.select('heroState').subscribe((heroState) => {
-      if (heroState.hero) {
+
+      if (heroState.hero && heroState.weaponVersion !== this.currentVersionOfWeapons) {
       this.weapons = heroState.hero.weapons.filter(w => w.level > 0).sort((a, b) => a.id > b.id ? -1 : 1);
       this.nextToBuyWeapon = heroState.hero.weapons.filter(w => w.level === 0).sort((n1, n2) => {
         if (n1.price > n2.price) {
@@ -30,7 +33,6 @@ export class AllWeaponsBoxComponent implements OnInit, OnDestroy {
         }
         return 0;
       })[0];
-      // console.log('--------------------heroState.hero.weapons 11------------------',this.nextToBuyWeapon);
     }
     });
   }

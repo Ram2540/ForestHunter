@@ -6,9 +6,11 @@ import { ControllerActions } from '../controller/controller.actions';
 
 export interface HeroState {
     hero: Hero;
+    weaponVersion: number; // this version means that something chnaged in weapon list
 }
 const initialHeroState: HeroState = {
     hero: new Hero(0),  // 0 as a default hero which will not be poster
+    weaponVersion: 0
 };
 
 export function heroReducer(state = initialHeroState, action: appActions) {
@@ -18,7 +20,8 @@ export function heroReducer(state = initialHeroState, action: appActions) {
                 ...state,
                 hero: {
                     ...action.payload,
-                    weapons: [...action.payload.weapons]
+                    weapons: [...action.payload.weapons],
+                    weaponVersion: state.weaponVersion + 1,
                 }
             }
         case ControllerActions.HERO_ADD_GOLD:
@@ -86,7 +89,8 @@ function getChnagedHeroWithWeaponAndMinusPrice(state: HeroState, weapon: Weapon,
             ...state.hero,
             gold: state.hero.gold - price,
             weapons: updateWeapons
-        }
+        },
+        weaponVersion: state.weaponVersion + 1,
     }
 }
 

@@ -17,12 +17,12 @@
     bottom: 0;
     z-index:100;
 }
-/* .buttons {
-    display: flex;
-} */
+
 .btn {
     margin: 0rem 0.5rem;
 }
 input.ng-invalid.ng-touched {
     border: 1px solid red;
 }
+
+

@@ -24,11 +24,15 @@
 }
 
 .resource-icon {
-        width: 2.5rem;
-        height: 2.5rem;
-        background: url('../../../assets/images/coin.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        /* margin: 0 0.5rem; */
+    width: 2.5rem;
+    height: 2.5rem;
+    background: url('../../../assets/images/coin.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 750ms;
+}
+
+.resource-icon:hover {
+    transform: rotateX(360deg);
 }
 
