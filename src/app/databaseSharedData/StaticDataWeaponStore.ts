@@ -6,7 +6,7 @@ export class StaticDataWeaponStore {
     private static _instance: StaticDataWeaponStore;
     private weaponList: Weapon[];
     private firstWeaponStages: Weapon[];
-    private maxWeaponLevel = 100;
+    private maxWeaponLevel = 1000;
     private priceFactor = 0.1; // 10% increase of price for each new level of weapon
     private damageFactor = 1.1; //  1.1 - 110% increase of damage for each new level of weapon
     get getWeaponList(): Weapon[] {

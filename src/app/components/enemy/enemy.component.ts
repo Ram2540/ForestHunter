@@ -4,12 +4,10 @@ import { Enemy } from '../../classes/enemy';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
+import { GameService } from 'src/app/services/game.service';
+import { EnemyHit } from './enemyHit.model';
 
-interface click {
-  x: number;
-  y: number;
-  state: number;
-}
+
 @Component({
   selector: 'app-enemy',
   templateUrl: './enemy.component.html',
@@ -21,7 +19,8 @@ interface click {
 export class EnemyComponent implements OnInit, OnDestroy {
   @ViewChild('self') self: ElementRef;
 
-  constructor(private store: Store<fromAppStore.AppState>) { }
+  constructor(private store: Store<fromAppStore.AppState>,
+    private gameService: GameService) { }
 
   enemy: Enemy = new Enemy(1, 1);
   img = new Image();
@@ -35,11 +34,14 @@ export class EnemyComponent implements OnInit, OnDestroy {
     height: number
   };
   private enemyStateSubscription: Subscription;
-  private clicksArray: click[] = [];
+  private clicksArray: EnemyHit[] = [];
   private parentElement: HTMLElement;
   private imageMargin = 50;
-  private maxState = 250;
+  private maxState = 30;
   private isDrawing = false;
+  private currentDamage: string;
+  private dellayDrawing = 70;
+  private heroStateSubscription: Subscription;
 
   ngOnInit() {
     setInterval(() => {
@@ -57,26 +59,36 @@ export class EnemyComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.heroStateSubscription = this.store.select('heroState').subscribe((heroState) => {
+      if (this.currentDamage !== this.gameService.getHeroDamageConverted) {
+        this.currentDamage = this.gameService.getHeroDamageConverted;
+      }
+    });
+
     this.canvas = document.getElementById('enemy') as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d');
 
     this.img.onload = () => {
       if (!this.isDrawing) {
         this.isDrawing = true;
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        setTimeout(() => {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.drawImage(this.img, 0, 0, this.img.width, this.img.height,     // source rectangle
-          this.imageMargin, this.imageMargin,
-          this.canvas.width - 2 * this.imageMargin,
-          this.canvas.height - 2 * this.imageMargin); // destination rectangle
-        this.drawAllClicks();
-        if (this.clicksArray.length > 0) {
-          this.drawEnemy();
-        }
-        this.isDrawing = false;
+          this.ctx.drawImage(this.img, 0, 0, this.img.width, this.img.height,     // source rectangle
+            this.imageMargin, this.imageMargin,
+            this.canvas.width - 2 * this.imageMargin,
+            this.canvas.height - 2 * this.imageMargin); // destination rectangle
+          this.drawAllClicks();
+          this.isDrawing = false;
+          if (this.clicksArray.length > 0) {
+            this.drawEnemy();
+          }
+        }, this.dellayDrawing);
       }
     };
     this.img.src = this.enemy.url;
+
+
   }
 
   ngAfterViewInit() {
@@ -90,10 +102,9 @@ export class EnemyComponent implements OnInit, OnDestroy {
 
   clickEnemy(event: Event) {
     const coord = this.getMousePos(this.canvas, event);
-    this.clicksArray.push({ x: coord.x, y: coord.y, state: 0 } as click);
-    if (!this.isDrawing) {
-      this.drawEnemy();
-    }
+    this.clicksArray.push(new EnemyHit(coord.x, coord.y, this.currentDamage));
+    this.drawEnemy();
+    this.gameService.hitEnemy();
   }
   getMousePos(canvas, evt) {
     const rect = canvas.getBoundingClientRect();
@@ -106,46 +117,45 @@ export class EnemyComponent implements OnInit, OnDestroy {
   adjustCanvasSizeToParent() {
     // These will change (scaling applied by the style)
     if (this.parentElement) {
-      let needDraw = false;
-      if (this.canvas.width !== this.parentElement.clientWidth) {
+      if (this.canvas.width !== this.parentElement.clientWidth || this.canvas.height !== this.parentElement.clientHeight) {
         this.canvas.width = this.parentElement.clientWidth;
-        needDraw = true;
-      }
-      if (this.canvas.height !== this.parentElement.clientHeight) {
         this.canvas.height = this.parentElement.clientHeight;
-        needDraw = true;
-      }
-      if (needDraw && !this.isDrawing) {
-        this.drawEnemy();
+        this.initCanvas();
       }
     } else {
       this.parentElement = this.self.nativeElement.parentElement.parentElement;
     }
   }
 
+  private initCanvas() {
+    this.ctx.font = '1rem Verdana';
+    this.drawEnemy();
+  }
+
   private drawAllClicks() {
     this.clicksArray.forEach(c => {
-      this.drawClick(c.x, c.y, c.state);
-      c.state++;
+      this.drawClick(c);
+      c.nextState();
     });
     this.clicksArray = this.clicksArray.filter((c) => {
       return c.state < this.maxState;
     });
-    if (this.clicksArray.length === 0) {
-      this.drawEnemy();
-    }
   }
 
-  private drawClick(x: number, y: number, state: number): void {
+  private drawClick(h: EnemyHit): void {
     this.ctx.fillStyle = `rgb(
-      ${Math.floor(0 + state)},
-      ${Math.floor(255 - state)},
-      ${Math.floor(0 + state)})`;
-    this.ctx.fillRect(x , y , 10, 10);
+      ${Math.floor(0 + h.state * Math.floor(255 / this.maxState))},
+      ${Math.floor(255 - h.state * Math.floor(255 / this.maxState))},
+      ${Math.floor(0 + h.state * Math.floor(255 / this.maxState))})`;
+    this.ctx.fillText(h.text, h.x - 20, h.y + 5);
   }
   ngOnDestroy() {
     if (this.enemyStateSubscription) {
       this.enemyStateSubscription.unsubscribe();
+    }
+
+    if (this.heroStateSubscription) {
+      this.heroStateSubscription.unsubscribe();
     }
   }
 }

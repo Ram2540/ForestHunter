@@ -7,6 +7,7 @@ import { DataStorageService } from './data-storage/data-storage.service';
 import { SharedDataGold } from '../databaseSharedData/gold';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Ratings } from '../components/ratings/ratings.model';
+import { HelperService } from './helper.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,10 +22,14 @@ export class GameService {
     public get getHeroDamage(): number {
         return this.heroDamage;
     }
+    public get getHeroDamageConverted(): string {
+        return this.healperService.getConvertedNumberToKs(this.heroDamage);
+    }
 
     constructor(private controllerActions: ControllerActions,
                 private store: Store<fromAppStore.AppState>,
-                private dataStorageService: DataStorageService) {
+                private dataStorageService: DataStorageService,
+                private healperService: HelperService) {
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {
             // console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
@@ -111,6 +116,10 @@ export class GameService {
             }
         });
 
+    }
+
+    hitEnemy() {
+        this.controllerActions.EnemyIsDamaged(this.getHeroDamage);
     }
 
     private updateHeroOnDB() {

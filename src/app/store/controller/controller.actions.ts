@@ -24,6 +24,7 @@ export class ControllerActions {
   static ENEMY_GENERATE = 'ENEMY_GENERATE';
   static ENEMY_LOAD_NEW = 'ENEMY_LOAD_NEW';
   static ENEMY_IS_DAMAGED = 'ENEMY_IS_DAMAGED';
+  // static ENEMY_IS_HIT = 'ENEMY_IS_HIT';
   static ENEMY_IS_KILLED = 'ENEMY_IS_KILLED';
   static ENEMY_SET_LEVEL = 'ENEMY_SET_LEVEL';
 
@@ -105,6 +106,10 @@ export class ControllerActions {
   EnemyIsDamaged(damage: number) {
     this.store.dispatch(createAction(ControllerActions.ENEMY_IS_DAMAGED, damage));
   }
+
+  // EnemyIsHit() {
+
+  // }
 
   EnemyIsKilled() {
     this.store.dispatch(createAction(ControllerActions.ENEMY_IS_KILLED));

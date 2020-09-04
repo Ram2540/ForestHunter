@@ -16,7 +16,7 @@ interface WeapondDatabaseData {
 export class SharedDataWeapons {
     private static weaponList: WeapondDatabaseData[] = [];
     private firstWeaponStages: Weapon[] = [];
-    private maxWeaponLevel = 25;
+    private maxWeaponLevel = 1000;
     private priceFactor = 0.1; // 10% increase of price for each new level of weapon
     private damageFactor = 1.1; //  1.1 - 110% increase of damage for each new level of weapon
     public static get getWeaponData(): WeapondDatabaseData[] {
