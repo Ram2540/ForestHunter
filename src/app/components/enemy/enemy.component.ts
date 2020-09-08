@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { trigger } from '@angular/animations';
 import { Enemy } from '../../classes/enemy';
 import { Subscription } from 'rxjs';
@@ -16,14 +16,14 @@ import { EnemyHit } from './enemyHit.model';
     trigger('enemyState', [])
   ]
 })
-export class EnemyComponent implements OnInit, OnDestroy {
+export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('self') self: ElementRef;
-  CurrentEnemy: Enemy;
-  img = new Image();
+  imgEnemy = new Image();
 
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 
+  private isAnemyAlive = false ;
   private clicksArray: EnemyHit[] = [];
   private parentElement: HTMLElement;
   private imageMargin = 70;
@@ -31,6 +31,7 @@ export class EnemyComponent implements OnInit, OnDestroy {
   private isDrawing = false;
   private currentDamage: string;
   private dellayDrawing = 70;
+  private dellayMoving = 70;
   // animation of image  values
   private enemyMovingX = 0;
   private shiftEnemyMoveX = 2;
@@ -38,14 +39,17 @@ export class EnemyComponent implements OnInit, OnDestroy {
   private enemyMovingY = 0;
   private shiftEnemyMoveY = 1;
   private enemyMaxShiftY = 10;
+  private transarencyValue = 1;
   // Subscriptions
   private heroStateSubscription: Subscription;
   private enemyStateSubscription: Subscription;
   private intervalAdjustCanvas;
   private intervalAnimation;
+  private intervalMovingEnemy;
+
 
   constructor(private store: Store<fromAppStore.AppState>,
-    private gameService: GameService) { }
+              private gameService: GameService) { }
 
   ngOnInit() {
     this.intervalAdjustCanvas = setInterval(() => {
@@ -56,11 +60,22 @@ export class EnemyComponent implements OnInit, OnDestroy {
       this.drawAnimation();
     }, this.dellayDrawing);
 
+    this.intervalMovingEnemy = setInterval(() => {
+      this.moveEnemy();
+    }, this.dellayMoving);
+
+
+
 
     this.enemyStateSubscription = this.store.select('enemyState').subscribe((enemyState) => {
-      if (!this.CurrentEnemy || this.CurrentEnemy !== enemyState.enemy || this.CurrentEnemy.url !== enemyState.enemy.url) {
-        this.CurrentEnemy = enemyState.enemy;
-        this.img.src = this.CurrentEnemy.url;
+      if (!this.imgEnemy || this.imgEnemy.src !== enemyState.enemy.url || this.isAnemyAlive !== enemyState.isEnemyAlive) {
+        this.clicksArray = [];
+        this.imgEnemy.src = enemyState.enemy.url;
+        this.isAnemyAlive = enemyState.isEnemyAlive;
+        this.transarencyValue = 1;
+        this.isDrawing = false;
+      } else if (!enemyState.isEnemyAlive && this.isAnemyAlive) {
+        this.isAnemyAlive = enemyState.isEnemyAlive;
       }
     });
 
@@ -77,36 +92,43 @@ export class EnemyComponent implements OnInit, OnDestroy {
     this.parentElement = this.self.nativeElement.parentElement.parentElement;
   }
 
-  // drawEnemy(): void {
-  //   this.img.src = this.enemy.url;
-  // }
-
   drawAnimation() {
     if (!this.isDrawing) {
       this.isDrawing = true;
+      if(!this.isAnemyAlive) {
+        this.transarencyValue -= 0.065;
+      }
+      this.ctx.globalAlpha = this.transarencyValue;
+
       if (this.ctx) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        if (this.img) {
-          this.ctx.drawImage(this.img, -this.enemyMovingX, this.enemyMovingY, this.img.width + this.enemyMovingX * 2, this.img.height - this.enemyMovingY, // source rectangle
+        if (this.imgEnemy) {
+          this.ctx.drawImage(
+            // source rectangle
+            this.imgEnemy, -this.enemyMovingX, this.enemyMovingY, this.imgEnemy.width + this.enemyMovingX * 2, this.imgEnemy.height - this.enemyMovingY,
             this.imageMargin, this.imageMargin,
             this.canvas.width - 2 * this.imageMargin,
             this.canvas.height - 2 * this.imageMargin); // destination rectangle
         }
         this.drawAllClicks();
-
-        // shift enemy image
-        if (this.enemyMovingX > this.enemyMaxShiftX || this.enemyMovingX < 0) {
-          this.shiftEnemyMoveX *= -1;
-        }
-        if (this.enemyMovingY > this.enemyMaxShiftY || this.enemyMovingY < 0) {
-          this.shiftEnemyMoveY *= -1;
-        }
-        this.enemyMovingY += this.shiftEnemyMoveY;
-        this.enemyMovingX += this.shiftEnemyMoveX;
-      }
+    }
       this.isDrawing = false;
     }
   }
+
+moveEnemy() {
+  if (this.isAnemyAlive) {
+    // shift enemy image
+    if (this.enemyMovingX > this.enemyMaxShiftX || this.enemyMovingX < 0) {
+      this.shiftEnemyMoveX *= -1;
+    }
+    if (this.enemyMovingY > this.enemyMaxShiftY || this.enemyMovingY < 0) {
+      this.shiftEnemyMoveY *= -1;
+    }
+    this.enemyMovingY += this.shiftEnemyMoveY;
+    this.enemyMovingX += this.shiftEnemyMoveX;
+  }
+}
 
 
   clickEnemy(event: Event) {
@@ -116,7 +138,7 @@ export class EnemyComponent implements OnInit, OnDestroy {
     }
     this.gameService.hitEnemy();
   }
-  private getMousePos(canvas, evt) {
+  private getMousePos(canvas: HTMLCanvasElement, evt) {
     const rect = canvas.getBoundingClientRect();
     return {
       x: evt.clientX - rect.left,
@@ -178,5 +200,6 @@ export class EnemyComponent implements OnInit, OnDestroy {
 
     clearInterval(this.intervalAdjustCanvas);
     clearInterval(this.intervalAnimation);
+    clearInterval(this.intervalMovingEnemy);
   }
 }

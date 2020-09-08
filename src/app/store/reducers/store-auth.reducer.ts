@@ -15,7 +15,7 @@ const initialState: AuthState = {
 }
 
 export function userReducer(state = initialState, action: appActions): AuthState {
-    switch(action.type) {
+    switch (action.type) {
         case ControllerActions.USER_LOGIN: {
             return {
                 ...state,
@@ -30,6 +30,6 @@ export function userReducer(state = initialState, action: appActions): AuthState
                 isLoginedIn: false
             }
         }
-        default : return state;
+        default: return state;
     }
 }

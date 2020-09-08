@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import * as firebase from 'firebase';
 import { DatabaseDataLinks } from './database-enums';
 import { SharedDataService } from 'src/app/databaseSharedData/shared-data.service';
-import { enemyReward } from 'src/app/databaseSharedData/gold';
+import { EnemyReward } from 'src/app/databaseSharedData/gold';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
@@ -20,7 +20,7 @@ import { UserDataInfo } from 'src/app/classes/userDataInfo';
 })
 export class DataStorageService {
   // private urlFirebase = 'https://foresthunter-f42be.firebaseio.com/';
-  public enemyRewards = new BehaviorSubject<enemyReward[]>(null);
+  public enemyRewards = new BehaviorSubject<EnemyReward[]>(null);
   private subscriptionToUser: Subscription;
 
   private get heroDBRefData() {
@@ -60,7 +60,7 @@ export class DataStorageService {
   }
   // ------------------------------------------------------------HERO----------------------------------------------------------------------
   public postUserDataInfo(postUserData: UserDataInfo) {
-    console.log('postUserData', postUserData);
+    //console.log('postUserData', postUserData);
     if (this.controllerActions.getAuthState().user && postUserData) {
       this.userDataInfoDBRefData
         .set(postUserData);

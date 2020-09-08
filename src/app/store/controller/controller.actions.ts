@@ -95,8 +95,8 @@ export class ControllerActions {
   }
 
   // ----------------------------------------------ENEMY------------------------------------------------------------
-  public EnemyGenerate(level: number) {
-    this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE, level));
+  public EnemyGenerate() {
+    this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
   }
 
   public EnemyLoadNew(level: number) {
@@ -128,7 +128,7 @@ public UserLogin(user: User) {
 public UserLogout() {
   this.store.dispatch(createAction(ControllerActions.USER_LOGOUT));
   this.HeroLoad(new Hero(0));
-  this.EnemyGenerate(1);
+  this.EnemyGenerate();
 }
 
 // -------------------------------------------------------------USER DATA INFO------------------------------------------------------------

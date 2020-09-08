@@ -20,9 +20,9 @@ export function heroReducer(state = initialHeroState, action: appActions) {
                 ...state,
                 hero: {
                     ...action.payload,
-                    weapons: [...action.payload.weapons],
-                    weaponVersion: state.weaponVersion + 1,
-                }
+                    weapons: [...action.payload.weapons]
+                },
+                weaponVersion: state.weaponVersion + 1
             }
         case ControllerActions.HERO_ADD_GOLD:
             const updatedGold = state.hero.gold + action.payload;

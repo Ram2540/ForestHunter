@@ -1,7 +1,7 @@
 import { SharedDataService } from './shared-data.service';
 import { Injectable } from '@angular/core';
 
-export interface enemyReward {
+export interface EnemyReward {
 
     level: number;
     gold: number;
@@ -10,13 +10,13 @@ export interface enemyReward {
 
 @Injectable()
 export abstract class SharedDataGold {
-    private static enemyRewardsArray: enemyReward[] = [];
+    private static enemyRewardsArray: EnemyReward[] = [];
     private static startGoldReward = 2;
-    private static multiplier = 1.8;
-    private static finalLevel = 1000;
+    private static multiplier = 2.1;
+    private static finalLevel = 100;
 
     // get array data for enemyRewards
-    public static get enemyRewards(): enemyReward[] {
+    public static get enemyRewards(): EnemyReward[] {
         if (this.enemyRewardsArray.length < this.finalLevel) {
             SharedDataGold.generateEnemyRewards();
         }
@@ -26,7 +26,7 @@ export abstract class SharedDataGold {
     public static generateEnemyRewards(): void {
         let reward = SharedDataGold.startGoldReward;
         for (let i = 0; i <= SharedDataGold.finalLevel; i++) {
-            const currentEnemyReward: enemyReward = { level: i, gold: reward };
+            const currentEnemyReward: EnemyReward = { level: i, gold: reward };
             SharedDataGold.enemyRewardsArray.push(currentEnemyReward);
             reward = Math.round(reward * SharedDataGold.multiplier);
         }

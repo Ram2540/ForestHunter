@@ -13,7 +13,7 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
   MostersDownOnCurrentLevel = 0;
   MaxMosterOnLevel = 0;
   PercentHP = 0;
-  EnemyHP  = '0';
+  EnemyHP = '0';
   FullHP = '0';
   EnemyCurrentLevel = 1;
   private storeEnemySubscriprion: Subscription;
@@ -24,8 +24,8 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.storeEnemySubscriprion = this.store.select('enemyState').subscribe((enemyState) => {
       this.PercentHP = enemyState.enemy.HP / enemyState.enemy.FullHP * 100;
-       this.FullHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.FullHP);
-       this.EnemyHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.HP);
+      this.FullHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.FullHP);
+      this.EnemyHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.HP);
       this.EnemyCurrentLevel = enemyState.enemy.level;
     });
 
@@ -34,6 +34,10 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
       this.MaxMosterOnLevel = heroState.hero.maxMosterOnLevel;
     });
 
+  }
+
+  ngOnChnage() {
+    this.PercentHP = this.PercentHP;
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { SharedDataGold, enemyReward } from './gold';
+import { SharedDataGold, EnemyReward } from './gold';
 import { SharedDataWeapons } from './weaponsData';
 import { pipe } from 'rxjs';
 import { StaticDataWeaponStore } from './StaticDataWeaponStore';
