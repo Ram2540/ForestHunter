@@ -2,6 +2,11 @@ body {
     background-color: rgba(115, 139, 115, 0.3);
 }
 
+/* fix issue with zoom in mobile devices */
+* {
+    touch-action: manipulation;
+}
+
 /* You can add global styles to this file, and also import other style files */
 /* [class^="tabs-all-"] {
     width: 118px;
