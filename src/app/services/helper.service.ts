@@ -8,7 +8,8 @@ export class HelperService {
   constructor() { }
 
   getConvertedNumberToKs(num: number): string {
-    let res = num.toString();
+
+    let res = num.toLocaleString().split(',').join('');
     if (num > 1000) {
       let rest = res.length % 3;
       if (rest === 0) {

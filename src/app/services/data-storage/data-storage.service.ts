@@ -52,15 +52,15 @@ export class DataStorageService {
     this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
       if (authState.user) {
         this.tryToPostNewUserDataInfoOrGetExistingOne();
-          this.tryToPostNewHeroOrGetExistingOne();
-          this.tryToPostNewRatingsOrGetExistingOne();
+        this.tryToPostNewHeroOrGetExistingOne();
+        this.tryToPostNewRatingsOrGetExistingOne();
       }
     });
 
   }
   // ------------------------------------------------------------HERO----------------------------------------------------------------------
   public postUserDataInfo(postUserData: UserDataInfo) {
-    //console.log('postUserData', postUserData);
+    // console.log('postUserData', postUserData);
     if (this.controllerActions.getAuthState().user && postUserData) {
       this.userDataInfoDBRefData
         .set(postUserData);
