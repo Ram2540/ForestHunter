@@ -1,10 +1,11 @@
 .app-main {
-    min-width: 55rem;
-    max-width: 80rem;
+    min-width: 60rem;
+    max-width: 90rem;
     display: grid;
-    grid-template-areas:"header"
-                        "main";
+    grid-template-areas:"header ."
+                        "main damage-info";
     grid-template-rows: 13% 87%;
+    grid-template-columns: 90% 10%;
     margin: auto;
     border: teal solid 0.2rem;
     border-radius: 1rem;
@@ -24,7 +25,7 @@
 
  .app-main-area {
     display: grid;
-    grid-template-areas:"left battlefiled";
+    grid-template-areas:"left battlefiled damage-info";
     grid-template-columns: 50% 50%;
     grid-template-rows: 32rem;
     grid-area: main;
@@ -46,4 +47,9 @@
 
 .app-main-top {
     display: flex;
+}
+
+.damage-info {
+    grid-area: damage-info;
+    margin: auto;
 }

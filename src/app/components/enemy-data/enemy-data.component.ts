@@ -10,6 +10,7 @@ import { HelperService } from 'src/app/services/helper.service';
   styleUrls: ['./enemy-data.component.css']
 })
 export class EnemyDataComponent implements OnInit, OnDestroy {
+  enemyName = 'HERE IS A MONSTER NAME';
   MostersDownOnCurrentLevel = 0;
   MaxMosterOnLevel = 0;
   PercentHP = 0;
@@ -27,6 +28,7 @@ export class EnemyDataComponent implements OnInit, OnDestroy {
       this.FullHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.FullHP);
       this.EnemyHP = this.helperService.getConvertedNumberToKs(enemyState.enemy.HP);
       this.EnemyCurrentLevel = enemyState.enemy.level;
+      this.enemyName = enemyState.enemy.name;
     });
 
     this.storeHeroSubscriprion = this.store.select('heroState').subscribe((heroState) => {

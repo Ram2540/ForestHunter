@@ -77,19 +77,15 @@
 }
 
 .ratio-moster-down {
-    width: 1rem;
+    text-align: center;
+    width: 3.5rem;
     height: 1.7rem;
     position: absolute;
     bottom: 4rem;
-    right: -1.5rem;
-    border-radius: 1.3rem;
-    line-height: 1.6rem;
-    padding: 0 4rem 0 1rem;
-    /* color: #fff; */
+    right: 0rem;
+    border-radius: 1.3rem 0 0 1.3rem ;
     font-size: 1.1rem;
-    font-weight: 700;
     border: 0.2rem solid #1b7f83;
-    /* background: linear-gradient(0deg,#6c547e,#1b5963); */
     box-shadow: 0 0.1rem 0.2rem #40372e, 0 0.2rem 0.2rem #40372e; 
 }
 
@@ -102,8 +98,6 @@
     bottom: 1rem;
     left: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,.55);
-    /* background: linear-gradient(0deg,#6c547e,#1b5963); */
-    /* background: linear-gradient(0deg,#ffe199,#f4c657 18%,#ffe199 60%,#f4c557 85%,#ffe199); */
     border-radius: 10px;
     overflow: hidden;
     font-weight: 400;

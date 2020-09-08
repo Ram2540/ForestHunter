@@ -34,6 +34,6 @@ const mostersURL = ['https://xgm.guru/files/649/130131/screenshot2.png',
         this.url = mostersURL[Math.floor(Math.random() * mostersURL.length)];
         //this.url = 'https://i7.pngflow.com/pngimage/293/775/png-evolve-monster-behemoth-kraken-legendary-creature-monster-purple-game-dragon-video-game-clipart.png'
 
-
+        this.name =this.url.substr(8,10);
     }
 }
