@@ -6,6 +6,7 @@ import { Subscription, Subject } from 'rxjs';
 import { timeInterval } from 'rxjs/operators';
 import { Ratings, RatingsDB } from './ratings.model';
 import { DataTableDirective } from 'angular-datatables';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-ratings',
@@ -28,7 +29,8 @@ export class RatingsComponent implements OnInit, OnDestroy, AfterViewInit {
   private whereInitdtTrigger = false;  // true - init in ngAfterViewInit false - init in ngOnInit
 
   constructor(private dataStorageService: DataStorageService,
-    private store: Store<fromAppStore.AppState>) {
+              private store: Store<fromAppStore.AppState>,
+              private helperService: HelperService) {
     this.dtOptions = {
       destroy:true,
       pagingType: 'full_numbers',
@@ -71,6 +73,10 @@ export class RatingsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dtTrigger.next();
     }
    }
+
+  getStranformedValue(value: number): string {
+    return this.helperService.getConvertedNumberToKs(value);
+  }
 
   // sortByMaxLevel() {
   //   this.ratingsList = this.ratingsList.sort((r, r1) => r1.maxLevel - r.maxLevel);

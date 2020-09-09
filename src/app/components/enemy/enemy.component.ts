@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { GameService } from 'src/app/services/game.service';
 import { EnemyHit } from './enemyHit.model';
+import { GlobalSettings } from 'src/app/global-settings';
 
 
 @Component({
@@ -26,19 +27,14 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   private isAnemyAlive = false ;
   private clicksArray: EnemyHit[] = [];
   private parentElement: HTMLElement;
-  private imageMargin = 70;
-  private maxState = 30;
+
+  private maxState: number;
   private isDrawing = false;
   private currentDamage: string;
-  private dellayDrawing = 70;
-  private dellayMoving = 70;
-  // animation of image  values
   private enemyMovingX = 0;
-  private shiftEnemyMoveX = 2;
-  private enemyMaxShiftX = 20;
+  private shiftEnemyMoveX: number;
   private enemyMovingY = 0;
-  private shiftEnemyMoveY = 1;
-  private enemyMaxShiftY = 10;
+  private shiftEnemyMoveY: number;
   private transarencyValue = 1;
   // Subscriptions
   private heroStateSubscription: Subscription;
@@ -54,17 +50,19 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.intervalAdjustCanvas = setInterval(() => {
       this.adjustCanvasSizeToParent();
-    }, this.dellayDrawing);
+    }, GlobalSettings.enemyDrawDellayDrawing);
 
     this.intervalAnimation = setInterval(() => {
       this.drawAnimation();
-    }, this.dellayDrawing);
+    }, GlobalSettings.enemyDrawDellayDrawing);
 
     this.intervalMovingEnemy = setInterval(() => {
       this.moveEnemy();
-    }, this.dellayMoving);
+    }, GlobalSettings.enemyDrawDellayMoving);
 
-
+    this.shiftEnemyMoveX = GlobalSettings.enemyAnimationShiftEnemyMoveX;
+    this.shiftEnemyMoveY = GlobalSettings.enemyAnimationShiftEnemyMoveY;
+    this.maxState = GlobalSettings.enemyClickMaxState;
 
 
     this.enemyStateSubscription = this.store.select('enemyState').subscribe((enemyState) => {
@@ -96,7 +94,7 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.isDrawing) {
       this.isDrawing = true;
       if(!this.isAnemyAlive) {
-        this.transarencyValue -= 0.065;
+        this.transarencyValue -= GlobalSettings.enemyAnimationDeathTransarencyChnagePerOneDraw;
       }
       this.ctx.globalAlpha = this.transarencyValue;
 
@@ -106,9 +104,9 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
           this.ctx.drawImage(
             // source rectangle
             this.imgEnemy, -this.enemyMovingX, this.enemyMovingY, this.imgEnemy.width + this.enemyMovingX * 2, this.imgEnemy.height - this.enemyMovingY,
-            this.imageMargin, this.imageMargin,
-            this.canvas.width - 2 * this.imageMargin,
-            this.canvas.height - 2 * this.imageMargin); // destination rectangle
+            GlobalSettings.enemyDrawImageMargin, GlobalSettings.enemyDrawImageMargin,
+            this.canvas.width - 2 * GlobalSettings.enemyDrawImageMargin,
+            this.canvas.height - 2 * GlobalSettings.enemyDrawImageMargin); // destination rectangle
         }
         this.drawAllClicks();
     }
@@ -119,10 +117,10 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
 moveEnemy() {
   if (this.isAnemyAlive) {
     // shift enemy image
-    if (this.enemyMovingX > this.enemyMaxShiftX || this.enemyMovingX < 0) {
+    if (this.enemyMovingX > GlobalSettings.enemyAnimationMaxShiftX || this.enemyMovingX < 0) {
       this.shiftEnemyMoveX *= -1;
     }
-    if (this.enemyMovingY > this.enemyMaxShiftY || this.enemyMovingY < 0) {
+    if (this.enemyMovingY > GlobalSettings.enemyAnimationMaxShiftY || this.enemyMovingY < 0) {
       this.shiftEnemyMoveY *= -1;
     }
     this.enemyMovingY += this.shiftEnemyMoveY;

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { ControllerActions } from '../store/controller/controller.actions';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../store/app-store';
-import { map, tap, debounceTime, take } from 'rxjs/operators';
+import { map, debounceTime, take } from 'rxjs/operators';
 import { DataStorageService } from './data-storage/data-storage.service';
 import { SharedDataGold } from '../databaseSharedData/gold';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Ratings } from '../components/ratings/ratings.model';
 import { HelperService } from './helper.service';
+import { GlobalSettings } from '../global-settings';
 
 @Injectable({
     providedIn: 'root'
@@ -16,12 +16,9 @@ import { HelperService } from './helper.service';
 export class GameService {
     private damageInterval: any;
     private heroDamage = 0;
-    private numberOfDamagesPerSecond = 1;
     private isUserLoginedIn = false;
     private currentRatings: Ratings;
-    private tipeOfDyingEnemy = 950;
     private enemyIsGenerating = false;
-    private tempDataForPost: number;
 
     public get getHeroDamage(): number {
         return this.heroDamage;
@@ -38,9 +35,9 @@ export class GameService {
         this.damageInterval = setInterval(() => {
             // console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
             if (this.isUserLoginedIn) {
-                this.controllerActions.EnemyIsDamaged(Math.floor(this.heroDamage / this.numberOfDamagesPerSecond));
+                this.controllerActions.EnemyIsDamaged(this.heroDamage / GlobalSettings.gameNumberOfDamagesPerSecond);
             }
-        }, (1000 / this.numberOfDamagesPerSecond));
+        }, (1000 / GlobalSettings.gameNumberOfDamagesPerSecond));
         // ------------------------------ENEMY------------------------------
         this.store.select('enemyState').pipe(
             map((enemyState) => {
@@ -61,7 +58,7 @@ export class GameService {
                     setTimeout(() => {
                         this.controllerActions.EnemyGenerate();
                         this.enemyIsGenerating = false;
-                    }, this.tipeOfDyingEnemy);
+                    }, GlobalSettings.gameDelayOfEnemyDying);
                 }
                 return null;
             })).subscribe((value) => {
