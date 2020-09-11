@@ -39,38 +39,61 @@ export class GameService {
             }
         }, (1000 / GlobalSettings.gameNumberOfDamagesPerSecond));
         // ------------------------------ENEMY------------------------------
-        this.store.select('enemyState').pipe(
-            map((enemyState) => {
-                if (enemyState.enemy && enemyState.enemy.HP <= 0 && enemyState.isEnemyAlive) {
-                    // -------------ALL LOGIC ENEMY DEAD APLLY HERE------------------
-                    this.controllerActions.HeroAddMonsterDownOnCurrentLevel();
-                    this.controllerActions.EnemyIsKilled();
-                    let goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
-                    if (goldReward) {
-                        // add bonus
-                        goldReward += goldReward * (this.controllerActions.getHeroState().hero.goldBonus / 100);
-                        this.controllerActions.HeroAddGold(goldReward);
-                    }
+        this.store.select('enemyState').subscribe((enemyState) => {
+            if (enemyState.enemy && enemyState.enemy.HP <= 0 && enemyState.isEnemyAlive) {
+                // -------------ALL LOGIC ENEMY DEAD APLLY HERE------------------
+                this.controllerActions.HeroAddMonsterDownOnCurrentLevel();
+                this.controllerActions.EnemyIsKilled();
+                if (enemyState.currentEnemyLevel !== this.controllerActions.getHeroState().hero.currentLevel) {
+                    // change enemy level
+                    this.controllerActions.EnemySetLevel(this.controllerActions.getHeroState().hero.currentLevel);
                 }
-                if (!enemyState.isEnemyAlive && !this.enemyIsGenerating) {
-                    this.enemyIsGenerating = true;
-                    // generate new enemy with deley
-                    setTimeout(() => {
-                        this.controllerActions.EnemyGenerate();
-                        this.enemyIsGenerating = false;
-                    }, GlobalSettings.gameDelayOfEnemyDying);
+                let goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
+                if (goldReward) {
+                    // add bonus
+                    goldReward += goldReward * (this.controllerActions.getHeroState().hero.goldBonus / 100);
+                    this.controllerActions.HeroAddGold(goldReward);
                 }
-                return null;
-            })).subscribe((value) => {
-                return value;
-            });
+                this.controllerActions.EnemyGenerate();
+            }
+        });
+        // this.store.select('enemyState').pipe(
+        //     map((enemyState) => {
+        //         if (enemyState.enemy && enemyState.enemy.HP <= 0 && enemyState.isEnemyAlive) {
+        //             // -------------ALL LOGIC ENEMY DEAD APLLY HERE------------------
+        //             this.controllerActions.HeroAddMonsterDownOnCurrentLevel();
+        //             this.controllerActions.EnemyIsKilled();
+        //             if (enemyState.currentEnemyLevel !== this.controllerActions.getHeroState().hero.currentLevel) {
+        //                 // change enemy level
+        //                 this.controllerActions.EnemySetLevel(this.controllerActions.getHeroState().hero.currentLevel);
+        //             }
+        //             let goldReward = SharedDataGold.enemyRewards.find((e) => e.level === enemyState.enemy.level).gold;
+        //             if (goldReward) {
+        //                 // add bonus
+        //                 goldReward += goldReward * (this.controllerActions.getHeroState().hero.goldBonus / 100);
+        //                 this.controllerActions.HeroAddGold(goldReward);
+        //             }
+        //             this.controllerActions.EnemyGenerate();
+        //         }
+        //         // if (!enemyState.isEnemyAlive && !this.enemyIsGenerating) {
+        //         //     this.enemyIsGenerating = true;
+        //         //     // generate new enemy with deley
+        //         //     setTimeout(() => {
+        //         //         this.controllerActions.EnemyGenerate();
+        //         //         this.enemyIsGenerating = false;
+        //         //     }, GlobalSettings.gameDelayOfEnemyDying);
+        //         // }
+        //         return null;
+        //     })).subscribe((value) => {
+        //         return value;
+        //     });
         // -------------------------------HERO-------------------------------
         this.store.select('heroState').pipe(
             map((heroState) => {
-                if (heroState.hero.currentLevel !== this.controllerActions.getEnemyState().currentEnemyLevel) {
-                    // change enemy level
-                    this.controllerActions.EnemySetLevel(heroState.hero.currentLevel);
-                }
+                // if (heroState.hero.currentLevel !== this.controllerActions.getEnemyState().currentEnemyLevel) {
+                //     // change enemy level
+                //     this.controllerActions.EnemySetLevel(heroState.hero.currentLevel);
+                // }
                 // hero Damage
                 const DPSmodefier = (1 + heroState.hero.DPSMultiplier / 100);
                 this.heroDamage = heroState.hero.weapons.filter(w => w.level > 0)

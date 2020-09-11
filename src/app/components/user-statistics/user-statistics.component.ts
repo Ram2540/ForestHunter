@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Ratings } from '../ratings/ratings.model';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ParseService } from 'src/app/services/parse.service';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
 import { Subscription } from 'rxjs';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-user-statistics',
@@ -23,14 +23,18 @@ export class UserStatisticsComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<fromAppStore.AppState>,
               private parseService: ParseService,
-              private controllerActions: ControllerActions) { }
+              private controllerActions: ControllerActions,
+              private helperService: HelperService) { }
 
   ngOnInit(): void {
     this.ratingsStateSubscription = this.store.select('ratingsState').subscribe((ratingState) => {
       this.ratings = { ...ratingState.rating };
-      // for(let r of this.ratings) {
-
-      // }
+      const properties = Object.keys(this.ratings);
+      for(const r of properties) {
+        if(!isNaN(this.ratings[r])) {
+          this.ratings[r] = this.helperService.getConvertedNumberToKs(this.ratings[r]);
+        }
+      }
     });
     this.userDataInfoStateSubscription = this.store.select('userDataInfoState').subscribe((userDataInfoState)=>{
       this.userName = userDataInfoState.userDataInfo.userName;

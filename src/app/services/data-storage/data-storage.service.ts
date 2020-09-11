@@ -108,7 +108,8 @@ export class DataStorageService {
           const leadedHero: Hero = snapshot.val();
           if (leadedHero) {
             this.controllerActions.HeroLoad(leadedHero);
-            this.controllerActions.EnemyLoadNew(leadedHero.currentLevel);
+            this.controllerActions.EnemySetLevel(leadedHero.currentLevel);
+            this.controllerActions.EnemyGenerate();
           }
         });
     }

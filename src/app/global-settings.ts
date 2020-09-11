@@ -1,7 +1,7 @@
 export class GlobalSettings {
     // ------------------------Game-------------------------------------
     static gameNumberOfDamagesPerSecond = 5;
-    static gameDelayOfEnemyDying = 1050;
+    static gameDelayOfEnemyGereration = 1050;
     // ------------------------END Game-------------------------------------
 
     // ------------------------Enemy-------------------------------------

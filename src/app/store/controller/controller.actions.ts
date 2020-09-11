@@ -14,6 +14,7 @@ import { Ratings, RatingsDB } from '../../components/ratings/ratings.model';
 import { RatingsState } from '../reducers/store-ratings.reducer';
 import { UserDataInfo } from 'src/app/classes/userDataInfo';
 import { UserDataInfoState } from '../reducers/store-userDataInfo.reducer';
+import { GlobalSettings } from 'src/app/global-settings';
 // import {AppState} from '../../models/appState';
 
 @Injectable({
@@ -95,13 +96,31 @@ export class ControllerActions {
   }
 
   // ----------------------------------------------ENEMY------------------------------------------------------------
-  public EnemyGenerate() {
-    this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
-  }
+private isEnemyGenerating = false;
+private enemyGenerateTimer;
 
-  public EnemyLoadNew(level: number) {
-    this.store.dispatch(createAction(ControllerActions.ENEMY_LOAD_NEW, level));
+  public EnemyGenerate() {
+    if (this.getEnemyState().currentEnemyLevel !== this.getEnemyState().enemy.level) {
+      if (this.enemyGenerateTimer) {
+          clearTimeout(this.enemyGenerateTimer);
+      }
+      this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
+      this.isEnemyGenerating = false;
+    } else if (!this.isEnemyGenerating) {
+      this.isEnemyGenerating = true;
+      setTimeout(() => {
+        this.enemyGenerateTimer = this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
+        this.isEnemyGenerating = false;
+      }, GlobalSettings.gameDelayOfEnemyGereration);
+    }
   }
+  // public EnemyGenerate() {
+  //   this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
+  // }
+
+  // public EnemyLoadNew(level: number) {
+  //   this.store.dispatch(createAction(ControllerActions.ENEMY_LOAD_NEW, level));
+  // }
 
   EnemyIsDamaged(damage: number) {
     this.store.dispatch(createAction(ControllerActions.ENEMY_IS_DAMAGED, damage));
