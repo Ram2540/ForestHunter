@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { ControllerActions } from '../store/controller/controller.actions';
 import { DataStorageService } from '../services/data-storage/data-storage.service';
 import { HelperService } from '../services/helper.service';
+import { FirestoreDBService } from '../database/firestore-db.service';
 
 
 
@@ -33,7 +34,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     private store: Store<fromAppStore.AppState>,
     private controllerActions: ControllerActions,
     private dataStorageService: DataStorageService,
-    private healperService: HelperService) { }
+    private healperService: HelperService,
+    private firestoreDB: FirestoreDBService) { }
   ngOnInit() {
     this.authStateSubscription = this.store.select('authState').subscribe(value => {
       this.isUserLoginedIn = value.isLoginedIn;
@@ -96,6 +98,9 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onTest() {
+
+   
+    // this.firestoreDB.getWeaponsCollection();
     // //console.log(this.healperService.getConvertedNumberToKs(652000));
 
     // this.store.select('ratingsState').subscribe(r => {

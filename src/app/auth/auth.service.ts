@@ -31,7 +31,6 @@ export class AuthService {
   // userChanged: Observable<User> = this.user.asObservable();
   private api = 'AIzaSyDWyCa698JnaQrv1z1PjSIkErIhiLSAFPo';
   private localStorageUserKey = 'userData';
-  private database = firebase.database();
   isLogined = false;
 
   constructor(private http: HttpClient,
@@ -56,19 +55,9 @@ export class AuthService {
 
 
   onTest() {
-    // firebase
-    //   .database()
-    //   .ref('userData/' + this.controllerActions.geAuthState().user.uid + '/')
-    //   .on('value', ((snapshot) => {
-    //     console.log(snapshot.val());
-    //   }));
-    // const hero = new Hero(1);
-    // firebase
-    //   .database()
-    //   .ref('ratings/test/')
-    //   .set(hero);
-    //this.dataStorageService.getRatings();
+
   }
+
   signup(email: string, password: string): Promise<boolean | Observable<never>> {
     return this.authFirebase.createUserWithEmailAndPassword(email, password)
       .then(() => true)

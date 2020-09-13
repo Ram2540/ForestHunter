@@ -27,7 +27,7 @@ export function userDataInfoStateReducer(state = initialState, action: appAction
             return {
                 ...state,
                 userDataInfo: {...action.payload,
-                    lastTimeUserLogin: state.userDataInfo.lastTimeUserLogin,
+                    lastTimeUserLogin: new Date().getTime(),
                     previousTimeUserLogin: state.userDataInfo.lastTimeUserLogin
                 }
             };
