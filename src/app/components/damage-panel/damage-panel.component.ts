@@ -58,16 +58,8 @@ export class DamagePanelComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
           this.damagePanelList[this.DPSIndex].valueChanged = false;
-        }, 1000);
+        }, 600);
       }
-      // if (this.damagePanelList[this.DPSIndex].damageInNymber !== this.gameService.getHeroDamage) {
-      //   this.damagePanelList[this.DPSIndex].damageInNymber = this.gameService.getHeroDamage;
-      //   this.damagePanelList[this.DPSIndex].damage = this.helperService.getConvertedNumberToKs(this.gameService.getHeroDamage);
-      //   this.damagePanelList[this.DPSIndex].valueChanged = true;
-      //   setTimeout( () => {
-      //     this.damagePanelList[this.DPSIndex].valueChanged = false;
-      //   }, 1000);
-      // }
     });
   }
 

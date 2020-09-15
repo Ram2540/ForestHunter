@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
-import { ParseService } from 'src/app/services/parse.service';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
 import { Subscription } from 'rxjs';
 import { HelperService } from 'src/app/services/helper.service';
@@ -22,7 +21,6 @@ export class UserStatisticsComponent implements OnInit, OnDestroy {
   private userDataInfoStateSubscription: Subscription;
 
   constructor(private store: Store<fromAppStore.AppState>,
-              private parseService: ParseService,
               private controllerActions: ControllerActions,
               private helperService: HelperService) { }
 

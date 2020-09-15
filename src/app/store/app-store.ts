@@ -4,7 +4,7 @@ import * as fromStoreEnemyReducer  from './reducers/store-enemy.reducer';
 import * as fromStoreAuthReducer  from './reducers/store-auth.reducer';
 import * as fromStoreRatingsReducer from './reducers/store-ratings.reducer';
 import * as fromStoreUserDataInfoStateReducer from './reducers/store-userDataInfo.reducer';
-
+import * as fromStoreWeaponStateReducer from './reducers/store-weapon.reducer';
 
 export interface AppState {
     heroState: fromStoreHeroReducer.HeroState;
@@ -12,6 +12,7 @@ export interface AppState {
     authState: fromStoreAuthReducer.AuthState;
     ratingsState: fromStoreRatingsReducer.RatingsState;
     userDataInfoState: fromStoreUserDataInfoStateReducer.UserDataInfoState;
+    weaponsState: fromStoreWeaponStateReducer.WeaponState;
 }
 //export type appActions = HeroActions | EnemyActions;
 export interface appActions {
@@ -26,6 +27,7 @@ export const appReducer: ActionReducerMap<AppState>  = {
     enemyState : fromStoreEnemyReducer.enemyReducer,
     authState : fromStoreAuthReducer.userReducer,
     ratingsState : fromStoreRatingsReducer.ratingsReducer,
-    userDataInfoState : fromStoreUserDataInfoStateReducer.userDataInfoStateReducer
+    userDataInfoState : fromStoreUserDataInfoStateReducer.userDataInfoStateReducer,
+    weaponsState : fromStoreWeaponStateReducer.weaponReducer
 }
 

@@ -1,9 +1,10 @@
 import { Weapon } from '../classes/weapon';
 import { weaponUrls } from '../enums/imageUrls';
 import { ElementTypes } from '../enums/elementTypes';
+import { GlobalSettings } from '../global-settings';
 
 
-interface WeapondDatabaseData {
+export interface WeapondDatabaseData {
     readonly id: number;
     damageList: number[];
     priceList: number[];
@@ -14,25 +15,26 @@ interface WeapondDatabaseData {
 }
 
 export class SharedDataWeapons {
+    private static _instance: SharedDataWeapons;
     private static weaponList: WeapondDatabaseData[] = [];
     private firstWeaponStages: Weapon[] = [];
     private maxWeaponLevel = 1000;
-    private priceFactor = 0.1; // 10% increase of price for each new level of weapon
+    // private priceFactor = 0.1; // 10% increase of price for each new level of weapon
     private damageFactor = 1.1; //  1.1 - 110% increase of damage for each new level of weapon
     public static get getWeaponData(): WeapondDatabaseData[] {
         return this.weaponList.slice();
     }
 
-
+    public static get Instance() {
+        return this._instance || (this._instance = new this());
+    }
     constructor() {
             this.generateWeaponListForDB();
     }
 
+
     public static getWeaponByIDandLevel(id: number, level: number) {
-        console.log('dsfsdfsd');
-        console.log(this.weaponList);
         const foundWeapon = this.weaponList.find(w => w.id === id);
-        console.log(foundWeapon);
         if (foundWeapon) {
             const updatedWeapon = new Weapon(foundWeapon.id,
                 level,
@@ -69,7 +71,7 @@ export class SharedDataWeapons {
         const UpdatedWeapon: Weapon = { ...weapon };
         // calculate values
         UpdatedWeapon.level++;
-        UpdatedWeapon.price = weapon.price + Math.round(weapon.price * this.priceFactor);
+        UpdatedWeapon.price = weapon.price + Math.round(weapon.price * GlobalSettings.weaponPriceFactor);
         UpdatedWeapon.damage = weapon.damage + this.getFirstStateOfWeapon(weapon.id).damage/* * this.damageFactor*/;
         // add values
         this.getDatabaseWeaponById(UpdatedWeapon.id).damageList.splice(UpdatedWeapon.level, 1, UpdatedWeapon.damage);
@@ -91,9 +93,10 @@ export class SharedDataWeapons {
         this.firstWeaponStages.push(new Weapon(5, 0, 450, 5500, 1, ElementTypes.Wind, true, weaponUrls.weapon5));
         this.firstWeaponStages.push(new Weapon(6, 0, 1600, 25000, 1, ElementTypes.Wind, true, weaponUrls.weapon6));
         this.firstWeaponStages.push(new Weapon(7, 0, 6000, 125000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
-        // this.firstWeaponStages.push(new Weapon(8, 0, 23500, 690000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
-        // this.firstWeaponStages.push(new Weapon(9, 0, 90000, 3000000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
-        // this.firstWeaponStages.push(new Weapon(10, 0, 375000, 12500000, 1, ElementTypes.Wind, true, weaponUrls.weapon7));
+        this.firstWeaponStages.push(new Weapon(8, 0, 23500, 690000, 1, ElementTypes.Water, true, weaponUrls.weapon8));
+        this.firstWeaponStages.push(new Weapon(9, 0, 90000, 3000000, 1, ElementTypes.Earth, true, weaponUrls.weapon9));
+        this.firstWeaponStages.push(new Weapon(10, 0, 375000, 12500000, 1, ElementTypes.Fire, true, weaponUrls.weapon10));
+        this.firstWeaponStages.push(new Weapon(11, 0, 1225000, 49000000, 1, ElementTypes.Water, true, weaponUrls.weapon11));
     }
 
     private getDatabaseWeaponFromWeapon(weapon: Weapon): WeapondDatabaseData {

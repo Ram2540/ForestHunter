@@ -1,4 +1,4 @@
 <div class="all-weapons-box">
-    <app-weapon-card class="app-weapon-card" *ngIf="this.nextToBuyWeapon" [weapon]="this.nextToBuyWeapon"></app-weapon-card>
+    <app-weapon-card class="app-weapon-card app-weapon-card-next" *ngIf="this.nextToBuyWeapon" [weapon]="this.nextToBuyWeapon" [isThisNextWeapon] = "true"></app-weapon-card>
     <app-weapon-card class="app-weapon-card"  *ngFor="let weaponElement of weapons" [weapon]="weaponElement"></app-weapon-card>
 </div>

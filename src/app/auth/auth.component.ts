@@ -9,6 +9,8 @@ import { ControllerActions } from '../store/controller/controller.actions';
 import { DataStorageService } from '../services/data-storage/data-storage.service';
 import { HelperService } from '../services/helper.service';
 import { FirestoreDBService } from '../database/firestore-db.service';
+import { ConvertDataService } from '../database/convert-data.service';
+import { WeaponService } from '../services/weapon.service';
 
 
 
@@ -35,11 +37,12 @@ export class AuthComponent implements OnInit, OnDestroy {
     private controllerActions: ControllerActions,
     private dataStorageService: DataStorageService,
     private healperService: HelperService,
-    private firestoreDB: FirestoreDBService) { }
+    private firestoreDB: FirestoreDBService,
+    private weaponService: WeaponService) { }
   ngOnInit() {
     this.authStateSubscription = this.store.select('authState').subscribe(value => {
       this.isUserLoginedIn = value.isLoginedIn;
-       return value;
+      return value;
   });
   }
   onSubmit(form: NgForm) {
@@ -80,7 +83,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   onOpenForm() {
     this.isFormOpened = !this.isFormOpened;
-    //this.authService.autoLogin();
+    // this.authService.autoLogin();
   }
 
   onSwitchLoginToSignUp() {
@@ -98,9 +101,12 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onTest() {
+    // this.firestoreDB.loadWeaponCollectionByID(7);
+      //this.firestoreDB.postWeaponsCollections();
 
-   
-    // this.firestoreDB.getWeaponsCollection();
+
+    //  this.controllerActions.WeaponLoadFromDBById(11);
+
     // //console.log(this.healperService.getConvertedNumberToKs(652000));
 
     // this.store.select('ratingsState').subscribe(r => {

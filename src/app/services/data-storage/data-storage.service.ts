@@ -11,8 +11,8 @@ import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
 import { ControllerActions } from 'src/app/store/controller/controller.actions';
 import { Ratings, RatingsDB } from '../../components/ratings/ratings.model';
-import { ParseService } from '../parse.service';
 import { UserDataInfo } from 'src/app/classes/userDataInfo';
+import { ConvertDataService } from 'src/app/database/convert-data.service';
 
 
 @Injectable({
@@ -47,7 +47,7 @@ export class DataStorageService {
               private sharedDataService: SharedDataService,
               private store: Store<fromAppStore.AppState>,
               private controllerActions: ControllerActions,
-              private parseService: ParseService) {
+              private convertDataService: ConvertDataService) {
 
     this.subscriptionToUser = this.store.select('authState').subscribe((authState) => {
       if (authState.user) {
@@ -132,7 +132,7 @@ export class DataStorageService {
   // ------------------------------------------------------------RATINGS----------------------------------------------------------------------
   public postRatings(postRatings: Ratings) {
     if (this.controllerActions.getAuthState().user && postRatings) {
-      this.ratingsDBRefGeneralUserData.set(this.parseService.parseRatingsToDB(postRatings));
+      this.ratingsDBRefGeneralUserData.set(this.convertDataService.convertRatingsToDB(postRatings));
     }
   }
 
@@ -140,7 +140,7 @@ export class DataStorageService {
     if (this.controllerActions.getAuthState().user) {
       this.ratingsDBRefGeneralUserData
         .once('value', (snapshot) => {
-          const loadedRatings: Ratings = this.parseService.parseDBToRatings(snapshot.val());
+          const loadedRatings: Ratings = this.convertDataService.convertDBToRatings(snapshot.val());
           if (loadedRatings) {
             this.controllerActions.ratingLoad(loadedRatings);
           }

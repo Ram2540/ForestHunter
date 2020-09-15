@@ -15,6 +15,9 @@ import { RatingsState } from '../reducers/store-ratings.reducer';
 import { UserDataInfo } from 'src/app/classes/userDataInfo';
 import { UserDataInfoState } from '../reducers/store-userDataInfo.reducer';
 import { GlobalSettings } from 'src/app/global-settings';
+import { WeapondDatabaseData } from 'src/app/databaseSharedData/weaponsData';
+import { WeaponState } from '../reducers/store-weapon.reducer';
+import { WeaponService } from 'src/app/services/weapon.service';
 // import {AppState} from '../../models/appState';
 
 @Injectable({
@@ -39,6 +42,10 @@ export class ControllerActions {
   static HERO_MONSTER_DOWN_ON_CURRENT_LEVEL = 'HERO_MONSTER_DOWN_ON_CURRENT_LEVEL';
   static HERO_WEAPON_LEVEL_UP = 'HERO_WEAPON_LEVEL_UP';
 
+  static WEAPON_LOAD_FRON_DB_BY_ID = 'WEAPON_LOAD_FRON_DB_BY_ID';
+  static WEAPON_LOAD_ALL_COLLECTIONS = 'WEAPON_LOAD_ALL_COLLECTIONS';
+  static WEAPON_NEXT_ASSIGNS_TO_BUY = 'WEAPON_NEXT_ASSIGNS_TO_BUY';
+
   static USER_LOGIN = 'USER_LOGIN';
   static USER_LOGOUT = 'USER_LOGOUT';
 
@@ -50,7 +57,8 @@ export class ControllerActions {
   static RATINGS_CHNAGED = 'RATINGS_CHNAGED';
   static RATINGS_GLOBAL_LOAD = 'RATINGS_GLOBAL_LOAD';
 
-  constructor(private store: Store<AppState>) {
+  constructor(
+    private store: Store<AppState>) {
 
   }
 
@@ -91,18 +99,29 @@ export class ControllerActions {
     this.store.dispatch(createAction(ControllerActions.HERO_MONSTER_DOWN_ON_CURRENT_LEVEL, additionalMonster));
   }
 
-  public HeroWeaponLevelUp(weapon: Weapon) {
-    this.store.dispatch(createAction(ControllerActions.HERO_WEAPON_LEVEL_UP, weapon));
+  public HeroWeaponLevelUp(updatedWeapon: Weapon) {
+    this.store.dispatch(createAction(ControllerActions.HERO_WEAPON_LEVEL_UP, updatedWeapon));
+  }
+  // ----------------------------------------------WEAPON------------------------------------------------------------
+  public WeaponLoadFromDBById(weapon: WeapondDatabaseData) {
+    this.store.dispatch(createAction(ControllerActions.WEAPON_LOAD_FRON_DB_BY_ID, weapon));
   }
 
+  public WeaponNextAssignToBuy(weapon: Weapon) {
+    this.store.dispatch(createAction(ControllerActions.WEAPON_NEXT_ASSIGNS_TO_BUY, weapon));
+  }
+
+  public WeaponsLoadAllCollections(weaponList: WeapondDatabaseData[]) {
+    this.store.dispatch(createAction(ControllerActions.WEAPON_LOAD_ALL_COLLECTIONS, weaponList));
+  }
   // ----------------------------------------------ENEMY------------------------------------------------------------
-private isEnemyGenerating = false;
-private enemyGenerateTimer;
+  private isEnemyGenerating = false;
+  private enemyGenerateTimer;
 
   public EnemyGenerate() {
     if (this.getEnemyState().currentEnemyLevel !== this.getEnemyState().enemy.level) {
       if (this.enemyGenerateTimer) {
-          clearTimeout(this.enemyGenerateTimer);
+        clearTimeout(this.enemyGenerateTimer);
       }
       this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
       this.isEnemyGenerating = false;
@@ -138,48 +157,48 @@ private enemyGenerateTimer;
     this.store.dispatch(createAction(ControllerActions.ENEMY_SET_LEVEL, level));
   }
 
-// -------------------------------------------------------------USER------------------------------------------------------------
-public UserLogin(user: User) {
-  this.store.dispatch(createAction(ControllerActions.USER_LOGIN, user));
-  this.UserUserDataInfoSetLastDateLogin();
-}
+  // -------------------------------------------------------------USER------------------------------------------------------------
+  public UserLogin(user: User) {
+    this.store.dispatch(createAction(ControllerActions.USER_LOGIN, user));
+    this.UserUserDataInfoSetLastDateLogin();
+  }
 
-public UserLogout() {
-  this.store.dispatch(createAction(ControllerActions.USER_LOGOUT));
-  this.HeroLoad(new Hero(0));
-  this.EnemyGenerate();
-}
+  public UserLogout() {
+    this.store.dispatch(createAction(ControllerActions.USER_LOGOUT));
+    this.HeroLoad(new Hero(0));
+    this.EnemyGenerate();
+  }
 
-// -------------------------------------------------------------USER DATA INFO------------------------------------------------------------
-public UserChangeName(newUserName: string[20]) {
-  this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_CHANGE_NAME, newUserName));
-}
+  // -------------------------------------------------------------USER DATA INFO------------------------------------------------------------
+  public UserChangeName(newUserName: string[20]) {
+    this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_CHANGE_NAME, newUserName));
+  }
 
-public UserUserDataInfoLoad(userDataInfo: UserDataInfo) {
-  this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_LOAD, userDataInfo));
-}
+  public UserUserDataInfoLoad(userDataInfo: UserDataInfo) {
+    this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_LOAD, userDataInfo));
+  }
 
-private UserUserDataInfoSetLastDateLogin() {
-  this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_SET_LAST_DATE_LOGIN));
-}
+  private UserUserDataInfoSetLastDateLogin() {
+    this.store.dispatch(createAction(ControllerActions.USER_DATA_INFO_SET_LAST_DATE_LOGIN));
+  }
 
 
-// ----------------------------------------------RATINGS------------------------------------------------------------
-public ratingLoad(rating: Ratings) {
+  // ----------------------------------------------RATINGS------------------------------------------------------------
+  public ratingLoad(rating: Ratings) {
     this.store.dispatch(createAction(ControllerActions.RATINGS_LOAD, rating));
-}
+  }
 
-public ratingsChanged(chnagedRating: Ratings) {
-  const currentState = this.getRatingsState();
-  for (const key of Object.keys(chnagedRating)) {
-    if (currentState.rating[key] !== chnagedRating[key]) {
-      this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, {valueName: key, newValue: chnagedRating[key]}));
+  public ratingsChanged(chnagedRating: Ratings) {
+    const currentState = this.getRatingsState();
+    for (const key of Object.keys(chnagedRating)) {
+      if (currentState.rating[key] !== chnagedRating[key]) {
+        this.store.dispatch(createAction(ControllerActions.RATINGS_CHNAGED, { valueName: key, newValue: chnagedRating[key] }));
+      }
     }
   }
-}
-public ratingsGlobalLoad(globalRatings: RatingsDB[]) {
-  this.store.dispatch(createAction(ControllerActions.RATINGS_GLOBAL_LOAD, globalRatings));
-}
+  public ratingsGlobalLoad(globalRatings: RatingsDB[]) {
+    this.store.dispatch(createAction(ControllerActions.RATINGS_GLOBAL_LOAD, globalRatings));
+  }
 
   // ----------------------------------------------GET STATES------------------------------------------------------------
   public getEnemyState(): EnemyState {
@@ -222,6 +241,15 @@ public ratingsGlobalLoad(globalRatings: RatingsDB[]) {
     let state: UserDataInfoState;
 
     this.store.select('userDataInfoState').pipe(take(1)).subscribe(
+      s => state = s
+    );
+    return state;
+  }
+
+  public getWeaponState(): WeaponState {
+    let state: WeaponState;
+
+    this.store.select('weaponsState').pipe(take(1)).subscribe(
       s => state = s
     );
     return state;

@@ -1,26 +1,52 @@
-import { verifyHostBindings } from '@angular/compiler';
+import { identifierModuleUrl, verifyHostBindings } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
+import { get } from 'jquery';
+import { Weapon } from '../classes/weapon';
+import { SharedDataWeapons, WeapondDatabaseData } from '../databaseSharedData/weaponsData';
+import { ControllerActions } from '../store/controller/controller.actions';
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreDBService {
   private db: firebase.firestore.Firestore;
-  private weaponsRef;
-  constructor() {
+  private weaponsRef; // : firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
+  constructor(private controllerActions: ControllerActions) {
     this.db = firebase.firestore();
     this.weaponsRef = this.db.collection('weapons');
   }
 
-  getWeaponsCollection() {
-    //console.log(this.weaponsRef.get());
+  public postWeaponsCollections() {
+    let x = new SharedDataWeapons();
+    const weaponsDB = SharedDataWeapons.getWeaponData;
 
-    this.weaponsRef.get().then((doc) => {
-      // Document was found in the cache. If no cached document exists,
-      // an error will be returned to the 'catch' block below.
-      console.log("Cached document data:", doc.data());
-  }).catch(function(error) {
-      console.log("Error getting cached document:", error);
+    weaponsDB.forEach(weapon => {
+      this.weaponsRef.doc(weapon.id.toString()).set({ ...weapon });
+    });
+  }
+
+  public loadWeaponCollectionByID(id: number) {
+    this.weaponsRef.doc(id.toString()).get().then((weaponDB) => {
+      const weapon: WeapondDatabaseData = weaponDB.data();
+      this.controllerActions.WeaponLoadFromDBById(weapon);
+  }).catch((error) => {
+      console.log('Error getting cached document:', error);
   });
   }
+
+  public loadAllWeaponCollections() {
+    this.weaponsRef
+    .onSnapshot((querySnapshot) => {
+        const weaponCollections: WeapondDatabaseData[] = [];
+        querySnapshot.forEach((doc) => {
+          const weapon = doc.data() as WeapondDatabaseData;
+          if (weapon) {
+            weaponCollections.push(weapon);
+          }
+        });
+        this.controllerActions.WeaponsLoadAllCollections(weaponCollections);
+    });
+  }
+
+ 
 }

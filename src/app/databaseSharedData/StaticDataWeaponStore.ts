@@ -1,13 +1,13 @@
 import { Weapon } from '../classes/weapon';
 import { ElementTypes } from 'src/app/enums/elementTypes';
 import { weaponUrls } from 'src/app/enums/imageUrls';
+import { GlobalSettings } from '../global-settings';
 
 export class StaticDataWeaponStore {
     private static _instance: StaticDataWeaponStore;
     private weaponList: Weapon[];
     private firstWeaponStages: Weapon[];
     private maxWeaponLevel = 1000;
-    private priceFactor = 0.1; // 10% increase of price for each new level of weapon
     private damageFactor = 1.1; //  1.1 - 110% increase of damage for each new level of weapon
     get getWeaponList(): Weapon[] {
         return this.weaponList;
@@ -69,7 +69,7 @@ export class StaticDataWeaponStore {
         const UpdatedWeapon: Weapon = { ...weapon };
         // calculate values
         UpdatedWeapon.level++;
-        UpdatedWeapon.price = weapon.price + Math.round(weapon.price * this.priceFactor);
+        UpdatedWeapon.price = weapon.price + Math.round(weapon.price * GlobalSettings.weaponPriceFactor);
         UpdatedWeapon.damage = weapon.damage + this.firstWeaponStages.find(w => w.id === weapon.id).damage/* * this.damageFactor*/;
         this.weaponList.push(UpdatedWeapon);
         return UpdatedWeapon;

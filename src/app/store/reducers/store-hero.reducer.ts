@@ -47,8 +47,8 @@ export function heroReducer(state = initialHeroState, action: appActions) {
             return getChnagedMonsterDownOnCurrentLevel(state, updatedMostersDownOnCurrentLevel);
         case ControllerActions.HERO_WEAPON_LEVEL_UP:
             if (isThereEnoughGold(state, action.payload.price)) {
-                const updatedWeapon = getUpdatedWeapon(action.payload.id, action.payload.level + 1);
-                return getChnagedHeroWithWeaponAndMinusPrice(state, updatedWeapon, action.payload.price);
+                //const updatedWeapon = getUpdatedWeapon(action.payload.id, action.payload.level + 1);
+                return getChnagedHeroWithWeaponAndMinusPrice(state, action.payload, action.payload.price);
             }
             return state;
         default:
@@ -82,7 +82,11 @@ function getChnagedMonsterDownOnCurrentLevel(state: HeroState, updatedMostersDow
 function getChnagedHeroWithWeaponAndMinusPrice(state: HeroState, weapon: Weapon, price: number) {
     const updateWeapons = [...state.hero.weapons];
     const index = updateWeapons.findIndex(w => w.id === weapon.id);
-    updateWeapons[index] = weapon;
+    if (index >= 0) {
+        updateWeapons[index] = weapon;
+    } else {
+        updateWeapons.push(weapon);
+    }
     return {
         ...state,
         hero: {
@@ -94,9 +98,9 @@ function getChnagedHeroWithWeaponAndMinusPrice(state: HeroState, weapon: Weapon,
     }
 }
 
-function getUpdatedWeapon(id: number, level: number) {
-    return StaticDataWeaponStore.Instance.getWeaponByIDandLevel(id, level);
-}
+// function getUpdatedWeapon(id: number, level: number) {
+//     //return StaticDataWeaponStore.Instance.getWeaponByIDandLevel(id, level);
+// }
 // -----------------------Gold--------------------------------
 function isThereEnoughGold(state: HeroState, price: number): boolean {
     return state.hero.gold >= price ? true : false;

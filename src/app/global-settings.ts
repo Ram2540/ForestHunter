@@ -4,6 +4,15 @@ export class GlobalSettings {
     static gameDelayOfEnemyGereration = 1050;
     // ------------------------END Game-------------------------------------
 
+    // ------------------------Hero-------------------------------------
+    static heroUpdatedNotOftenThanEvery = 10000;
+    // ------------------------END Hero-------------------------------------
+
+    // ------------------------Weapon-------------------------------------
+    static weaponPriceFactor = 0.01; // 10% increase of price for each new level of weapon
+    // static weaponTimeOfWaitingWeaponDataFromDB = 10000;
+    // ------------------------END Weapon-------------------------------------
+
     // ------------------------Enemy-------------------------------------
     // draw enemy
     static enemyDrawImageMargin = 70;

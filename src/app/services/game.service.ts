@@ -8,6 +8,7 @@ import { SharedDataGold } from '../databaseSharedData/gold';
 import { Ratings } from '../components/ratings/ratings.model';
 import { HelperService } from './helper.service';
 import { GlobalSettings } from '../global-settings';
+import { DownloadService } from './download.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +20,7 @@ export class GameService {
     private isUserLoginedIn = false;
     private currentRatings: Ratings;
     private enemyIsGenerating = false;
+    private lastTimeHerobeenUpdated: Date;
 
     public get getHeroDamage(): number {
         return this.heroDamage;
@@ -30,7 +32,28 @@ export class GameService {
     constructor(private controllerActions: ControllerActions,
         private store: Store<fromAppStore.AppState>,
         private dataStorageService: DataStorageService,
-        private healperService: HelperService) {
+        private healperService: HelperService,
+        private downlaodService: DownloadService) {
+
+            // this.store.select('weaponsState').subscribe((weaponState) => {
+            //     console.log(weaponState.weaponList);
+            // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        this.lastTimeHerobeenUpdated = new Date();
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {
             // console.log("this.isUserLoginedIn ", this.isUserLoginedIn);
@@ -154,10 +177,11 @@ export class GameService {
 
     private updateHeroOnDB() {
 
-        this.store.select('heroState').pipe(debounceTime(2000)).subscribe(heroState => {
-            if (this.isUserLoginedIn) {
+        this.store.select('heroState').pipe(debounceTime(500)).subscribe(heroState => {
+            if (this.isUserLoginedIn && (new Date().getTime() - this.lastTimeHerobeenUpdated.getTime()) > GlobalSettings.heroUpdatedNotOftenThanEvery) {
                 if (heroState.hero && heroState.hero.id > 0) {
                     this.dataStorageService.postHero(heroState.hero);
+                    this.lastTimeHerobeenUpdated = new Date();
                 }
             }
         });
