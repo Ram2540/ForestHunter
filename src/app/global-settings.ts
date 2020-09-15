@@ -9,7 +9,7 @@ export class GlobalSettings {
     // ------------------------END Hero-------------------------------------
 
     // ------------------------Weapon-------------------------------------
-    static weaponPriceFactor = 0.01; // 10% increase of price for each new level of weapon
+    static weaponPriceFactor = 0.1; // 0.1 - 10% increase of price for each new level of weapon
     // static weaponTimeOfWaitingWeaponDataFromDB = 10000;
     // ------------------------END Weapon-------------------------------------
 

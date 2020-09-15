@@ -8,6 +8,10 @@
     overflow-y: scroll;
 }
 
+.app-all-weapons-box {
+    width: 100%;
+    height: 100%;
+}
 
 /* Scroll */
 .hero-left-side::-webkit-scrollbar-track
