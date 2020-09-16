@@ -15,10 +15,10 @@
             <div class="weapon-label-dps-box">DPS</div>
             <div class="weapon-dps">{{weaponDPS}}</div>
         </div>
-        <!-- <div class="weapon-name-box"></div> -->
-        <app-buy-button appButtonHighlighter class="color-btn-green" (buttonClicked)="levelUp()"
-            [myValue]="weaponPrice" [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}" [isCoin]="true">
-        </app-buy-button>
+        <div class="color-btn-text color-btn-green"  [ngClass]="{'color-btn-grey': currentGoldValue < weapon.price}" (click)="levelUp()">
+            <div class="f-gold"></div>
+            <div class="gold">{{weaponPrice}}</div>
+        </div>
     </div>
 
 </div>

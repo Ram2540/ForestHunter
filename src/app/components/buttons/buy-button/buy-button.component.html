@@ -1,7 +1,4 @@
-<!-- <div class="color-btn green "> -->
-<div class="color-btn-text" (click)="onClick()">
+<div class="color-btn-text" (click)="onClick.emit()">
     <div *ngIf="isCoin" class="f-gold"></div>
     <div class="gold">{{myValue}}</div>
-    <div class="color-btn-text1">{{text}}</div>
 </div>
-<!-- </div> -->

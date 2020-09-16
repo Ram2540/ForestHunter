@@ -73,6 +73,20 @@ img {
     background: linear-gradient(0deg,#a1aa95,#aabd96);
 }
 
+.color-btn-text {
+    display: flex;
+    text-align: center;
+}
+
+.f-gold {
+    width: 1.3rem;
+    height: inherit;
+    background: url('../../../assets/images/coin.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 0.5rem;
+}
+
 @media screen and (max-width: 60rem) {
     .weapon-avatar-box {
       width:40%;

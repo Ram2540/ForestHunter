@@ -1,7 +1,7 @@
 export enum Screens {
     hero,
+    mercenaries,
     guild,
-    village,
     quests,
     ratings
 }

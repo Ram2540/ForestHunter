@@ -6,7 +6,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./buy-button.component.css']
 })
 export class BuyButtonComponent implements OnInit {
-  @Output() buttonClicked = new EventEmitter();
+  @Output() onClick = new EventEmitter();
   @Input() text;
   @Input() myValue: number;
   @Input() isCoin = false;
@@ -15,7 +15,5 @@ export class BuyButtonComponent implements OnInit {
 
   ngOnInit() {
   }
-  onClick() {
-    this.buttonClicked.emit();
-  }
+
 }

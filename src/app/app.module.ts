@@ -38,8 +38,9 @@ import { DamageControlComponent } from './components/damage-control/damage-contr
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
-import { VillageComponent } from './components/village/village.component';
 import { DamageInfoComponent } from './components/damage-info/damage-info.component';
+import { MercenariesScreenComponent } from './components/mercenaries-screen/mercenaries-screen.component';
+import { MercenariesComponent } from './components/mercenaries/mercenaries.component';
 // import { GameService } from './services/game.service';
 
 firebase.initializeApp(environment.firebaseConfig);
@@ -70,8 +71,9 @@ firebase.initializeApp(environment.firebaseConfig);
     RatingsComponent,
     AvatarComponent,
     UserStatisticsComponent,
-    VillageComponent,
-    DamageInfoComponent
+    DamageInfoComponent,
+    MercenariesScreenComponent,
+    MercenariesComponent
   ],
   imports: [
     BrowserModule,
