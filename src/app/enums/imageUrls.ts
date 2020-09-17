@@ -1,7 +1,5 @@
 export enum weaponUrls {
-   
-
-    weapon1 = "https://i.pinimg.com/originals/73/24/e5/7324e5ab88378759f1c22d4afd70de82.png",
+     weapon1 = "https://i.pinimg.com/originals/73/24/e5/7324e5ab88378759f1c22d4afd70de82.png",
     weapon2 = "https://i.pinimg.com/originals/0f/fb/d5/0ffbd52570dab7a285c6527da7bc64de.png",
     weapon3 = "https://orangemushroom.files.wordpress.com/2017/08/login-img-raceselect_new-back0-4-0_new.png?w=700&h=&crop=1",
     weapon4 = "https://i.pinimg.com/originals/10/a5/aa/10a5aad9cd4b42c729fffa15e15778f4.png",
@@ -28,7 +26,13 @@ export enum weaponUrls {
     weapon25 =  "https://i.pinimg.com/originals/38/da/3e/38da3e439d6594a697fb6930a0527cb0.png",
     weapon26 =  "https://i.pinimg.com/originals/2d/d5/73/2dd573c04c440a6924cd17222eaba06a.png",
     weapon27 =  "https://i.pinimg.com/originals/b4/ef/c1/b4efc1d77d32ecf838bf28d2e739fd0a.png",
-    weapon28 =  "https://i.pinimg.com/originals/e4/e2/66/e4e266c960f2db9a41a71b0aabe7637a.png"
+    weapon28 =  "https://i.pinimg.com/originals/e4/e2/66/e4e266c960f2db9a41a71b0aabe7637a.png",
+    weapon29 =  "https://i.pinimg.com/originals/af/6a/4e/af6a4e85004f9323d1b6f744d9b40031.png",
+    weapon30 =  "https://i.pinimg.com/originals/d4/81/4e/d4814e662874025c04b8df39b33f941e.png",
+    weapon31 =  "https://i.pinimg.com/originals/e4/bc/b4/e4bcb4aef066b3ce5e1a14ee75200c57.png"
+    
+
+    
 
 
  // ---------------------https://www.pinterest.com/Kittyotic/chibis/-----------------------------

@@ -17,7 +17,10 @@ export class DamagePanelComponent implements OnInit, OnDestroy {
   private DPSIndex = 0;
   private DPCindex = 1;
   private heroStateSubscription: Subscription;
-  constructor(private store: Store<fromAppStore.AppState>, private gameService: GameService, private helperService: HelperService) { }
+  constructor(
+    private store: Store<fromAppStore.AppState>,
+    private gameService: GameService,
+    private helperService: HelperService) { }
 
   ngOnInit() {
     const damageControlDPC: DamageControl = {
@@ -61,6 +64,7 @@ export class DamagePanelComponent implements OnInit, OnDestroy {
         }, 600);
       }
     });
+    this.damagePanelList[this.DPSIndex].valueChanged = false;
   }
 
   ngOnDestroy() {

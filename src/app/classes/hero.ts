@@ -1,5 +1,4 @@
 import { Weapon } from './weapon';
-import { StaticDataWeaponStore } from '../databaseSharedData/StaticDataWeaponStore';
 
 export class Hero {
     id: number;
@@ -26,6 +25,6 @@ export class Hero {
         this.maxMosterOnLevel = 10;
         this.mostersDownOnCurrentLevel = 0;
         this.DPSMultiplier = 0;
-        this.weapons = StaticDataWeaponStore.Instance.getFirstWeapons;
+        this.weapons = [];//StaticDataWeaponStore.Instance.getFirstWeapons;
     }
 }

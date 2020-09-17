@@ -1,3 +1,5 @@
+import { weaponUrls } from './enums/imageUrls';
+
 export class GlobalSettings {
     // ------------------------Game-------------------------------------
     static gameNumberOfDamagesPerSecond = 5;
@@ -10,7 +12,15 @@ export class GlobalSettings {
 
     // ------------------------Weapon-------------------------------------
     static weaponPriceFactor = 0.1; // 0.1 - 10% increase of price for each new level of weapon
-    // static weaponTimeOfWaitingWeaponDataFromDB = 10000;
+
+    static maxWeaponLevel = 1000;
+    // amountOfDifferentWeapons how many picture do I have now, so we can generate the same amount of army
+    static amountOfDifferentWeapons = Object.keys(weaponUrls).length;
+    static increasingDamageOfNextWeapon = 3.5;
+    static increasingPriceOfNextWeapon = 5;
+
+    static everyAmountLevelAdaptationIsApplied = 50; // 100 every 100 level there will be adaptation ration amount of cost and damage
+    static adaptationRationForWeapons = 10;
     // ------------------------END Weapon-------------------------------------
 
     // ------------------------Enemy-------------------------------------
@@ -26,4 +36,10 @@ export class GlobalSettings {
     static enemyAnimationMaxShiftY = 10;
     static enemyAnimationDeathTransarencyChnagePerOneDraw = 0.065;
     // ------------------------END Enemy-------------------------------------
+    // ------------------------Gold Reward-------------------------------------
+    static startGoldReward = 3;
+    static goldMultiplier = 1.44;
+    static finalLevel = 1000;
+    // ------------------------END Gold Reward-------------------------------------
+
 }

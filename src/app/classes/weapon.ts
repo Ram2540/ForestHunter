@@ -11,6 +11,7 @@ export class Weapon {
     readonly element: ElementTypes;
     availability: boolean;
     UrlImg: string;
+    adaptationRation: number;
 
     constructor(
         id: number,
@@ -20,7 +21,8 @@ export class Weapon {
         attackFrequency: number,
         element: ElementTypes,
         availability: boolean,
-        UrlImg: string
+        UrlImg: string,
+        adaptationRation: number
     ) {
         this.id = id;
         this.level = level;
@@ -30,7 +32,7 @@ export class Weapon {
         this.element = element;
         this.availability = availability;
         this.UrlImg = UrlImg;
-
+        this.adaptationRation = adaptationRation;
     }
     // getWeaponsList() {
     //     const weapons: Weapon[] = [];

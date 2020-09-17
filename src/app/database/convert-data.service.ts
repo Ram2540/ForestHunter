@@ -34,7 +34,8 @@ export class ConvertDataService {
       weapondDB.attackFrequencyList[level],
       weapondDB.element,
       weapondDB.availability,
-      weapondDB.UrlImg
+      weapondDB.UrlImg,
+      weapondDB.adaptationRation
     );
   }
 

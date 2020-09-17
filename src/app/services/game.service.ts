@@ -35,24 +35,6 @@ export class GameService {
         private healperService: HelperService,
         private downlaodService: DownloadService) {
 
-            // this.store.select('weaponsState').subscribe((weaponState) => {
-            //     console.log(weaponState.weaponList);
-            // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         this.lastTimeHerobeenUpdated = new Date();
         // ------------------------------DAMAGE------------------------------
         this.damageInterval = setInterval(() => {

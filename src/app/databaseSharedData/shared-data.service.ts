@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { SharedDataGold, EnemyReward } from './gold';
-import { SharedDataWeapons } from './weaponsData';
-import { pipe } from 'rxjs';
-import { StaticDataWeaponStore } from './StaticDataWeaponStore';
+import { SharedDataGold } from './gold';
 
 // update data in firebase for weapons and enemy rewards
 
@@ -17,7 +14,7 @@ export class SharedDataService {
 
   public UpdateAllSharedDataToDB() {
     this.setEnemyRewardsToDB();
-    this.setWeaponsToDB();
+    //this.setWeaponsToDB();
   }
 
   public getRefForEnemyRewards() {
@@ -29,13 +26,13 @@ export class SharedDataService {
       .set(SharedDataGold.enemyRewards);
   }
 
-  private setWeaponsToDB() {
-    this.getRef(this.weaponsPath)
-      .set(StaticDataWeaponStore.Instance.getWeaponList);
-    // const firstInit = new SharedDataWeapons();
-    // this.getRef(this.weaponsPath)
-    //   .set(SharedDataWeapons.getWeaponData);
-  }
+  // private setWeaponsToDB() {
+  //   this.getRef(this.weaponsPath)
+  //     .set(StaticDataWeaponStore.Instance.getWeaponList);
+  //   // const firstInit = new SharedDataWeapons();
+  //   // this.getRef(this.weaponsPath)
+  //   //   .set(SharedDataWeapons.getWeaponData);
+  // }
 
   private getRef(ref: string): firebase.database.Reference {
     return firebase

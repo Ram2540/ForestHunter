@@ -1,5 +1,4 @@
 import { Weapon } from 'src/app/classes/weapon';
-import { StaticDataWeaponStore } from 'src/app/databaseSharedData/StaticDataWeaponStore';
 import { WeapondDatabaseData } from 'src/app/databaseSharedData/weaponsData';
 import { appActions } from '../app-store';
 import { ControllerActions } from '../controller/controller.actions';
@@ -57,7 +56,8 @@ function getNextWeaponsList(weaponsDB: WeapondDatabaseData[]): Weapon[]{
             w.attackFrequencyList[level],
             w.element,
             w.availability,
-            w.UrlImg
+            w.UrlImg,
+            w.adaptationRation
           );
         weaponsList.push(weapon)
     });

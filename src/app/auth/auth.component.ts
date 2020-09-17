@@ -102,7 +102,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   onTest() {
     // this.firestoreDB.loadWeaponCollectionByID(7);
-      // this.firestoreDB.postWeaponsCollections();
+    // this.firestoreDB.postWeaponsCollections();
 
 
     //  this.controllerActions.WeaponLoadFromDBById(11);
