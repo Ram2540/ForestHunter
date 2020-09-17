@@ -12,8 +12,8 @@ export interface EnemyState {
 
 const initialEnemyState: EnemyState = {
     enemy: new Enemy(1, 1),
-    isEnemyAlive: true,
-    currentEnemyLevel: 1,
+    isEnemyAlive: false,
+    currentEnemyLevel: 0,
 };
 
 export function enemyReducer(state = initialEnemyState, action: appActions) {
@@ -21,8 +21,8 @@ export function enemyReducer(state = initialEnemyState, action: appActions) {
         case ControllerActions.ENEMY_GENERATE:
             return {
                 ...state,
-                // enemy: state.enemy ? state.enemy : new Enemy(1, action.payload)
-                enemy: state.enemy.HP <= 0 ? new Enemy(1, state.currentEnemyLevel) : state.enemy,
+                // enemy: state.enemy.HP <= 0 ? new Enemy(1, state.currentEnemyLevel) : state.enemy,
+                enemy: new Enemy(1, state.currentEnemyLevel),
                 isEnemyAlive: true
             };
         // case ControllerActions.ENEMY_LOAD_NEW:

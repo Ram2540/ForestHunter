@@ -127,8 +127,8 @@ export class ControllerActions {
       this.isEnemyGenerating = false;
     } else if (!this.isEnemyGenerating) {
       this.isEnemyGenerating = true;
-      setTimeout(() => {
-        this.enemyGenerateTimer = this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
+      this.enemyGenerateTimer = setTimeout(() => {
+         this.store.dispatch(createAction(ControllerActions.ENEMY_GENERATE));
         this.isEnemyGenerating = false;
       }, GlobalSettings.gameDelayOfEnemyGereration);
     }
