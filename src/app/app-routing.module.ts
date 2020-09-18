@@ -8,7 +8,7 @@ import { RatingsComponent } from './components/ratings/ratings.component';
 
 // I need implement guards
 const appRoutes: Routes = [
-    { path: '', component: LeftSideHeroComponent },
+    { path: '', component: MercenariesScreenComponent },
     { path: 'hero', component: LeftSideHeroComponent },
     { path: 'mercenaries', component: MercenariesScreenComponent },
     { path: 'guild', component: LeftSideHeroComponent },

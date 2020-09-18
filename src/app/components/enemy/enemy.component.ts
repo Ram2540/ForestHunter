@@ -103,7 +103,8 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.imgEnemy) {
           this.ctx.drawImage(
             // source rectangle
-            this.imgEnemy, -this.enemyMovingX, this.enemyMovingY, this.imgEnemy.width + this.enemyMovingX * 2, this.imgEnemy.height - this.enemyMovingY,
+            this.imgEnemy, -this.enemyMovingX, this.enemyMovingY,
+            this.imgEnemy.width + this.enemyMovingX * 2, this.imgEnemy.height - this.enemyMovingY,
             GlobalSettings.enemyDrawImageMargin, GlobalSettings.enemyDrawImageMargin,
             this.canvas.width - 2 * GlobalSettings.enemyDrawImageMargin,
             this.canvas.height - 2 * GlobalSettings.enemyDrawImageMargin); // destination rectangle

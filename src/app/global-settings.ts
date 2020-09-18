@@ -38,7 +38,10 @@ export class GlobalSettings {
     // ------------------------END Enemy-------------------------------------
     // ------------------------Gold Reward-------------------------------------
     static startGoldReward = 3;
-    static goldMultiplier = 1.44;
+    static goldMultiplier = 2;
+    static minGoldMultiplier = 1.1;
+    static periodGoldMultiplierDrop = 5;
+    static dropMultiplierEveryPeriod = 0.05; // but not less then minGoldMultiplier
     static finalLevel = 1000;
     // ------------------------END Gold Reward-------------------------------------
 

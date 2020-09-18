@@ -15,11 +15,13 @@ const initialHeroState: HeroState = {
 export function heroReducer(state = initialHeroState, action: appActions) {
     switch (action.type) {
         case ControllerActions.HERO_LOAD:
+
+            const newWeapon =  action.payload.weapons ?? [];
             return {
                 ...state,
                 hero: {
                     ...action.payload,
-                    weapons: [...action.payload.weapons]
+                    weapons: [...newWeapon]
                 },
                 weaponVersion: state.weaponVersion + 1
             }
