@@ -1,6 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { trigger } from '@angular/animations';
-import { Enemy } from '../../classes/enemy';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromAppStore from '../../store/app-store';
@@ -12,10 +10,7 @@ import { GlobalSettings } from 'src/app/global-settings';
 @Component({
   selector: 'app-enemy',
   templateUrl: './enemy.component.html',
-  styleUrls: ['./enemy.component.css'],
-  animations: [
-    trigger('enemyState', [])
-  ]
+  styleUrls: ['./enemy.component.css']
 })
 export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('self') self: ElementRef;

@@ -1,4 +1,45 @@
-<div class="hero-left-side"> 
-    <div class="equipments">Hero equipments</div>
-    <div class="inventory">inventory</div>
+<div class="hero-left-side" cdkDropListGroup>
+    <!-- <div class="inventory-box" cdkDropListGroup> -->
+    <div class="hero-equipments-box" cdkDropList [cdkDropListData]="heroEquipmentItems1"
+        (cdkDropListDropped)="drop($event)">
+            <app-item class="hero-cell" cdkDrag *ngFor="let item of heroEquipmentItems1" [item]=item></app-item>
+    </div>
+    <div class="hero-equipments-box" cdkDropList [cdkDropListData]="heroEquipmentItems2"
+    (cdkDropListDropped)="drop($event)">
+        <app-item class="hero-cell" cdkDrag *ngFor="let item of heroEquipmentItems2" [item]=item></app-item>
+</div>
+
+<div class="inventory-box">
+    <div class="inventory-line"  *ngFor="let items of inventoryAllItems"  cdkDropList cdk-drop-list [cdkDropListData]="items"
+        (cdkDropListDropped)="drop($event)">
+            <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of items" [item]=item></app-item>
+    </div>
+</div>
+
+    <!-- <div class="inventory-box">
+        <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems1"
+            (cdkDropListDropped)="drop($event)">
+                <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of inventoryItems1" [item]=item></app-item>
+        </div>
+        <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems2"
+            (cdkDropListDropped)="drop($event)">
+                <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of inventoryItems2" [item]=item></app-item>
+        </div>
+        <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems3"
+            (cdkDropListDropped)="drop($event)">
+                <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of inventoryItems3" [item]=item></app-item>
+        </div>
+        <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems4"
+            (cdkDropListDropped)="drop($event)">
+                <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of inventoryItems4" [item]=item></app-item>
+        </div>
+        <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems5"
+            (cdkDropListDropped)="drop($event)">
+                <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of inventoryItems5" [item]=item></app-item>
+        </div>
+        <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems6"
+            (cdkDropListDropped)="drop($event)">
+                <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of inventoryItems6" [item]=item></app-item>
+        </div>
+    </div> -->
 </div>

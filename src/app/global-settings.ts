@@ -44,5 +44,9 @@ export class GlobalSettings {
     static dropMultiplierEveryPeriod = 0.05; // but not less then minGoldMultiplier
     static finalLevel = 1000;
     // ------------------------END Gold Reward-------------------------------------
+    // ------------------------Inventory-------------------------------------
+    static equipmentMaxAmountOfItems = 5;   // x * 2 the value will be miltilied by 4
+    static inventoryMaxAmountOfItems = 8;   // x * 6 the value will be miltilied by 4
+    // ------------------------END Inventory-------------------------------------
 
 }

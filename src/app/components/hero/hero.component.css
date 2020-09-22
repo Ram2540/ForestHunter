@@ -1,10 +1,52 @@
 .hero-left-side {
     display: flex;
 }
-.equipments {
+
+
+.inventory-box,
+.hero-equipments-box {
+    width: 45%;
+    display: flex;
+    height: 22rem;
+}
+
+.hero-equipments-box {
+    width: 27%;
+}
+
+.inventory-line,
+.hero-equipments-box {
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+}
+
+.cell,
+.hero-cell {
+    width: 3rem;
+    height: 3rem;
+    border: 0.1rem solid black;
+    margin: 0.05rem;
+}
+
+.hero-cell {
+    margin: 0.5rem 0rem;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0.4;
+    height: 1rem;
+    border: none;
+  }
+
+  /* .cdk-drag-placeholder {
+    display:none;
+    } */
+
+/* .equipments {
     width: 50%;
 }
 
 .inventory {
     width: 50%;
-}
+} */

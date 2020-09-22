@@ -32,7 +32,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule  } from '@angular/fire/database';
 import { StoreModule } from '@ngrx/store';
 import * as fromStoreApp from './store/app-store';
-import * as firebase from 'firebase';
 import { ButtonHighlighterDirective } from './decorators/button-highlighter.directive';
 import { DamageControlComponent } from './components/damage-control/damage-control.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
@@ -41,7 +40,10 @@ import { UserStatisticsComponent } from './components/user-statistics/user-stati
 import { DamageInfoComponent } from './components/damage-info/damage-info.component';
 import { MercenariesScreenComponent } from './components/mercenaries-screen/mercenaries-screen.component';
 import { MercenariesComponent } from './components/mercenaries/mercenaries.component';
-// import { GameService } from './services/game.service';
+import { ItemComponent } from './components/item/item.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+import * as firebase from 'firebase';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -73,7 +75,8 @@ firebase.initializeApp(environment.firebaseConfig);
     UserStatisticsComponent,
     DamageInfoComponent,
     MercenariesScreenComponent,
-    MercenariesComponent
+    MercenariesComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +89,8 @@ firebase.initializeApp(environment.firebaseConfig);
     HttpClientModule,
     FormsModule,
     StoreModule.forRoot(fromStoreApp.appReducer),
-    DataTablesModule
+    DataTablesModule,
+    DragDropModule
   ],
   providers: [
     AuthService,
