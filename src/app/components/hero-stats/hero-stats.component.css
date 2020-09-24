@@ -1,0 +1,12 @@
+/* .hero-data-box {
+    display: flex;
+} */
+
+
+
+ul {
+    list-style-type: none;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+  }

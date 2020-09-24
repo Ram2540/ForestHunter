@@ -2,21 +2,38 @@ import { Hero } from '../../classes/hero';
 import { Weapon } from 'src/app/classes/weapon';
 import { appActions } from '../app-store';
 import { ControllerActions } from '../controller/controller.actions';
+import { Item } from 'src/app/components/item/item.model';
+import { getDefaultStatValues, HeroStats } from 'src/app/components/hero-stats/hero-stats.model';
 
 export interface HeroState {
     hero: Hero;
     weaponVersion: number; // this version means that something chnaged in weapon list
+    heroStats: HeroStats[];
+    heroStatsVersion: number;
+    inventory: Item[];
+    inventoryVersion: number;
+    equipment: Item[];
+    equipmentVersion: number;
+
 }
 const initialHeroState: HeroState = {
     hero: new Hero(0),  // 0 as a default hero which will not be poster
-    weaponVersion: 0
+    weaponVersion: 0,
+    heroStats: [],
+    heroStatsVersion: 0,
+    inventory: [],
+    inventoryVersion: 0,
+    equipment: [],
+    equipmentVersion: 0,
 };
+
+
 
 export function heroReducer(state = initialHeroState, action: appActions) {
     switch (action.type) {
         case ControllerActions.HERO_LOAD:
 
-            const newWeapon =  action.payload.weapons ?? [];
+            const newWeapon = action.payload.weapons ?? [];
             return {
                 ...state,
                 hero: {
@@ -48,10 +65,16 @@ export function heroReducer(state = initialHeroState, action: appActions) {
             return getChnagedMonsterDownOnCurrentLevel(state, updatedMostersDownOnCurrentLevel);
         case ControllerActions.HERO_WEAPON_LEVEL_UP:
             if (isThereEnoughGold(state, action.payload.price)) {
-                //const updatedWeapon = getUpdatedWeapon(action.payload.id, action.payload.level + 1);
                 return getChnagedHeroWithWeaponAndMinusPrice(state, action.payload, action.payload.price);
             }
             return state;
+        case ControllerActions.HERO_STATS_CALCULATE:
+            const updatedStats = getUpdatedStats(action.payload);
+            return {
+                ...state,
+                heroStats: updatedStats,
+                heroStatsVersion: state.heroStatsVersion + 1
+            };
         default:
             return state;
     }
@@ -105,4 +128,31 @@ function getChnagedHeroWithWeaponAndMinusPrice(state: HeroState, weapon: Weapon,
 // -----------------------Gold--------------------------------
 function isThereEnoughGold(state: HeroState, price: number): boolean {
     return state.hero.gold >= price ? true : false;
+}
+
+// TEST
+function getUpdatedStats(heroItems: Item[]): HeroStats[] {
+    const updatedHeroStats: HeroStats[] = getDefaultStatValues();
+    if (heroItems) {
+        heroItems.forEach(i => {
+            i.itemEffects.forEach(e => {
+                if (updatedHeroStats[e.effectType]) {
+                    updatedHeroStats[e.effectType].value += e.value;
+                }
+            });
+        });
+    }
+
+
+    // this.listData1.push('Fire: 9%');
+    // this.listData1.push('Wind: 9%');
+    // this.listData1.push('Water: 9%');
+    // this.listData1.push('Earth: 9%');
+
+    // this.listData2.push('Clitical chance: 9%');
+    // this.listData2.push('DPS increase: 9%');
+    // this.listData2.push('DPC increase: 9%');
+    // this.listData2.push('Something: 9%');
+
+    return updatedHeroStats;
 }

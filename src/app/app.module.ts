@@ -42,8 +42,11 @@ import { MercenariesScreenComponent } from './components/mercenaries-screen/merc
 import { MercenariesComponent } from './components/mercenaries/mercenaries.component';
 import { ItemComponent } from './components/item/item.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import * as firebase from 'firebase';
+import { HeroStatsComponent } from './components/hero-stats/hero-stats.component';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -76,7 +79,8 @@ firebase.initializeApp(environment.firebaseConfig);
     DamageInfoComponent,
     MercenariesScreenComponent,
     MercenariesComponent,
-    ItemComponent
+    ItemComponent,
+    HeroStatsComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +94,9 @@ firebase.initializeApp(environment.firebaseConfig);
     FormsModule,
     StoreModule.forRoot(fromStoreApp.appReducer),
     DataTablesModule,
-    DragDropModule
+    DragDropModule,
+    MatTooltipModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService,

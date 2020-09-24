@@ -19,7 +19,7 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 
-  private isAnemyAlive = false ;
+  private isAnemyAlive = false;
   private clicksArray: EnemyHit[] = [];
   private parentElement: HTMLElement;
 
@@ -40,7 +40,7 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   constructor(private store: Store<fromAppStore.AppState>,
-              private gameService: GameService) { }
+    private gameService: GameService) { }
 
   ngOnInit() {
     this.intervalAdjustCanvas = setInterval(() => {
@@ -88,7 +88,7 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   drawAnimation() {
     if (!this.isDrawing) {
       this.isDrawing = true;
-      if(!this.isAnemyAlive) {
+      if (!this.isAnemyAlive) {
         this.transarencyValue -= GlobalSettings.enemyAnimationDeathTransarencyChnagePerOneDraw;
       }
       this.ctx.globalAlpha = this.transarencyValue;
@@ -105,24 +105,24 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
             this.canvas.height - 2 * GlobalSettings.enemyDrawImageMargin); // destination rectangle
         }
         this.drawAllClicks();
-    }
+      }
       this.isDrawing = false;
     }
   }
 
-moveEnemy() {
-  if (this.isAnemyAlive) {
-    // shift enemy image
-    if (this.enemyMovingX > GlobalSettings.enemyAnimationMaxShiftX || this.enemyMovingX < 0) {
-      this.shiftEnemyMoveX *= -1;
+  moveEnemy() {
+    if (this.isAnemyAlive) {
+      // shift enemy image
+      if (this.enemyMovingX > GlobalSettings.enemyAnimationMaxShiftX || this.enemyMovingX < 0) {
+        this.shiftEnemyMoveX *= -1;
+      }
+      if (this.enemyMovingY > GlobalSettings.enemyAnimationMaxShiftY || this.enemyMovingY < 0) {
+        this.shiftEnemyMoveY *= -1;
+      }
+      this.enemyMovingY += this.shiftEnemyMoveY;
+      this.enemyMovingX += this.shiftEnemyMoveX;
     }
-    if (this.enemyMovingY > GlobalSettings.enemyAnimationMaxShiftY || this.enemyMovingY < 0) {
-      this.shiftEnemyMoveY *= -1;
-    }
-    this.enemyMovingY += this.shiftEnemyMoveY;
-    this.enemyMovingX += this.shiftEnemyMoveX;
   }
-}
 
 
   clickEnemy(event: Event) {
@@ -143,8 +143,9 @@ moveEnemy() {
   private adjustCanvasSizeToParent() {
     // These will change (scaling applied by the style)
     if (this.parentElement) {
-      if (this.canvas.width !== this.parentElement.clientWidth || this.canvas.height !== this.parentElement.clientHeight) {
-        this.initCanvas(this.parentElement.clientWidth, this.parentElement.clientHeight);
+      const minWidthHeight = Math.min(this.parentElement.clientWidth, this.parentElement.clientHeight);
+      if (this.canvas.width !== minWidthHeight || this.canvas.height !== minWidthHeight) {
+        this.initCanvas(minWidthHeight, minWidthHeight);
       }
     } else {
       this.parentElement = this.self.nativeElement.parentElement.parentElement;

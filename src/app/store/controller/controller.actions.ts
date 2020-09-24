@@ -18,6 +18,7 @@ import { GlobalSettings } from 'src/app/global-settings';
 import { WeapondDatabaseData } from 'src/app/databaseSharedData/weaponsData';
 import { WeaponState } from '../reducers/store-weapon.reducer';
 import { WeaponService } from 'src/app/services/weapon.service';
+import { Item } from 'src/app/components/item/item.model';
 // import {AppState} from '../../models/appState';
 
 @Injectable({
@@ -41,6 +42,7 @@ export class ControllerActions {
   static HERO_SET_MAX_MONSTER_ON_LEVEL = 'HERO_SET_MAX_MONSTER_ON_LEVEL';
   static HERO_MONSTER_DOWN_ON_CURRENT_LEVEL = 'HERO_MONSTER_DOWN_ON_CURRENT_LEVEL';
   static HERO_WEAPON_LEVEL_UP = 'HERO_WEAPON_LEVEL_UP';
+  static HERO_STATS_CALCULATE = 'HERO_STATS_CALCULATE';
 
   static WEAPON_LOAD_FRON_DB_BY_ID = 'WEAPON_LOAD_FRON_DB_BY_ID';
   static WEAPON_LOAD_ALL_COLLECTIONS = 'WEAPON_LOAD_ALL_COLLECTIONS';
@@ -101,6 +103,10 @@ export class ControllerActions {
 
   public HeroWeaponLevelUp(updatedWeapon: Weapon) {
     this.store.dispatch(createAction(ControllerActions.HERO_WEAPON_LEVEL_UP, updatedWeapon));
+  }
+
+  public HeroStatsCalculate(heroItems: Item[]) {
+    this.store.dispatch(createAction(ControllerActions.HERO_STATS_CALCULATE, heroItems));
   }
   // ----------------------------------------------WEAPON------------------------------------------------------------
   public WeaponLoadFromDBById(weapon: WeapondDatabaseData) {

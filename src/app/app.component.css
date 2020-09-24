@@ -1,4 +1,58 @@
 .app-main {
+    max-width: 90rem;
+    min-width: 60rem;
+    max-height: 50rem;
+    min-height:25rem;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    border: teal solid 0.2rem;
+    border-radius: 1rem;
+    box-shadow:0.5rem 0.5rem 0.5rem teal;
+    background: linear-gradient(rgba(253, 253, 253, 1),teal 90%);
+}
+
+.app-main-top {
+    margin: 0.5rem 0.5rem;
+    /* grid-area: header; */
+}
+
+.app-avatar {
+    margin-left: auto;
+}
+
+ .app-main-area {
+    display: flex;
+} 
+
+.main-left-area {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.main-right-area {
+    width: 45%;
+    /* grid-area: battlefiled; */
+}
+
+.app-main-top {
+    display: flex;
+}
+
+.damage-info {
+    width: 10%;
+    margin: auto;
+}
+
+
+
+
+/* 
+.app-main {
     min-width: 60rem;
     max-width: 90rem;
     display: grid;
@@ -30,14 +84,14 @@
     grid-template-rows: 32rem;
     grid-area: main;
     grid-gap: 0.1rem;
-    min-height: 0;  /* NEW */
-    min-width: 0;   /* NEW; needed for Firefox */
+    min-height: 0;  
+    min-width: 0;   
 } 
 
 .main-left-area {
     grid-area: left;
-    overflow: hidden;  /* NEW */
-    min-width: 0;      /* NEW; needed for Firefox */
+    overflow: hidden;  
+    min-width: 0;      
 }
 
 .main-right-area {
@@ -52,4 +106,4 @@
 .damage-info {
     grid-area: damage-info;
     margin: auto;
-}
+} */

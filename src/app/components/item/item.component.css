@@ -5,5 +5,14 @@
 
 .item {
     height: 3rem;
+    white-space: pre-wrap;
 }
+
+.tooltip-inner,
+.tooltip-arrow {
+    white-space: pre-wrap;
+    color: #fff;
+    background: #FF9900;
+}
+
 

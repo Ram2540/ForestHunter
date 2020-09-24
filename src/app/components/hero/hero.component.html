@@ -1,20 +1,25 @@
 <div class="hero-left-side" cdkDropListGroup>
-    <!-- <div class="inventory-box" cdkDropListGroup> -->
-    <div class="hero-equipments-box" cdkDropList [cdkDropListData]="heroEquipmentItems1"
-        (cdkDropListDropped)="drop($event)">
-            <app-item class="hero-cell" cdkDrag *ngFor="let item of heroEquipmentItems1" [item]=item></app-item>
+    <div class="hero-equipments">
+        <div class="hero-equipments-box">
+            <div class="hero-equipments-left" cdkDropList [cdkDropListData]="heroEquipmentItems1"
+                (cdkDropListDropped)="drop($event)">
+                <app-item class="hero-cell" cdkDrag *ngFor="let item of heroEquipmentItems1" [item]=item></app-item>
+            </div>
+            <div class="hero-equipments-right" cdkDropList [cdkDropListData]="heroEquipmentItems2"
+                (cdkDropListDropped)="drop($event)">
+                <app-item class="hero-cell" cdkDrag *ngFor="let item of heroEquipmentItems2" [item]=item></app-item>
+            </div>
+        </div>
+        <app-hero-stats class="app-hero-stats"></app-hero-stats>
     </div>
-    <div class="hero-equipments-box" cdkDropList [cdkDropListData]="heroEquipmentItems2"
-    (cdkDropListDropped)="drop($event)">
-        <app-item class="hero-cell" cdkDrag *ngFor="let item of heroEquipmentItems2" [item]=item></app-item>
-</div>
+    
 
-<div class="inventory-box">
-    <div class="inventory-line"  *ngFor="let items of inventoryAllItems"  cdkDropList cdk-drop-list [cdkDropListData]="items"
-        (cdkDropListDropped)="drop($event)">
+    <div class="inventory-box">
+        <div class="inventory-line" *ngFor="let items of inventoryAllItems" cdkDropList cdk-drop-list
+            [cdkDropListData]="items" (cdkDropListDropped)="drop($event)">
             <app-item class="cell" cdkDrag cdkDrag *ngFor="let item of items" [item]=item></app-item>
+        </div>
     </div>
-</div>
 
     <!-- <div class="inventory-box">
         <div class="inventory-line" cdkDropList cdk-drop-list [cdkDropListData]="inventoryItems1"

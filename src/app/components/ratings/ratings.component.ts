@@ -3,7 +3,6 @@ import { DataStorageService } from 'src/app/services/data-storage/data-storage.s
 import * as fromAppStore from '../../store/app-store';
 import { Store } from '@ngrx/store';
 import { Subscription, Subject } from 'rxjs';
-import { timeInterval } from 'rxjs/operators';
 import { Ratings, RatingsDB } from './ratings.model';
 import { DataTableDirective } from 'angular-datatables';
 import { HelperService } from 'src/app/services/helper.service';
