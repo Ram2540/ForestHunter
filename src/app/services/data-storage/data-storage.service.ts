@@ -29,12 +29,12 @@ export class DataStorageService {
   private get userDataInfoDBRefData() {
     return this.getRef(this.RefForDataTo(DatabaseDataLinks.UserDataInfo));
   }
-  private get enemyLogDBData() {
-    return this.getRef(this.RefForDataTo(DatabaseDataLinks.EnemyLog) + new Date().getTime().toString());
-  }
-  private get weaponLogDBData() {
-    return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
-  }
+  // private get enemyLogDBData() {
+  //   return this.getRef(this.RefForDataTo(DatabaseDataLinks.EnemyLog) + new Date().getTime().toString());
+  // }
+  // private get weaponLogDBData() {
+  //   return this.getRef(this.RefForDataTo(DatabaseDataLinks.WeaponLog) + new Date().getTime().toString());
+  // }
   private get ratingsDBRefAllRatings() {
     return this.getRef(this.getRefForRatingsGeneral());
   }
@@ -56,7 +56,6 @@ export class DataStorageService {
         this.tryToPostNewRatingsOrGetExistingOne();
       }
     });
-
   }
   // ------------------------------------------------------------HERO----------------------------------------------------------------------
   public postUserDataInfo(postUserData: UserDataInfo) {
@@ -129,7 +128,7 @@ export class DataStorageService {
         this.getHero();
       });
   }
-  // ------------------------------------------------------------RATINGS----------------------------------------------------------------------
+  // ------------------------------------------------------------RATINGS-------------------------------------------------------------
   public postRatings(postRatings: Ratings) {
     if (this.controllerActions.getAuthState().user && postRatings) {
       this.ratingsDBRefGeneralUserData.set(this.convertDataService.convertRatingsToDB(postRatings));

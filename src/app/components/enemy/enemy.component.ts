@@ -19,9 +19,13 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 
-  private isAnemyAlive = false;
+  private isEnemyAlive = false;
   private clicksArray: EnemyHit[] = [];
   private parentElement: HTMLElement;
+
+  private goldRewardText: string = '18.5k10 -static';
+  private goldRewardIcon = new Image();
+ 
 
   private maxState: number;
   private isDrawing = false;
@@ -39,18 +43,19 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   private intervalMovingEnemy;
 
 
-  constructor(private store: Store<fromAppStore.AppState>,
+  constructor(
+    private store: Store<fromAppStore.AppState>,
     private gameService: GameService) { }
 
   ngOnInit() {
     this.intervalAdjustCanvas = setInterval(() => {
       this.adjustCanvasSizeToParent();
     }, GlobalSettings.enemyDrawDellayDrawing);
-
-    this.intervalAnimation = setInterval(() => {
-      this.drawAnimation();
-    }, GlobalSettings.enemyDrawDellayDrawing);
-
+    setTimeout(() => {
+      this.intervalAnimation = setInterval(() => {
+        this.drawAnimation();
+      }, GlobalSettings.enemyDrawDellayDrawing);
+    }, 1000)
     this.intervalMovingEnemy = setInterval(() => {
       this.moveEnemy();
     }, GlobalSettings.enemyDrawDellayMoving);
@@ -61,14 +66,14 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.enemyStateSubscription = this.store.select('enemyState').subscribe((enemyState) => {
-      if (!this.imgEnemy || this.imgEnemy.src !== enemyState.enemy.url || this.isAnemyAlive !== enemyState.isEnemyAlive) {
+      if (!this.imgEnemy || this.imgEnemy.src !== enemyState.enemy.url || this.isEnemyAlive !== enemyState.isEnemyAlive) {
         this.clicksArray = [];
         this.imgEnemy.src = enemyState.enemy.url;
-        this.isAnemyAlive = enemyState.isEnemyAlive;
+        this.isEnemyAlive = enemyState.isEnemyAlive;
         this.transarencyValue = 1;
         this.isDrawing = false;
-      } else if (!enemyState.isEnemyAlive && this.isAnemyAlive) {
-        this.isAnemyAlive = enemyState.isEnemyAlive;
+      } else if (!enemyState.isEnemyAlive && this.isEnemyAlive) {
+        this.isEnemyAlive = enemyState.isEnemyAlive;
       }
     });
 
@@ -79,6 +84,7 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.initCanvas();
+    this.goldRewardIcon.src = 'assets/images/coin.png';
   }
 
   ngAfterViewInit() {
@@ -88,7 +94,7 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
   drawAnimation() {
     if (!this.isDrawing) {
       this.isDrawing = true;
-      if (!this.isAnemyAlive) {
+      if (!this.isEnemyAlive) {
         this.transarencyValue -= GlobalSettings.enemyAnimationDeathTransarencyChnagePerOneDraw;
       }
       this.ctx.globalAlpha = this.transarencyValue;
@@ -105,13 +111,14 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
             this.canvas.height - 2 * GlobalSettings.enemyDrawImageMargin); // destination rectangle
         }
         this.drawAllClicks();
+        this.drawLoot(this.goldRewardText, this.goldRewardIcon);
       }
       this.isDrawing = false;
     }
   }
 
   moveEnemy() {
-    if (this.isAnemyAlive) {
+    if (this.isEnemyAlive) {
       // shift enemy image
       if (this.enemyMovingX > GlobalSettings.enemyAnimationMaxShiftX || this.enemyMovingX < 0) {
         this.shiftEnemyMoveX *= -1;
@@ -173,6 +180,20 @@ export class EnemyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.clicksArray = this.clicksArray.filter((c) => {
         return c.state < this.maxState;
       });
+    }
+  }
+
+  private drawLoot(text: string, img?: HTMLImageElement) {
+    if (!this.isEnemyAlive) {
+      const x = this.canvas.width / 2;
+      const y = this.canvas.height - 2 * GlobalSettings.enemyDrawImageMargin;
+      this.ctx.globalAlpha = 1;
+      this.ctx.fillStyle = `rgb( 255, 215, 0)`;
+      this.ctx.fillText(text, x, y);
+      if (img) {
+        this.ctx.drawImage(img, x - 20, y - 18, 20, 20); // destination rectangle
+      }
+      this.ctx.globalAlpha = this.transarencyValue;
     }
   }
 

@@ -26,39 +26,10 @@ export class WeaponService {
     this.store.select('weaponsState').subscribe((weaponsState) => {
       if (weaponsState.weaponDatabaseList) {
         this.weaponList = [...weaponsState.weaponDatabaseList];
-        // if (weaponsState.nextWeapon) {
-        //   this.nextWeaponId = weaponsState.nextWeapon.id;
-        // } else if (this.weaponList.length > 0 ) {
-        //   this.controllerActions.WeaponNextAssignToBuy(this.getWeaponByIDandLevel(this.nextWeaponId + 1, 1));
-        // }
       }
     });
 
-
     this.firestoreDBService.loadAllWeaponCollections();
-
-    // this.store.select('heroState').subscribe((heroState) => {
-    //   if (heroState.weaponVersion !== this.currentWeaponVersion) {
-    //     this.currentWeaponVersion = heroState.weaponVersion;
-    //     if (heroState.hero.weapons.findIndex(w => w.id === this.nextWeaponId) >= 0) {
-    //       this.controllerActions.WeaponNextAssignToBuy(this.getWeaponByIDandLevel(this.nextWeaponId + 1, 1));
-    //     }
-    //   }
-    // });
-
-    // this.store.select('heroState').subscribe((heroState) => {
-    //   if (heroState.weaponVersion !== this.currentWeaponVersion) {
-    //     this.currentWeaponVersion = heroState.weaponVersion;
-    //     const needDownloadWeaponIDs = heroState.hero.weapons
-    //       .map(w => w.id)
-    //       .filter(id => this.downloadService.weaponsIDAlreadyDownloaded.indexOf(id) < 0);
-    //     if (needDownloadWeaponIDs.length > 0) {
-    //       this.downloadService.downloadWeaponIDs$.next(needDownloadWeaponIDs); // send to download
-    //     }
-    //   }
-    // });
-
-
   }
 
 

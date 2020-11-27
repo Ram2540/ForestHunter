@@ -17,7 +17,7 @@ export class FirestoreDBService {
   }
 
   public postWeaponsCollections() {
-    let x = new SharedDataWeapons();
+    let x = SharedDataWeapons.Instance;
     const weaponsDB = SharedDataWeapons.getWeaponData;
 
     weaponsDB.forEach(weapon => {
